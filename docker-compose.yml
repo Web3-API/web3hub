@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=web3hub
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data

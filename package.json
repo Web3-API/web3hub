@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "export": "rm -rf .next out && next build && next export",
-    "deploy": "cd out && surge && cd .."
+    "deploy": "cd out && surge && cd ..",
+    "db:start": "docker-compose up"
   },
   "dependencies": {
     "@svgr/webpack": "^5.5.0",
