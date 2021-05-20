@@ -14,6 +14,9 @@ const onboardInit = (dispatch) => {
         type: 'SET_NETWORK',
         payload: network,
       })
+      dispatch({
+        type: 'recreateredirects'
+      })
     },
     balance: (balance) => {
       dispatch({
@@ -30,6 +33,9 @@ const onboardInit = (dispatch) => {
       dispatch({
         type: 'SET_WEB3',
         payload: web3,
+      })
+      dispatch({
+        type: 'recreateredirects'
       })
     },
   })

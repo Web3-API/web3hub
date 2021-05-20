@@ -1,5 +1,7 @@
 import {networkID} from '../constants'
 
+import {UriRedirect} from '@web3api/client-js';
+
 let initialState = {
   dapp: {
     balance: -1,
@@ -49,7 +51,7 @@ type dappType = {
 }
 
 type web3apiType = {
-  redirects: any[]
+  redirects: UriRedirect[]
 }
 
 type publishType = {

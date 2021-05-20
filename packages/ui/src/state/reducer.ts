@@ -24,9 +24,7 @@ function dappReducer(state = {}, action) {
       return { ...state, ...newStateObj }
     case 'SET_WEB3':
       newStateObj.web3 = action.payload
-      let finalState = { ...state, ...newStateObj }
-      finalState = web3apiReducer(finalState, { type: 'recreateredirects' })
-      return finalState
+      return { ...state, ...newStateObj }
     case 'SET_AVAILABLE_APIS':
       newStateObj.apis = action.payload
       return { ...state, ...newStateObj }
@@ -98,19 +96,25 @@ function publishReducer(state = {}, action) {
   }
 }
 
-function web3apiReducer(state: any = {}, action) {
-  // console.log('dappReducer', state, action)
+function web3apiReducer(
+  state: {
+    dapp: dappType,
+    web3api: web3apiType
+  } = {
+    web3api: InitialState.web3api,
+    dapp: InitialState.dapp
+  },
+  action
+) {
   let newStateObj: web3apiType = InitialState.web3api
-  const dapp = state.dapp
+  const dapp = state.dapp;
+
   switch (action.type) {
     case 'recreateredirects':
-      
-    const networks: Record<string, ConnectionConfig> = { };
-      
-      networks[state.dapp.network] = { provider: state.dapp.provider };
+      const networks: Record<string, ConnectionConfig> = { };
 
       if (dapp) {
-        networks[dapp.network] = { provider: dapp.provider };
+        networks[dapp.network.toString()] = { provider: dapp.web3 };
       }
 
       newStateObj.redirects = [
@@ -132,7 +136,7 @@ export default function mainReducer(w3hubStates, action) {
   // localStorage.setItem('w3hubStates.publish', JSON.stringify(w3hubStates.publish))
   return {
     dapp: dappReducer(w3hubStates.dapp, action),
-    web3api: web3apiReducer(w3hubStates.web3api, action),
+    web3api: web3apiReducer(w3hubStates, action),
     publish: publishReducer(w3hubStates.publish, action),
     search: searchReducer(w3hubStates.search, action)
   }
