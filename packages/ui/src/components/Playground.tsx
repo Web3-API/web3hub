@@ -3,6 +3,7 @@
 import { jsx, Flex, Button, Styled, Field } from 'theme-ui'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useWeb3ApiQuery } from "@web3api/react";
 import { useStateValue } from '../state/state'
 
 import Badge from './Badge'
@@ -41,6 +42,20 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [varformstoggle, setvarformstoggle] = useState(false)
 
+  const { data, errors, loading, execute } = useWeb3ApiQuery({
+    uri: "TODO: ens/rinkeby/simplestorage-meta.web3api.eth",
+    query: "...",
+    variables { ... }
+  });
+
+  /*
+    data.methodName = whatever is returned (string, bool, object)
+
+    if (data && data.methodName) {
+      setOutput(JSON.stringify(data.methodName))
+    }
+  */
+
   const varsList = [...selectedMethod.matchAll(/\$([a-zA-Z0-9_-]{1,})/g)] || null
 
   function handleShowSchema(e: React.BaseSyntheticEvent) {
@@ -63,7 +78,7 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   function handleRunBtnClick() {
     setclientresponse(responseData)
-    
+    // TODO: execute();
   }
 
   function handleClearBtnClick() {
