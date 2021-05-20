@@ -8,40 +8,31 @@ import { useRef } from 'react'
 import solarizedDark from '../theme/Solarized-dark.json'
 
 type GQLCodeBlockProps = {
-  title: string
+  title?: string
+  readOnly?: boolean
+  height?: string
   value: any
 }
 
-const GQLCodeBlock = ({ title, value }: GQLCodeBlockProps) => {
-  const ref = useRef(null)
+const GQLCodeBlock = ({ title, readOnly, height = '200px', value }: GQLCodeBlockProps) => {
   const handleEditorWillMount = (monaco) => {
     monaco.editor.defineTheme('solarizedDark', solarizedDark);
     monaco.editor.setTheme('solarizedDark');
-  }
-  const handleEditorDidMount = () => {
-    let triggerCheck = setInterval(() => {
-      let foldButton = ref.current.querySelector('.cldr.codicon') as HTMLElement
-      if (foldButton !== null) {
-        clearInterval(triggerCheck)
-        foldButton.click()
-      }
-    }, 500)
-  }
+  } 
   return (
-    <div ref={ref}>
-      <Styled.h5 sx={{ m: 0, py: 2, bg: 'white' }}>{title}</Styled.h5>
+    <div className="GQLCodeBlock-wrap">
+      {title ? <Styled.h5 sx={{ m: 0, py: 2, bg: 'white' }}>{title}</Styled.h5> : null}
       <Editor
-        onMount={handleEditorDidMount}
         theme="solarizedDark"
         options={{
           minimap: {
             enabled: false,
           },
           scrollBeyondLastLine: false,
-          readOnly: true
+          readOnly: readOnly
         }}
         beforeMount={handleEditorWillMount}
-        height="200px"
+        height={height}
         defaultLanguage="graphql"
         defaultValue={value.toString()}
       />

@@ -41,6 +41,8 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [varformstoggle, setvarformstoggle] = useState(false)
 
+  const varsList = [...selectedMethod.matchAll(/\$([a-zA-Z0-9_-]{1,})/g)] || null
+
   function handleShowSchema(e: React.BaseSyntheticEvent) {
     return setshowschema(!showschema)
   }
@@ -66,11 +68,10 @@ const Playground = ({ api }: PlaygroundProps) => {
   function handleClearBtnClick() {
     setclientresponse('')
   }
+
   function handleVarsFormToggle() {
-    console.log(varformstoggle)
     setvarformstoggle(!varformstoggle)
   }
-  
 
   useEffect(() => {
     if (router.asPath.includes('ens/')) {
@@ -106,9 +107,6 @@ const Playground = ({ api }: PlaygroundProps) => {
       go()
     }
   }, [loadingContents])
-
-  const regexp = /\$([a-zA-Z0-9_-]{1,})/g
-  const varsList = [...selectedMethod.matchAll(regexp)] || null
 
   return (
     <div
@@ -212,6 +210,7 @@ const Playground = ({ api }: PlaygroundProps) => {
           </Flex>
           <Styled.code>
             <textarea
+              onChange={() => {}}
               sx={{
                 resize: 'none',
                 width: '100%',
@@ -223,10 +222,15 @@ const Playground = ({ api }: PlaygroundProps) => {
               }}
               value={selectedMethod}
             ></textarea>
+             {/* <GQLCodeBlock
+                value={selectedMethod}
+                height={'300px'}
+              /> */}
           </Styled.code>
           <div
             className={varformstoggle ? 'vars expanded' : 'vars'}
             sx={{
+              display: varsList.length > 0 ? 'block' : 'none',
               position: 'absolute',
               width: '100%',
               height: '40px',
@@ -241,16 +245,16 @@ const Playground = ({ api }: PlaygroundProps) => {
               sx={{
                 bg: 'gray',
                 height: '40px',
-                p: 1,
+                px: 3,
                 alignItems: 'center',
                 display: 'grid',
                 color: 'white',
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
             >
               Vars
             </div>
-            <form sx={{bg: 'white', p: 3}}>
+            <form sx={{ bg: 'white', p: 3 }}>
               {varsList.map((varItem) => (
                 <Field
                   label={varItem[0]}
@@ -282,7 +286,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               '*': { display: 'flex', alignItems: 'center' },
             }}
           >
-            <div className="left" sx={{ '> *': { mr: 2 } }}>
+            <div className="left" sx={{ '> *': { mr: '1rem !important' } }}>
               <Button variant="primarySmall" onClick={handleRunBtnClick}>
                 Run
               </Button>
@@ -313,13 +317,11 @@ const Playground = ({ api }: PlaygroundProps) => {
               )}
             </div>
           </Flex>
-          <div sx={{ flex: 1, pb: 0, mb: 0 }}>
-            <Styled.pre
-              sx={{ height: '100%', color: 'w3PlaygroundSoftBlue', pb: 0, mb: 0 }}
-            >
-              {clientresponse !== '' && JSON.stringify(clientresponse, undefined, 2)}
-            </Styled.pre>
-          </div>
+          <Styled.pre
+            sx={{ height: '100%', color: 'w3PlaygroundSoftBlue', pb: 0, mb: 0 }}
+          >
+            {clientresponse !== '' && JSON.stringify(clientresponse, undefined, 2)}
+          </Styled.pre>
         </div>
         {structuredschema?.localqueries && (
           <Flex
@@ -355,14 +357,28 @@ const Playground = ({ api }: PlaygroundProps) => {
                 width: '400px',
               }}
             >
-              <GQLCodeBlock title="Queries" value={structuredschema.localqueries} />
-              <GQLCodeBlock title="Mutations" value={structuredschema.localmutations} />
-              <GQLCodeBlock title="Custom Types" value={structuredschema.localcustom} />
               <GQLCodeBlock
+                readOnly
+                title="Queries"
+                value={structuredschema.localqueries}
+              />
+              <GQLCodeBlock
+                readOnly
+                title="Mutations"
+                value={structuredschema.localmutations}
+              />
+              <GQLCodeBlock
+                readOnly
+                title="Custom Types"
+                value={structuredschema.localcustom}
+              />
+              <GQLCodeBlock
+                readOnly
                 title="Imported Queries"
                 value={structuredschema.importedqueries}
               />
               <GQLCodeBlock
+                readOnly
                 title="Imported Mutations"
                 value={structuredschema.importedmutations}
               />
