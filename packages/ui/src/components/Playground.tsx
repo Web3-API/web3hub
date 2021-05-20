@@ -63,6 +63,7 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   function handleRunBtnClick() {
     setclientresponse(responseData)
+    
   }
 
   function handleClearBtnClick() {

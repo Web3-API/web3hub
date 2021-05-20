@@ -12,6 +12,11 @@ let initialState = {
     apis: [],
     github: ''
   },
+  web3api: {
+    redirects: [
+
+    ],
+  },
   publish: {
     subdomain: '',
     ipfs: '',
@@ -43,6 +48,10 @@ type dappType = {
   github?: string
 }
 
+type web3apiType = {
+  redirects: any[]
+}
+
 type publishType = {
   subdomain: string
   ipfs: string
@@ -66,5 +75,6 @@ type searchType = {
 
 export default initialState
 export type { dappType }
+export type { web3apiType }
 export type { publishType }
 export type { searchType }

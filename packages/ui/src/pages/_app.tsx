@@ -1,20 +1,22 @@
 import { ThemeProvider } from 'theme-ui'
 import theme from '../theme'
-import { StateProvider } from '../state/state'
+import { StateProvider, useStateValue } from '../state/state'
 import InitialState from '../state/initialState'
 import Reducer from '../state/reducer'
 import Head from 'next/head'
 import 'animate.css/animate.css'
 import { SWRConfig } from 'swr'
 import { fetcherREST } from '../utils/fetcher'
+import { Web3ApiProvider } from '@web3api/react'
 const swrOptions = {
   // refreshInterval: 10000,
   fetcher: (resource) => fetcherREST(resource),
 }
 
-function MyApp({ Component, pageProps }) {
+function StatefulApp({pageProps, Component}) {
+  const [{ redirects }] = useStateValue()
   return (
-    <StateProvider initialState={InitialState} reducer={Reducer}>
+    <Web3ApiProvider redirects={redirects}>
       <ThemeProvider theme={theme}>
         <Head>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -27,6 +29,14 @@ function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         </SWRConfig>
       </ThemeProvider>
+    </Web3ApiProvider>
+  )
+}
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <StateProvider initialState={InitialState} reducer={Reducer}>
+      <StatefulApp pageProps={pageProps} Component={Component}/>
     </StateProvider>
   )
 }
