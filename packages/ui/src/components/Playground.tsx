@@ -3,7 +3,7 @@
 import { jsx, Flex, Button, Styled, Field } from 'theme-ui'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useWeb3ApiQuery } from "@web3api/react";
+import { useWeb3ApiQuery } from '@web3api/react'
 import { useStateValue } from '../state/state'
 
 import Badge from './Badge'
@@ -43,21 +43,15 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [varformstoggle, setvarformstoggle] = useState(false)
 
-  // const { data, errors, loading, execute } = useWeb3ApiQuery({
-  //   uri: "TODO: ens/rinkeby/simplestorage-meta.web3api.eth",
-  //   query: "...",
-  //   variables { ... }
-  // });
-
-  /*
-    data.methodName = whatever is returned (string, bool, object)
-
-    if (data && data.methodName) {
-      setOutput(JSON.stringify(data.methodName))
-    }
-  */
-
   const varsList = [...selectedMethod.matchAll(/\$([a-zA-Z0-9_-]{1,})/g)] || null
+
+  const [formVarsToSubmit, setformVarsToSubmit] = useState({})
+
+  const { data: queryResponse, errors, loading, execute } = useWeb3ApiQuery({
+    uri: 'ens/rinkeby/' + router.asPath.split('/playground/ens/')[1],
+    query: selectedMethod,
+    variables: formVarsToSubmit,
+  })
 
   function handleShowSchema(e: React.BaseSyntheticEvent) {
     return setshowschema(!showschema)
@@ -79,9 +73,33 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   function handleRunBtnClick(e) {
     e.preventDefault()
+    let varsToSubmit = {}
+    Array.from(e.target)
+      .filter((item: any) => item.type !== 'submit')
+      .map((input: any) => (varsToSubmit[input.name] = input.value))
+    setformVarsToSubmit(varsToSubmit)
     setclientresponse(responseData)
-    // TODO: execute();
   }
+
+  useEffect(() => {
+    async function runQuery() {
+      if (Object.keys(formVarsToSubmit).length > 0) {
+        console.log({
+          uri: 'ens/rinkeby/' + router.asPath.split('/playground/ens/')[1],
+          query: selectedMethod,
+          variables: formVarsToSubmit,
+        })
+        await execute()
+        console.log({ queryResponse, errors, loading })
+        setclientresponse(queryResponse || [...errors].toString() )
+        // data.methodName = whatever is returned (string, bool, object)
+        // if (data && data.methodName) {
+        //   setOutput(JSON.stringify(data.methodName))
+        // }
+      }
+    }
+    runQuery()
+  }, [formVarsToSubmit])
 
   function handleClearBtnClick() {
     setclientresponse('')
@@ -131,7 +149,7 @@ const Playground = ({ api }: PlaygroundProps) => {
       setnewSelectedMethod(selectedMethod)
     }
   }, [selectedMethod])
-  
+
   return (
     <div
       className="playground"
@@ -289,6 +307,7 @@ const Playground = ({ api }: PlaygroundProps) => {
                   key={varItem[1]}
                 />
               ))}
+              <input type="submit" value="Submit" sx={{ display: 'none' }} />
             </form>
           </div>
         </div>
@@ -296,7 +315,8 @@ const Playground = ({ api }: PlaygroundProps) => {
         <div
           className="result"
           sx={{
-            width: '70%',
+            width: '60%',
+            maxWidth: '712px',
             backgroundColor: 'w3PlayGroundNavy',
             display: 'flex',
             flexDirection: 'column',
