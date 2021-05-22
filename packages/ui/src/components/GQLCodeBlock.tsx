@@ -21,7 +21,7 @@ const GQLCodeBlock = ({ title, readOnly, height = '200px', value }: GQLCodeBlock
   } 
   return (
     <div className="GQLCodeBlock-wrap">
-      {title ? <Styled.h5 sx={{ m: 0, py: 2, bg: 'white' }}>{title}</Styled.h5> : null}
+      {title ? <Styled.h5 sx={{ m: 0, py: 2, px: '.75rem', bg: 'white' }}>{title}</Styled.h5> : null}
       <Editor
         theme="solarizedDark"
         options={{

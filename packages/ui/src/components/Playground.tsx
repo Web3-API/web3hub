@@ -35,6 +35,7 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [showschema, setshowschema] = useState(false)
   const [selectedMethod, setSelectedMethod] = useState('')
+  const [newSelectedMethod, setnewSelectedMethod] = useState('')
 
   const [structuredschema, setstructuredschema] = useState<any>()
 
@@ -42,11 +43,11 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [varformstoggle, setvarformstoggle] = useState(false)
 
-  const { data, errors, loading, execute } = useWeb3ApiQuery({
-    uri: "TODO: ens/rinkeby/simplestorage-meta.web3api.eth",
-    query: "...",
-    variables { ... }
-  });
+  // const { data, errors, loading, execute } = useWeb3ApiQuery({
+  //   uri: "TODO: ens/rinkeby/simplestorage-meta.web3api.eth",
+  //   query: "...",
+  //   variables { ... }
+  // });
 
   /*
     data.methodName = whatever is returned (string, bool, object)
@@ -76,7 +77,8 @@ const Playground = ({ api }: PlaygroundProps) => {
     link.click()
   }
 
-  function handleRunBtnClick() {
+  function handleRunBtnClick(e) {
+    e.preventDefault()
     setclientresponse(responseData)
     // TODO: execute();
   }
@@ -124,6 +126,12 @@ const Playground = ({ api }: PlaygroundProps) => {
     }
   }, [loadingContents])
 
+  useEffect(() => {
+    if (selectedMethod !== newSelectedMethod) {
+      setnewSelectedMethod(selectedMethod)
+    }
+  }, [selectedMethod])
+  
   return (
     <div
       className="playground"
@@ -180,11 +188,11 @@ const Playground = ({ api }: PlaygroundProps) => {
         >
           <div className="left">
             <Stars count={0} onDark />
-            <ul className="category-Badges" sx={{ ml: 3 }}>
-              <li>
-                <Badge label="IPFS" onDark />
-              </li>
-            </ul>
+            {api.locationUri && (
+              <div className="category-Badges" sx={{ ml: 3 }}>
+                <Badge label="IPFS" onDark ipfsHash={api.locationUri} />
+              </div>
+            )}
           </div>
           <div className="right">
             <a
@@ -224,25 +232,22 @@ const Playground = ({ api }: PlaygroundProps) => {
               />
             )}
           </Flex>
-          <Styled.code>
-            <textarea
-              onChange={() => {}}
+          {selectedMethod !== '' && selectedMethod === newSelectedMethod && (
+            <div
               sx={{
-                resize: 'none',
-                width: '100%',
-                height: '18rem',
-                bg: 'transparent',
-                color: 'w3PlaygroundSoftBlue',
-                border: '2px solid rgba(205,208,227,0.295455) !important',
-                borderRadius: '4px',
+                border: '2px solid gray',
+                borderRadius: '8px',
+                overflow: 'Hidden',
+                bg: '#002b36',
               }}
-              value={selectedMethod}
-            ></textarea>
-             {/* <GQLCodeBlock
+            >
+              <GQLCodeBlock
+                key={newSelectedMethod}
                 value={selectedMethod}
                 height={'300px'}
-              /> */}
-          </Styled.code>
+              />
+            </div>
+          )}
           <div
             className={varformstoggle ? 'vars expanded' : 'vars'}
             sx={{
@@ -259,7 +264,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               className="lip"
               onClick={handleVarsFormToggle}
               sx={{
-                bg: 'gray',
+                bg: '#284c5d',
                 height: '40px',
                 px: 3,
                 alignItems: 'center',
@@ -270,12 +275,17 @@ const Playground = ({ api }: PlaygroundProps) => {
             >
               Vars
             </div>
-            <form sx={{ bg: 'white', p: 3 }}>
+            <form
+              onSubmit={handleRunBtnClick}
+              sx={{ bg: 'white', p: 3, pt: '0.6rem', label: { fontSize: '.9rem' } }}
+            >
               {varsList.map((varItem) => (
                 <Field
+                  sx={{
+                    p: '0 .5rem',
+                  }}
                   label={varItem[0]}
                   name={varItem[1]}
-                  defaultValue=""
                   key={varItem[1]}
                 />
               ))}
@@ -359,46 +369,51 @@ const Playground = ({ api }: PlaygroundProps) => {
                 fill: '#FFF',
                 width: '30px',
                 height: '30px',
-                top: '1rem',
+                top: '18px',
+                position: 'sticky',
+                left: 0,
                 '&:hover': {
                   fill: 'w3PlaygroundSoftBlue',
                   cursor: 'pointer',
                 },
               }}
             />
-            <aside
-              className="hidden-schema-panel"
-              sx={{
-                color: 'w3shade3',
-                width: '400px',
-              }}
-            >
-              <GQLCodeBlock
-                readOnly
-                title="Queries"
-                value={structuredschema.localqueries}
-              />
-              <GQLCodeBlock
-                readOnly
-                title="Mutations"
-                value={structuredschema.localmutations}
-              />
-              <GQLCodeBlock
-                readOnly
-                title="Custom Types"
-                value={structuredschema.localcustom}
-              />
-              <GQLCodeBlock
-                readOnly
-                title="Imported Queries"
-                value={structuredschema.importedqueries}
-              />
-              <GQLCodeBlock
-                readOnly
-                title="Imported Mutations"
-                value={structuredschema.importedmutations}
-              />
-            </aside>
+            <div>
+              <Styled.h3 sx={{ m: 0, p: '.75rem', bg: '#cecece' }}>Schema</Styled.h3>
+              <aside
+                className="hidden-schema-panel"
+                sx={{
+                  color: 'w3shade3',
+                  width: '400px',
+                }}
+              >
+                <GQLCodeBlock
+                  readOnly
+                  title="Queries"
+                  value={structuredschema.localqueries}
+                />
+                <GQLCodeBlock
+                  readOnly
+                  title="Mutations"
+                  value={structuredschema.localmutations}
+                />
+                <GQLCodeBlock
+                  readOnly
+                  title="Custom Types"
+                  value={structuredschema.localcustom}
+                />
+                <GQLCodeBlock
+                  readOnly
+                  title="Imported Queries"
+                  value={structuredschema.importedqueries}
+                />
+                <GQLCodeBlock
+                  readOnly
+                  title="Imported Mutations"
+                  value={structuredschema.importedmutations}
+                />
+              </aside>
+            </div>
           </Flex>
         )}
       </Flex>
