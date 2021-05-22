@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx, useThemeUI } from 'theme-ui'
+import { jsx, Flex, useThemeUI } from 'theme-ui'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import APIs from '../../public/images/apis.svg'
@@ -39,7 +39,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="col" sx={{ flex: '6 !important', justifyContent: 'center' }}>
-        <div sx={{ flex: 1 }}>
+        <Flex sx={{ flex: 1 }}>
           <ul
             sx={{
               flex: 1,
@@ -108,9 +108,18 @@ const Navbar = () => {
               </a>
             </li>
           </ul>
-        </div>
+          
+        </Flex>
       </div>
-      <div className="col" sx={{ flex: '3 !important' }} />
+      <div className="col" sx={{ flex: '3 !important' }}>
+        <a href="https://web3api.typeform.com/to/AkTwem3f" target="_BLANK" sx={{
+          color: 'white',
+          fontSize: 1,
+          '&:hover': {
+            textDecoration: 'underline'
+          }
+        }}>Feedback</a>
+      </div>
     </nav>
   )
 }

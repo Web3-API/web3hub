@@ -1,7 +1,10 @@
 import InitialState from '../state/initialState'
 import type { dappType } from '../state/initialState'
+import type { web3apiType } from '../state/initialState'
 import type { publishType } from '../state/initialState'
 import type { searchType } from '../state/initialState'
+
+import { ethereumPlugin, ConnectionConfig } from "@web3api/ethereum-plugin-js"
 
 function dappReducer(state = {}, action) {
   // console.log('dappReducer', state, action)
@@ -93,11 +96,47 @@ function publishReducer(state = {}, action) {
   }
 }
 
+function web3apiReducer(
+  state: {
+    dapp: dappType,
+    web3api: web3apiType
+  } = {
+    web3api: InitialState.web3api,
+    dapp: InitialState.dapp
+  },
+  action
+) {
+  let newStateObj: web3apiType = InitialState.web3api
+  const dapp = state.dapp;
+
+  switch (action.type) {
+    case 'recreateredirects':
+      const networks: Record<string, ConnectionConfig> = { };
+
+      if (dapp) {
+        networks[dapp.network.toString()] = { provider: dapp.web3 };
+      }
+
+      newStateObj.redirects = [
+        {
+          from: "ens/ethereum.web3api.eth",
+          to: ethereumPlugin({
+            networks: networks
+          })
+        }
+      ]
+      return {...state, ...newStateObj}
+    default:
+      return state
+  }
+}
+
 export default function mainReducer(w3hubStates, action) {
   // middleware goes here, i.e calling analytics service, etc.
   // localStorage.setItem('w3hubStates.publish', JSON.stringify(w3hubStates.publish))
   return {
     dapp: dappReducer(w3hubStates.dapp, action),
+    web3api: web3apiReducer(w3hubStates, action),
     publish: publishReducer(w3hubStates.publish, action),
     search: searchReducer(w3hubStates.search, action)
   }

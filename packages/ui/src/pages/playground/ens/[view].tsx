@@ -9,6 +9,7 @@ import Playground from '../../../components/Playground'
 
 import { useRouter } from 'next/router'
 import { useGetAPIfromENSParamInURL } from '../../../hooks/ens/useGetAPIfromENS'
+import BottomSpace from '../../../components/BottomSpace'
 
 const PlaygroundPage = () => {
   const router = useRouter()
