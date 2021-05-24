@@ -1,11 +1,13 @@
 import axios from "axios";
 import { NextFunction, Request, Response, Router } from "express";
-import { authenticate } from "passport";
 
 import { User } from "../models/User";
 import { ghCallback } from "../services/github/strategy";
 
 const router = Router();
+
+//@TODO: Make sure this is the best approach
+const domain = process.env.HOST || "http://localhost:3000";
 
 const checkAccessToken = (
   request: Request,
@@ -77,10 +79,6 @@ const handleSignIn = async (
   return next();
 };
 
-const authScopes = authenticate("github", {
-  scope: ["read:org", "read:user"],
-});
-
 const authHandler = async (request: Request, response: Response) => {
   const data = {
     client_id: process.env.GITHUB_CLIENT_ID,
@@ -123,7 +121,7 @@ const authHandler = async (request: Request, response: Response) => {
   }
 };
 
-router.get("/sign-in", handleSignIn, checkRedirectUri, authScopes);
+router.get("/sign-in", handleSignIn);
 router.get("/github/callback/:code", authHandler);
 router.get("/sign-out", (request: Request, response: Response) => {
   request.logout();

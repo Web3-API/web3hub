@@ -24,7 +24,7 @@ const CreateApi = () => {
 
   const checkInfo = async () => {
     await Auth.getInstance()
-    const t = await Auth.get('basicProfile')
+    const t = await Auth.get('cryptoAccounts')
     console.log(t)
   }
 

@@ -203,7 +203,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
               Please sign in with GitHub to continue.
             </Styled.h4>
             <a
-              href={`http://localhost:3001/auth/sign-in?redirectUrl=${router.pathname}`}
+              href={`https://github.com/login/oauth/authorize?client_id=c0b5102af0262717b743&scope=read:user read:org`}
               onClick={() => {
                 localStorage.setItem('w3hubLastURLb4Signin', router.asPath)
               }}
