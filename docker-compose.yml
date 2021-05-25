@@ -9,6 +9,8 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
     ports:
       - 6432:5432
+    env_file:
+      - ./packages/api/.env
   redis:
     image: "redis:alpine"
     ports:
@@ -32,4 +34,4 @@ services:
     depends_on:
       - "db"
       - "redis"
-    command:  bash -c "./wait-for-it.sh db:5432 && ./wait-for-it.sh redis:6379 && yarn start"
+    command: bash -c "./wait-for-it.sh db:5432 && ./wait-for-it.sh redis:6379 && yarn start"
