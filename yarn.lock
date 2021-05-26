@@ -4307,7 +4307,7 @@
   resolved "https://registry.yarnpkg.com/@web3api/manifest-schema/-/manifest-schema-0.0.1-prealpha.22.tgz#b5c54d965915b50a75b4a018bf0f8747e67d065f"
   integrity sha512-sTnUU6EMEeN+LWoMGPkvk3Y0M6gigl1dxdf3BOVo7bE3OkcP25q5tNCWuIXZeEJoHuax9sTpHZydhKJj1XX1hQ==
 
-"@web3api/react@^0.0.1-prealpha.22":
+"@web3api/react@0.0.1-prealpha.22":
   version "0.0.1-prealpha.22"
   resolved "https://registry.yarnpkg.com/@web3api/react/-/react-0.0.1-prealpha.22.tgz#92002d4cfaf1026331ac1ab8024cecd680a51456"
   integrity sha512-0/CKYHd469Z2choJR/VNpgXa/IsMC6LEa848lJPt3yE7R26mcJ8SqOZy6xeUG0WLmxR2tPllZvXhzLskuaO8PA==

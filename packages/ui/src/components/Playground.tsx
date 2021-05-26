@@ -78,7 +78,7 @@ const Playground = ({ api }: PlaygroundProps) => {
       .filter((item: any) => item.type !== 'submit')
       .map((input: any) => (varsToSubmit[input.name] = input.value))
     setformVarsToSubmit(varsToSubmit)
-    setclientresponse(responseData)
+    // setclientresponse(responseData)
   }
 
   useEffect(() => {
@@ -91,7 +91,12 @@ const Playground = ({ api }: PlaygroundProps) => {
         })
         await execute()
         console.log({ queryResponse, errors, loading })
-        setclientresponse(queryResponse || [...errors].toString() )
+        if(errors !== undefined || queryResponse !== undefined) {
+          setclientresponse(queryResponse || [...errors].toString() )
+        } else {
+          console.log('if this is empty - async race condtion issue')
+        }
+        
         // data.methodName = whatever is returned (string, bool, object)
         // if (data && data.methodName) {
         //   setOutput(JSON.stringify(data.methodName))
