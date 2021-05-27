@@ -1,7 +1,7 @@
 #!/bin/bash
  
 echo 'Starting to Deploy...'
-ssh ec2-user@18.221.73.93 " sudo docker image prune -f 
+ssh ec2-user@18.221.73.93 "echo 'we are in' && sudo docker image prune -f 
         cd web3hub 
         sudo docker-compose down
         git fetch origin
