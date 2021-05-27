@@ -22,7 +22,7 @@ const PlaygroundPage = () => {
         styles={(theme) => ({
           body: {
             background: 'none' + ' !important',
-            backgroundColor: theme.colors.w3shade0 + ' !important',
+            backgroundColor: 'w3shade0',
           },
         })}
       />

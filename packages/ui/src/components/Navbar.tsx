@@ -51,7 +51,7 @@ const Navbar = () => {
                 borderLeft: '0.125rem solid',
                 borderLeftColor: 'w3NavGrayGreen',
                 svg: {
-                  stroke: theme.colors.w3green,
+                  stroke: 'w3green',
                 },
                 '&:hover': {
                   borderLeftColor: 'w3NavHighlightTeal',
@@ -82,8 +82,8 @@ const Navbar = () => {
                   : ''
               }
             >
-              <Link href="/" sx={{ alignItems: 'center' }}>
-                <a>
+              <Link href="/">
+                <a sx={{ alignItems: 'center' }}>
                   <APIs />
                   <span sx={{ height: 2 }}>&nbsp;</span>
                   <span className="text-nav">API's</span>

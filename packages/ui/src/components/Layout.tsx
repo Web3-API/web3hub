@@ -75,7 +75,7 @@ const Layout = ({ children }: LayoutProps) => {
             backgroundRepeat: 'no-repeat',
             backgroundSize: '100% 100%',
             backgroundAttachment: 'scroll',
-            background: theme.colors.w3hazeGradient,
+            background: 'w3hazeGradient',
           },
           'body::before': {
             display: 'none',
@@ -110,6 +110,39 @@ const Layout = ({ children }: LayoutProps) => {
           fieldset: {
             padding: 0,
             border: 'none',
+          },
+          code: {
+            m: 0,
+            fontFamily: 'monospace',
+          },
+          table: {
+            width: '100%',
+            borderCollapse: 'separate',
+            borderSpacing: 0,
+          },
+          th: {
+            textAlign: 'left',
+            borderBottomStyle: 'solid',
+          },
+          td: {
+            textAlign: 'left',
+            borderBottomStyle: 'solid',
+          },
+          pre: {
+            overflowX: 'auto',
+            border: '2px solid rgba(205, 208, 227, 0.295455)',
+            padding: '.75rem',
+            borderRadius: '8px',
+            marginTop: 0,
+            fontFamily: 'monospace',
+            fontStyle: 'normal',
+            fontWeight: 'normal',
+            fontSize: '14px',
+            lineHeight: '140.62%',
+            color: '#000000',
+            code: {
+              color: 'inherit',
+            },
           },
           '.contents': {
             maxWidth: '76.5rem',
@@ -157,7 +190,7 @@ const Layout = ({ children }: LayoutProps) => {
             letterSpacing: '-0.0375rem',
             textTransform: 'uppercase',
             textDecoration: 'none',
-            color: theme.colors.w3TextNavTeal,
+            color: 'w3TextNavTeal',
           },
           '.bn-onboard-custom': {
             zIndex: 100000,

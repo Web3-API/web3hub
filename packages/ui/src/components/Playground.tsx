@@ -173,9 +173,9 @@ const Playground = ({ api }: PlaygroundProps) => {
           p: '1.5rem',
           backgroundColor: 'w3shade2',
           '*': { display: 'flex' },
-          label: {
-            display: 'none',
-          },
+          // 'label': {
+          //   display: 'none',
+          // },
         }}
       >
         {api === undefined ? (
@@ -302,7 +302,7 @@ const Playground = ({ api }: PlaygroundProps) => {
                 bg: 'white', 
                 p: 3,
                 pt: '0.6rem',
-                label: {
+                '*:nth-child(1)': {
                   fontSize: '.9rem'
                 }
               }}

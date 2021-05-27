@@ -235,7 +235,7 @@ const PublishAPI = () => {
             my: 3,
             mb: 2,
           },
-          label: {
+          '.labelEl': {
             width: '13.75rem',
             mr: '2.75rem',
             mb: 2,
@@ -301,7 +301,7 @@ const PublishAPI = () => {
           <Themed.h4>Location</Themed.h4>
           <p>Point Web3hub to where your package has been uploaded.</p>
           <div className="fieldset">
-            <label>IPFS location</label>
+            <label className="labelEl">IPFS location</label>
             <div className={'inputwrap ' + ipfsClasses}>
               <Input
                 type="text"
@@ -324,7 +324,7 @@ const PublishAPI = () => {
             integrating.
           </p>
           <div className="fieldset">
-            <label>ENS Subdomain</label>
+            <label className="labelEl">ENS Subdomain</label>
             <div
               className={'inputwrap ' + subdomainClasses}
               sx={{
