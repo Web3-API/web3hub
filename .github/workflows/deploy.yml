@@ -6,7 +6,7 @@ on:
   # pull_request:
   #   types: [closed]
 jobs:
-  merge-PR:
+  deploy-app:
     # if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
@@ -18,5 +18,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           name: id_rsa
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
+      - name: Make script executable
+        run: chmod +x ./deploy_to_aws.sh
       - name: rsync over ssh
         run: ./deploy_to_aws.sh
