@@ -1,6 +1,5 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, Flex, Button, Styled } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
+import { Flex, Button, Themed } from 'theme-ui'
 import { useRouter } from 'next/router'
 
 const Published = () => {
@@ -15,7 +14,7 @@ const Published = () => {
       }}
     >
       <img src="/images/thinking-emoji.svg" alt="thinking" sx={{ mb: 4 }} />
-      <Styled.h5
+      <Themed.h5
         sx={{
           fontFamily: 'Montserrat',
           fontSize: '1.25rem',
@@ -26,7 +25,7 @@ const Published = () => {
         }}
       >
         Looks like you did not publish an API yet!
-      </Styled.h5>
+      </Themed.h5>
       <Button
         variant="primaryLarge"
         onClick={() => {

@@ -1,6 +1,5 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, Flex, Styled } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
+import { Flex, Themed } from 'theme-ui'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 const SignInArea = dynamic(() => import('./SignInArea'), { ssr: false })
@@ -27,7 +26,7 @@ const Header = ({ title, onDark, backNav }: HeaderProps) => {
       }}
     >
       {title && (
-        <Styled.h1
+        <Themed.h1
           sx={{
             fontSize: '2.75rem',
             fontWeight: '700',
@@ -39,7 +38,7 @@ const Header = ({ title, onDark, backNav }: HeaderProps) => {
           }}
         >
           {title}
-        </Styled.h1>
+        </Themed.h1>
       )}
       {backNav && (
         <Flex
@@ -49,7 +48,7 @@ const Header = ({ title, onDark, backNav }: HeaderProps) => {
           sx={{ alignItems: 'center', cursor: 'pointer' }}
         >
           <ArrowBack sx={{ mr: 2 }} />
-          <Styled.h3
+          <Themed.h3
             sx={{
               mb: 0,
               textTransform: 'uppercase',
@@ -57,7 +56,7 @@ const Header = ({ title, onDark, backNav }: HeaderProps) => {
             }}
           >
             {backNav}
-          </Styled.h3>
+          </Themed.h3>
         </Flex>
       )}
       <div className="col">

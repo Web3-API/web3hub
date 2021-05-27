@@ -1,6 +1,4 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
 import RDS from 'react-dropdown-select'
 
 type RDSProps = {
@@ -27,21 +25,21 @@ const SelectBox = ({
   return (
     <RDS
       sx={{
-        width: '17.5rem',
-        border: ' 0.125rem solid',
-        borderColor: 'w3beige',
+        width: '17.5rem !important',
+        border: ' 0.125rem solid !important',
+        borderColor: 'w3beige !important',
         color: 'text',
-        bg: dark ? 'w3shade1' : 'white',
-        p: '1rem',
-        borderRadius: '0.5rem',
-        height: skinny ? '2.625rem' : '3.875rem',
+        bg: dark ? 'w3shade1 !important' : 'white !important',
+        p: '1rem !important',
+        borderRadius: '0.5rem !important',
+        height: skinny ? '2.625rem' : '3.875rem !important',
         '&[aria-expanded="true"]': {
-          borderBottomLeftRadius: '0',
-          borderBottomRightRadius: '0',
-          borderBottom: 'none',
-          pt: 'calc(1rem - 0.125rem)',
+          borderBottomLeftRadius: '0 !important',
+          borderBottomRightRadius: '0 !important',
+          borderBottom: 'none !important',
+          pt: 'calc(1rem - 0.125rem) !important',
           '*': {
-            color: dark ? 'white' : 'text',
+            color: dark ? 'white !important' : 'text',
           },
         },
         '.react-dropdown-select-no-data': {
@@ -49,76 +47,76 @@ const SelectBox = ({
         },
         '&:hover, &:focus-within': {
           borderColor: 'text',
-          boxShadow: 'none',
+          boxShadow: 'none !important',
         },
         // '.react-dropdown-select-input': {
         //   display: 'none',
         // },
         '.react-dropdown-select-clear': {
-          fontSize: '1.5625rem',
-          top: '-0.125rem',
-          right: '-0.375rem',
+          fontSize: '1.5625rem !important',
+          top: '-0.125rem !important',
+          right: '-0.375rem !important',
         },
         '.react-dropdown-select-dropdown': {
-          top: skinny ? '2.375rem' : '3.625rem',
+          top: skinny ? '2.375rem' : '3 .625rem',
           bg: dark ? 'w3shade1' : 'white',
           color: dark ? 'white' : 'text',
-          border: dark ? '0.125rem solid' : '0.125rem solid',
+          border: dark ? '0.125rem solid' : '0 .125rem solid',
           borderColor: dark ? 'w3beige' : 'w3beige',
-          borderBottomLeftRadius: '0.5rem',
-          borderBottomRightRadius: '0.5rem',
-          borderTopLeftRadius: '0rem',
-          borderTopRightRadius: '0rem',
-          borderTop: '0.0625rem solid rgba(104,129,132,.5)',
-          left: '-0.125rem',
-          width: 'calc(100% + 0.25rem)',
+          borderBottomLeftRadius: '0.5rem !important',
+          borderBottomRightRadius: '0.5rem !important',
+          borderTopLeftRadius: '0rem !important',
+          borderTopRightRadius: '0rem !important',
+          borderTop: '0.0625rem solid rgba(104,129,132,.5) !important',
+          left: '-0.125rem !important',
+          width: 'calc(100% + 0.25rem) !important',
         },
         '.react-dropdown-select-item': {
-          borderColor: 'rgba(104,129,132,.5)',
-          fontFamily: 'Montserrat',
-          fontWeight: 'bold',
-          fontSize: '0.875rem',
-          lineHeight: '0.875rem',
-          color: dark ? 'white' : 'text',
-          padding: '1rem 2rem',
-          height: skinny ? '2.25rem' : '3.5rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'left',
-          pl: '1.25rem',
+          borderColor: 'rgba(104,129,132,.5) !important',
+          fontFamily: 'Montserrat !important',
+          fontWeight: 'bold !important',
+          fontSize: '0.875rem !important',
+          lineHeight: '0.875rem !important',
+          color: dark ? 'white !important' : 'text',
+          padding: '1rem 2rem !important',
+          height: skinny ? '2.25rem !important' : '3 !important.5rem',
+          display: 'flex !important',
+          alignItems: 'center !important',
+          justifyContent: 'left !important',
+          pl: '1.25rem !important',
           '&.react-dropdown-select-item-selected': {
-            bg: dark ? 'w3shade1' : 'white',
-            borderBottomColor: 'inherit',
+            bg: dark ? 'w3shade1 !important' : 'white !important',
+            borderBottomColor: 'inherit !important',
           },
           '&:hover': {
-            bg: dark ? 'w3shade3' : '#cad9f3',
+            bg: dark ? 'w3shade3 !important' : '#cad9f3 !important',
           },
           '&:last-of-type': {
-            borderBottom: 'none',
+            borderBottom: 'none !important',
           },
           '&:first-of-type': {
-            borderTop: 'none',
+            borderTop: 'none !important',
           },
         },
         '.react-dropdown-select-content': {
           span: {
-            height: '1.5rem',
-            display: 'flex',
+            height: '1.5rem !important',
+            display: 'flex !important',
             flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontFamily: 'Montserrat',
+            alignItems: 'center !important',
+            justifyContent: 'center !important',
+            fontFamily: 'Montserrat !important',
 
-            fontWeight: 'bold',
-            fontSize: '0.875rem',
-            lineHeight: '0.875rem',
-            letterSpacing: '-0.004em',
+            fontWeight: 'bold !important',
+            fontSize: '0.875rem !important',
+            lineHeight: '0.875rem !important',
+            letterSpacing: '-0.004em !important',
 
-            color: dark ? 'white' : 'text',
+            color: dark ? 'white !important' : 'text',
           },
         },
         '.react-dropdown-select-dropdown-handle:focus path': {
-          stroke: 'none',
+          stroke: 'none !important',
         },
       }}
       keepSelectedInList

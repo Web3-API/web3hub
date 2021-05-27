@@ -1,6 +1,5 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, Styled } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
+import { Themed } from 'theme-ui'
 import Editor from '@monaco-editor/react'
 import { useRef } from 'react'
 
@@ -21,7 +20,7 @@ const GQLCodeBlock = ({ title, readOnly, height = '200px', value }: GQLCodeBlock
   } 
   return (
     <div className="GQLCodeBlock-wrap">
-      {title ? <Styled.h5 sx={{ m: 0, py: 2, px: '.75rem', bg: 'white' }}>{title}</Styled.h5> : null}
+      {title ? <Themed.h5 sx={{ m: 0, py: 2, px: '.75rem', bg: 'white' }}>{title}</Themed.h5> : null}
       <Editor
         theme="solarizedDark"
         options={{

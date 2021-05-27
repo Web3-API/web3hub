@@ -1,7 +1,6 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
+/** @jsxImportSource theme-ui **/
 import { useCallback, useEffect } from 'react'
-import { jsx, Input, Flex, Button, Styled } from 'theme-ui'
+import { Input, Flex, Button, Themed } from 'theme-ui'
 import axios from 'axios'
 import { useCreateSubdomain } from '../../hooks/ens/useCreateSubdomain'
 import { useStateValue } from '../../state/state'
@@ -299,7 +298,7 @@ const PublishAPI = () => {
         }}
       >
         <section>
-          <Styled.h4>Location</Styled.h4>
+          <Themed.h4>Location</Themed.h4>
           <p>Point Web3hub to where your package has been uploaded.</p>
           <div className="fieldset">
             <label>IPFS location</label>
@@ -319,7 +318,7 @@ const PublishAPI = () => {
           </div>
         </section>
         <section>
-          <Styled.h4>Pointer</Styled.h4>
+          <Themed.h4>Pointer</Themed.h4>
           <p>
             Register your API to an ENS domain that developers will reference when
             integrating.
@@ -375,7 +374,7 @@ const PublishAPI = () => {
           </div>
         </section>
         <section>
-          <Styled.h4>Publish to Web3Hub</Styled.h4>
+          <Themed.h4>Publish to Web3Hub</Themed.h4>
           <p>
             Make your package discoverable on the Web3Hub. After publishing, the IPFS
             pacakge will be persistently pinned using Fleek. Learn more

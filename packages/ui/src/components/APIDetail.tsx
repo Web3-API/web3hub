@@ -1,6 +1,5 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, Flex, Styled, Button } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
+import { Flex, Themed, Button } from 'theme-ui'
 import BottomSpace from '../components/BottomSpace'
 import Stars from '../components/Stars'
 import PlaygroundImg from '../../public/images/playground.svg'
@@ -38,7 +37,7 @@ const APIDetail = ({
           }}
         />
         <div className="api-info" sx={{ mr: 4, width: '28.125rem' }}>
-          <Styled.h1
+          <Themed.h1
             className="title"
             sx={{
               mb: 3,
@@ -51,7 +50,7 @@ const APIDetail = ({
             }}
           >
             {api.name}
-          </Styled.h1>
+          </Themed.h1>
           <div
             className="subtitle"
             sx={{
@@ -96,7 +95,7 @@ const APIDetail = ({
             }}
           >
             <div className="left">
-              <Styled.h4
+              <Themed.h4
                 className="title"
                 sx={{
                   mb: 0,
@@ -111,7 +110,7 @@ const APIDetail = ({
                 }}
               >
                 {api.name}
-              </Styled.h4>
+              </Themed.h4>
             </div>
             <div className="right">
               <Stars count={0} large />
@@ -226,12 +225,12 @@ const APIDetail = ({
           }}
         />
         <div sx={{ width: '38.375rem' }}>
-          <Styled.h2 sx={{ textAlign: 'center' }}>Get Started</Styled.h2>
-          <Styled.code>
-            <Styled.pre>{`yarn install @web3api/client`}</Styled.pre>
-          </Styled.code>
-          <Styled.code>
-            <Styled.pre>
+          <Themed.h2 sx={{ textAlign: 'center' }}>Get Started</Themed.h2>
+          <Themed.code>
+            <Themed.pre>{`yarn install @web3api/client`}</Themed.pre>
+          </Themed.code>
+          <Themed.code>
+            <Themed.pre>
               {`import {
   Web3API,
   Ethereum,
@@ -247,8 +246,8 @@ const api = new Web3API({
     subgraph: new Subgraph({ provider: "http://localhost:8020" })
   }
 })`}
-            </Styled.pre>
-          </Styled.code>
+            </Themed.pre>
+          </Themed.code>
         </div>
       </Flex>
       <BottomSpace />

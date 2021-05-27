@@ -1,6 +1,5 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, Flex, Styled } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
+import { Flex, Themed } from 'theme-ui'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useStateValue } from '../state/state'
@@ -46,7 +45,7 @@ const Signin = () => {
               className="content"
               sx={{ display: 'grid', placeItems: 'center', height: '50%' }}
             >
-              <Styled.h1>Signing In...</Styled.h1>
+              <Themed.h1>Signing In...</Themed.h1>
             </section>
           </div>
         </main>

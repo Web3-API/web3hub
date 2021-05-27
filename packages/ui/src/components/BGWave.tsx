@@ -1,12 +1,10 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx } from 'theme-ui'
-import { Global } from '@emotion/core'
+/** @jsxImportSource theme-ui **/
 
 type BGWaveProps = {
   dark?: boolean
   light?: boolean
 }
+
 const BGWave = ({ dark, light }: BGWaveProps) => {
   let color = dark ? 'dark' : light ? 'light' : 'light'
   return (

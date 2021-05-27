@@ -1,9 +1,8 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
+/** @jsxImportSource theme-ui **/
 import { useEffect } from 'react'
-import { jsx, useThemeUI } from 'theme-ui'
+import { useThemeUI } from 'theme-ui'
 import { timing } from '../theme'
-import { Global } from '@emotion/core'
+import { Global } from '@emotion/react'
 import { useStateValue } from '../state/state'
 import useSWR from 'swr'
 
