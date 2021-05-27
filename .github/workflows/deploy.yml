@@ -17,7 +17,7 @@ jobs:
         with:
           key: ${{ secrets.SSH_KEY }}
           name: id_rsa
-          known_hosts: unnecessary
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Make script executable
         run: chmod +x ./deploy_to_aws.sh
       - name: rsync over ssh
