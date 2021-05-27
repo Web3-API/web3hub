@@ -209,7 +209,7 @@ const Playground = ({ api }: PlaygroundProps) => {
         >
           <div className="left">
             <Stars count={0} onDark />
-            {api.locationUri && (
+            {api?.locationUri && (
               <div className="category-Badges" sx={{ ml: 3 }}>
                 <Badge label="IPFS" onDark ipfsHash={api.locationUri} />
               </div>
