@@ -8,7 +8,6 @@ import Playground from '../../../components/Playground'
 
 import { useRouter } from 'next/router'
 import { useGetAPIfromENSParamInURL } from '../../../hooks/ens/useGetAPIfromENS'
-import BottomSpace from '../../../components/BottomSpace'
 
 const PlaygroundPage = () => {
   const router = useRouter()
@@ -29,10 +28,9 @@ const PlaygroundPage = () => {
       </Flex>
       <Global
         styles={(theme: any) => {
-          console.log(theme)
           return ({
             body: {
-              backgroundColor: theme.colors.w3shade0,
+              background: theme.colors.w3shade0 + ' !important',
             },
           })
         }}
