@@ -86,7 +86,7 @@ const Navbar = () => {
                 <a sx={{ alignItems: 'center' }}>
                   <APIs />
                   <span sx={{ height: 2 }}>&nbsp;</span>
-                  <span className="text-nav">API's</span>
+                  <span className="text-nav" sx={{ color: 'w3TextNavTeal'}}>API's</span>
                 </a>
               </Link>
             </li>
@@ -95,7 +95,7 @@ const Navbar = () => {
                 <a className="text-nav">
                   <PlaygroundImg />
                   <span sx={{ height: 2 }}>&nbsp;</span>
-                  <span>Playground</span>
+                  <span className="text-nav" sx={{ color: 'w3TextNavTeal'}}>Playground</span>
                 </a>
               </Link>
             </li>
@@ -103,7 +103,7 @@ const Navbar = () => {
               <a className="text-nav" href="https://web3api.dev" target="_BLANK">
                 <Doc />
                 <span>&nbsp;</span>
-                <span>Docs</span>
+                <span className="text-nav" sx={{ color: 'w3TextNavTeal'}}>Docs</span>
               </a>
             </li>
           </ul>
