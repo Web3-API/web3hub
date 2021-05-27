@@ -1,5 +1,7 @@
 import {networkID} from '../constants'
 
+import {UriRedirect} from '@web3api/client-js';
+
 let initialState = {
   dapp: {
     balance: -1,
@@ -11,6 +13,11 @@ let initialState = {
     web3: undefined,
     apis: [],
     github: ''
+  },
+  web3api: {
+    redirects: [
+
+    ],
   },
   publish: {
     subdomain: '',
@@ -43,6 +50,10 @@ type dappType = {
   github?: string
 }
 
+type web3apiType = {
+  redirects: UriRedirect[]
+}
+
 type publishType = {
   subdomain: string
   ipfs: string
@@ -66,5 +77,6 @@ type searchType = {
 
 export default initialState
 export type { dappType }
+export type { web3apiType }
 export type { publishType }
 export type { searchType }
