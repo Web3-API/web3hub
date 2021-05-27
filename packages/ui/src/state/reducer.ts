@@ -1,10 +1,12 @@
+import { ensPlugin } from '@web3api/ens-plugin-js'
+import { ipfsPlugin } from '@web3api/ipfs-plugin-js'
 import InitialState from '../state/initialState'
 import type { dappType } from '../state/initialState'
 import type { web3apiType } from '../state/initialState'
 import type { publishType } from '../state/initialState'
 import type { searchType } from '../state/initialState'
 
-import { ethereumPlugin, ConnectionConfig } from "@web3api/ethereum-plugin-js"
+import { ethereumPlugin, ConnectionConfig } from '@web3api/ethereum-plugin-js'
 
 function dappReducer(state = {}, action) {
   // console.log('dappReducer', state, action)
@@ -41,8 +43,7 @@ function searchReducer(state = {}, action) {
   switch (action.type) {
     case 'sortSelectApi':
       newStateObj.sortedApi = action.payload
-      return {...state, ...newStateObj}
-    
+      return { ...state, ...newStateObj }
   }
 }
 
@@ -51,46 +52,46 @@ function publishReducer(state = {}, action) {
   switch (action.type) {
     case 'setsubdomain':
       newStateObj.subdomain = action.payload
-      return {...state, ...newStateObj}
+      return { ...state, ...newStateObj }
     case 'setipfs':
       newStateObj.ipfs = action.payload
-      return {...state, ...newStateObj}
+      return { ...state, ...newStateObj }
     case 'setsubdomainError':
       newStateObj.subdomainError = action.payload
-      return {...state, ...newStateObj}
+      return { ...state, ...newStateObj }
     case 'setsubdomainLookupSuccess':
       newStateObj.subdomainLookupSuccess = action.payload
-      return {...state, ...newStateObj}
+      return { ...state, ...newStateObj }
     case 'setsubdomainRegisterSuccess':
       newStateObj.subdomainRegisterSuccess = action.payload
-      return {...state, ...newStateObj}
+      return { ...state, ...newStateObj }
     case 'setsubdomainLoading':
       newStateObj.subdomainLoading = action.payload
-      return {...state, ...newStateObj}
+      return { ...state, ...newStateObj }
     case 'setipfsLoading':
       newStateObj.ipfsLoading = action.payload
-      return {...state, ...newStateObj}
+      return { ...state, ...newStateObj }
     case 'setipfsError':
       newStateObj.ipfsError = action.payload
-      return {...state, ...newStateObj}
+      return { ...state, ...newStateObj }
     case 'setipfsSuccess':
       newStateObj.ipfsSuccess = action.payload
-      return {...state, ...newStateObj}
+      return { ...state, ...newStateObj }
     case 'setShowConnectModal':
       newStateObj.showConnectModal = action.payload
-      return {...state, ...newStateObj}
+      return { ...state, ...newStateObj }
     case 'setShowSignInModal':
       newStateObj.showSignInModal = action.payload
-      return {...state, ...newStateObj}
+      return { ...state, ...newStateObj }
     case 'setShowSuccessModal':
       newStateObj.showSuccessModal = action.payload
-      return {...state, ...newStateObj}
+      return { ...state, ...newStateObj }
     case 'setApiData':
       newStateObj.apiData = action.payload
-      return {...state, ...newStateObj}
+      return { ...state, ...newStateObj }
     case 'registrationStatus':
       newStateObj.registrationStatus = action.payload
-      return {...state, ...newStateObj}
+      return { ...state, ...newStateObj }
     default:
       return state
   }
@@ -98,34 +99,43 @@ function publishReducer(state = {}, action) {
 
 function web3apiReducer(
   state: {
-    dapp: dappType,
+    dapp: dappType
     web3api: web3apiType
   } = {
     web3api: InitialState.web3api,
-    dapp: InitialState.dapp
+    dapp: InitialState.dapp,
   },
-  action
+  action,
 ) {
   let newStateObj: web3apiType = InitialState.web3api
-  const dapp = state.dapp;
+  const dapp = state.dapp
 
   switch (action.type) {
     case 'recreateredirects':
-      const networks: Record<string, ConnectionConfig> = { };
+      console.log('happening!')
+      const networks: Record<string, ConnectionConfig> = {}
 
       if (dapp) {
-        networks[dapp.network.toString()] = { provider: dapp.web3 };
+        networks[dapp.network.toString()] = { provider: dapp.web3 }
       }
 
       newStateObj.redirects = [
         {
-          from: "ens/ethereum.web3api.eth",
+          from: 'w3://ens/ipfs.web3api.eth',
+          to: ipfsPlugin({ provider: 'https://ipfs.io' }),
+        },
+        {
+          from: 'w3://ens/ens.web3api.eth',
+          to: ensPlugin({}),
+        },
+        {
+          from: 'ens/ethereum.web3api.eth',
           to: ethereumPlugin({
-            networks: networks
-          })
-        }
+            networks: networks,
+          }) as any,
+        },
       ]
-      return {...state, ...newStateObj}
+      return { ...state, ...newStateObj }
     default:
       return state
   }
@@ -138,6 +148,6 @@ export default function mainReducer(w3hubStates, action) {
     dapp: dappReducer(w3hubStates.dapp, action),
     web3api: web3apiReducer(w3hubStates, action),
     publish: publishReducer(w3hubStates.publish, action),
-    search: searchReducer(w3hubStates.search, action)
+    search: searchReducer(w3hubStates.search, action),
   }
 }

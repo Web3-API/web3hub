@@ -26,7 +26,7 @@ type PlaygroundProps = {
 }
 
 const Playground = ({ api }: PlaygroundProps) => {
-  const [{ dapp }] = useStateValue()
+  const [{ dapp, ...others }] = useStateValue()
   const router = useRouter()
   const [apiOptions] = useState(dapp.apis)
 
@@ -48,9 +48,14 @@ const Playground = ({ api }: PlaygroundProps) => {
   const [formVarsToSubmit, setformVarsToSubmit] = useState({})
 
   const { data: queryResponse, errors, loading, execute } = useWeb3ApiQuery({
-    uri: 'ens/rinkeby/' + router.asPath.split('/playground/ens/')[1],
-    query: selectedMethod,
-    variables: formVarsToSubmit,
+    uri: 'ens/ropsten/' + router.asPath.split('/playground/ens/')[1],
+    query: `mutation {
+      deploy
+    }`,
+  })
+  
+  console.log({
+    others,
   })
 
   function handleShowSchema(e: React.BaseSyntheticEvent) {
@@ -72,36 +77,47 @@ const Playground = ({ api }: PlaygroundProps) => {
   }
 
   function handleRunBtnClick(e) {
+    console.log('here')
     e.preventDefault()
     let varsToSubmit = {}
+    console.log(e.target)
     Array.from(e.target)
       .filter((item: any) => item.type !== 'submit')
       .map((input: any) => (varsToSubmit[input.name] = input.value))
+    console.log(varsToSubmit)
     setformVarsToSubmit(varsToSubmit)
     // setclientresponse(responseData)
   }
 
+
   useEffect(() => {
     async function runQuery() {
-      if (Object.keys(formVarsToSubmit).length > 0) {
+      // if (Object.keys(formVarsToSubmit).length > 0) {
+      try {
         console.log({
-          uri: 'ens/rinkeby/' + router.asPath.split('/playground/ens/')[1],
-          query: selectedMethod,
+          uri: 'ens/ropsten/' + router.asPath.split('/playground/ens/')[1],
+          query: `mutation {
+              deployContract
+            }`,
           variables: formVarsToSubmit,
         })
-        await execute()
+        const t = await execute()
+        console.log(t)
         console.log({ queryResponse, errors, loading })
-        if(errors !== undefined || queryResponse !== undefined) {
-          setclientresponse(queryResponse || [...errors].toString() )
+        if (errors !== undefined || queryResponse !== undefined) {
+          setclientresponse(queryResponse || [...errors].toString())
         } else {
           console.log('if this is empty - async race condtion issue')
         }
-        
-        // data.methodName = whatever is returned (string, bool, object)
-        // if (data && data.methodName) {
-        //   setOutput(JSON.stringify(data.methodName))
-        // }
+      } catch (e) {
+        console.log(e)
       }
+
+      // data.methodName = whatever is returned (string, bool, object)
+      //  if (data && data.methodName) {
+      //    setOutput(JSON.stringify(data.methodName))
+      //  }
+      // }
     }
     runQuery()
   }, [formVarsToSubmit])
