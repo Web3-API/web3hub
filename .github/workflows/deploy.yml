@@ -1,13 +1,13 @@
-name: Deploy EC2
+name: Deploy to EC2 instance of Web3Hub
 on:
   push:
     branches:
-      - dockerization
-  # pull_request:
-  #   types: [closed]
+      - main
+  pull_request:
+    types: [closed]
 jobs:
   deploy-app:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,7 +18,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           name: id_rsa
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
-      - name: Make script executable
-        run: chmod +x ./deploy_to_aws.sh
-      - name: rsync over ssh
-        run: ./deploy_to_aws.sh
+      - name: Make deployment script executable
+        run: chmod +x ./.github/scripts/deploy.sh
+      - name: Run deployment script
+        run: ./.github/scripts/deploy.sh

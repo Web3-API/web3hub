@@ -5,8 +5,8 @@ ssh ec2-user@18.221.73.93 "docker image prune -f
         cd web3hub 
         docker-compose down
         docker container rm $(docker container ls -a)
-        git fetch fork
-        git reset --hard fork/dockerization  &&  echo 'You are doing well'
+        git fetch origin
+        git reset --hard origin/main  &&  echo 'So fresh so far'
         docker-compose build && docker-compose up -d
         "
 echo 'Deployment completed successfully'
