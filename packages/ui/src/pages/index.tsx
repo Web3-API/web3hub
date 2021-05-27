@@ -20,7 +20,7 @@ const Home = () => {
         <Navbar />
         <main>
           <div className="contents animate">
-            <Header title="Browse APIs" />
+            <Header title="Hermano claro que si" />
             <section className="content">
               <SortNav />
               <ApiGrid>
