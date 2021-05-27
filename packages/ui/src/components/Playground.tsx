@@ -219,7 +219,7 @@ const Playground = ({ api }: PlaygroundProps) => {
             <a
               className="text-nav"
               href={router.asPath.replace('playground', 'apis')}
-              sx={{ '&:hover': { textDecoration: 'underline' } }}
+              sx={{ '&:hover': { textDecoration: 'underline' }, color: 'w3TextNavTeal' }}
             >
               GO TO API PAGE
             </a>
@@ -298,13 +298,13 @@ const Playground = ({ api }: PlaygroundProps) => {
             </div>
             <form
               onSubmit={handleRunBtnClick}
-              sx={{ 
-                bg: 'white', 
+              sx={{
+                bg: 'white',
                 p: 3,
                 pt: '0.6rem',
-                '*:nth-child(1)': {
-                  fontSize: '.9rem'
-                }
+                '*:nth-of-type(1)': {
+                  fontSize: '.9rem',
+                },
               }}
             >
               {varsList.map((varItem) => (

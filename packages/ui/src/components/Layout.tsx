@@ -37,7 +37,7 @@ const Layout = ({ children }: LayoutProps) => {
     >
       {children}      
       <Global
-        styles={(theme) => ({
+        styles={(theme: any) => ({
           '@keyframes shift': {
             from: { transform: 'translate(-10px, 0)' },
             to: { transform: 'translate(0, 0)' }
@@ -75,7 +75,7 @@ const Layout = ({ children }: LayoutProps) => {
             backgroundRepeat: 'no-repeat',
             backgroundSize: '100% 100%',
             backgroundAttachment: 'scroll',
-            background: 'w3hazeGradient',
+            background: theme.colors.w3hazeGradient,
           },
           'body::before': {
             display: 'none',
@@ -190,7 +190,7 @@ const Layout = ({ children }: LayoutProps) => {
             letterSpacing: '-0.0375rem',
             textTransform: 'uppercase',
             textDecoration: 'none',
-            color: 'w3TextNavTeal',
+            color: theme.colors.w3TextNavTeal,
           },
           '.bn-onboard-custom': {
             zIndex: 100000,
