@@ -27,10 +27,13 @@ services:
     build:
       context: ./packages/api
       dockerfile: Dockerfile
+    environment: 
+      - NODE_ENV=production
     ports:
       - 3001:3001
     env_file:
       - ./packages/api/.env
+    
     depends_on:
       - "db"
       - "redis"

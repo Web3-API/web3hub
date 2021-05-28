@@ -13,9 +13,10 @@
     ]
   },
   "scripts": {
-    "start": "concurrently \"yarn:start:ui\" \"yarn:start:api\"",
+    "start": "concurrently \"yarn:start:db\" \"yarn:start:ui\" \"yarn:start:api\"",
     "start:api": "lerna exec --scope @web3hub/api -- yarn dev",
-    "start:ui": "lerna exec --scope @web3hub/ui -- yarn dev"
+    "start:ui": "lerna exec --scope @web3hub/ui -- yarn dev",
+    "start:db": "lerna exec --scope @web3hub/api -- yarn db:start"
   },
   "devDependencies": {
     "lerna": "4.0.0",
