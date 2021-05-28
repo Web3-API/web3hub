@@ -1,6 +1,5 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, Select, Styled, Flex, Button } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
+import { Select, Themed, Flex, Button } from 'theme-ui'
 
 const CreateAPI = () => {
   return (
@@ -68,23 +67,23 @@ const CreateAPI = () => {
               starter repo
             </a>
           </div>
-          <Styled.code>
-            <Styled.pre>
+          <Themed.code>
+            <Themed.pre>
               {`git clone https://github.com/web3api-start/uniswapv2 
 cd uniswapv2
 yarn install`}
-            </Styled.pre>
-          </Styled.code>
+            </Themed.pre>
+          </Themed.code>
         </Flex>
         <Flex>
           <div>
             <label>When ready deploy the package to IPFS using the following</label>
           </div>
-          <Styled.code>
-            <Styled.pre>{`yarn codegen
+          <Themed.code>
+            <Themed.pre>{`yarn codegen
 yarn build
-yarn deploy --IPFS`}</Styled.pre>
-          </Styled.code>
+yarn deploy --IPFS`}</Themed.pre>
+          </Themed.code>
         </Flex>
       </form>
       <div>
@@ -120,11 +119,11 @@ yarn deploy --IPFS`}</Styled.pre>
               '*': { textAlign: 'center' },
             }}
           >
-            <Styled.h2 sx={{ color: 'white', fontWeight: 'bold', mb: 2, mt: 0 }}>Need help?</Styled.h2>
-            <Styled.p sx={{ mb: 4, color: 'white' }}>
+            <Themed.h2 sx={{ color: 'white', fontWeight: 'bold', mb: 2, mt: 0 }}>Need help?</Themed.h2>
+            <Themed.p sx={{ mb: 4, color: 'white' }}>
               First time developing with Web3API? View the getting started tutorial
               here.
-            </Styled.p>
+            </Themed.p>
             <Button variant="calloutMedium" sx={{ px: '2.25rem', py: '1.25rem'}}>Getting Started</Button>
           </Flex>
         </div>

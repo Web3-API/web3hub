@@ -1,7 +1,6 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, Flex } from 'theme-ui'
-import { Global } from '@emotion/core'
+/** @jsxImportSource theme-ui **/
+import { Flex } from 'theme-ui'
+import { Global } from '@emotion/react'
 import Layout from '../../../components/Layout'
 import Navbar from '../../../components/Navbar'
 import Header from '../../../components/Header'
@@ -9,7 +8,6 @@ import Playground from '../../../components/Playground'
 
 import { useRouter } from 'next/router'
 import { useGetAPIfromENSParamInURL } from '../../../hooks/ens/useGetAPIfromENS'
-import BottomSpace from '../../../components/BottomSpace'
 
 const PlaygroundPage = () => {
   const router = useRouter()
@@ -29,12 +27,13 @@ const PlaygroundPage = () => {
         </main>
       </Flex>
       <Global
-        styles={(theme) => ({
-          body: {
-            background: 'none' + ' !important',
-            backgroundColor: theme.colors.w3shade0 + ' !important',
-          },
-        })}
+        styles={(theme: any) => {
+          return ({
+            body: {
+              background: theme.colors.w3shade0 + ' !important',
+            },
+          })
+        }}
       />
     </Layout>
   )
