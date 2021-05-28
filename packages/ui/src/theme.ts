@@ -149,39 +149,6 @@ const GlobalTheme = {
       color: 'primary',
       textDecoration: 'none',
     },
-    pre: {
-      overflowX: 'auto',
-      border: '2px solid rgba(205, 208, 227, 0.295455)',
-      padding: '.75rem',
-      borderRadius: '8px',
-      marginTop: 0,
-      fontFamily: 'monospace',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      fontSize: '14px',
-      lineHeight: '140.62%',
-      color: '#000000',
-      code: {
-        color: 'inherit',
-      },
-    },
-    code: {
-      m: 0,
-      fontFamily: 'monospace',
-    },
-    table: {
-      width: '100%',
-      borderCollapse: 'separate',
-      borderSpacing: 0,
-    },
-    th: {
-      textAlign: 'left',
-      borderBottomStyle: 'solid',
-    },
-    td: {
-      textAlign: 'left',
-      borderBottomStyle: 'solid',
-    },
     img: {
       maxWidth: '100%',
     },

@@ -1,7 +1,5 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
+/** @jsxImportSource theme-ui **/
 import { useState, useEffect } from 'react'
-import { jsx } from 'theme-ui'
 import RDS from 'react-dropdown-select'
 
 type RDSProps = {
@@ -37,26 +35,26 @@ const SearchBox = ({
   return (
     <RDS
       sx={{
-        borderRadius: '0.5rem',
-        width: large ? '100%' : '25rem',
-        border: '0.125rem solid',
-        color: dark ? 'text' : '#598188',
-        bg: dark ? 'w3shade1' : '#EFF5F4',
-        p: '1rem',
-        height: '3.875rem',
-        borderColor: dark ? 'text' : 'transparent',
+        borderRadius: '0.5rem !important',
+        width: large ? '100% !important' : '25rem !important',
+        border: '0.125rem solid !important',
+        color: dark ? 'text' : '#598188 !important',
+        bg: dark ? 'w3shade1 !important' : '#EFF5F4 !important',
+        p: '1rem !important',
+        height: '3.875rem !important',
+        borderColor: dark ? 'text' : 'transparent !important',
         '&[aria-expanded="true"]': {
-          borderBottomLeftRadius: detachedResults ? '0.5rem' : '0',
-          borderBottomRightRadius: detachedResults ? '0.5rem' : '0',
-          borderBottomColor: detachedResults ? 'text' : 'transparent',
+          borderBottomLeftRadius: detachedResults ? '0.5rem !important' : '0 !important',
+          borderBottomRightRadius: detachedResults ? '0.5rem !important' : '0 !important',
+          borderBottomColor: detachedResults ? 'text' : 'transparent !important',
           '*': {
-            color: dark ? 'white' : 'text',
+            color: dark ? 'white !important' : 'text',
           },
           '.react-dropdown-select-content': {
             '&::before': {
               background: dark
                 ? 'url(/images/magnifying-glass-white.svg) no-repeat'
-                : 'url(/images/magnifying-glass.svg) no-repeat',
+                : 'url(/images/magnifying-glass.svg) no-repeat !important',
             },
           },
         },
@@ -64,20 +62,20 @@ const SearchBox = ({
           color: 'text',
         },
         '&:hover, &:focus-within': {
-          borderColor: dark ? 'text' : 'transparent',
-          boxShadow: 'none',
+          borderColor: dark ? 'text' : 'transparent !important',
+          boxShadow: 'none !important',
         },
         '.react-dropdown-select-input': {
-          color: dark ? 'white' : 'text',
-          fontFamily: 'Istok Web',
-          fontSize: '0.875rem',
-          lineHeight: '100%',
-          width: '12.5rem',
+          color: dark ? 'white !important' : 'text',
+          fontFamily: 'Istok Web !important',
+          fontSize: '0.875rem !important',
+          lineHeight: '100% !important',
+          width: '12.5rem !important',
         },
         '.react-dropdown-select-clear': {
-          fontSize: '1.5625rem',
-          top: '-0.125rem',
-          right: '-0.375rem',
+          fontSize: '1.5625rem !important',
+          top: '-0.125rem !important',
+          right: '-0.375rem !important',
         },
         '.react-dropdown-select-dropdown': {
           top: detachedResults ? '4.6875rem' : '3.625rem',
@@ -92,53 +90,56 @@ const SearchBox = ({
           borderTop: detachedResults ? '0.125rem solid' : '0.0625rem solid',
           borderTopColor: detachedResults ? 'w3beige' : 'rgba(104,129,132,.5)',
           left: '-0.125rem',
-          width: detachedResults ? '30%' : 'calc(100% + 0.25rem)',
+          width: detachedResults ? '30%' : 'calc(100% + 0.25rem) !important',
         },
         '.react-dropdown-select-item': {
-          borderColor: 'rgba(104,129,132,.5)',
-          fontFamily: 'Montserrat',
-          fontWeight: 'bold',
-          fontSize: '0.875rem',
-          lineHeight: '0.875rem',
-          color: dark ? 'white' : 'text',
-          padding: '1rem 2rem',
-          height: '3.5rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'left',
-          pl: '1.25rem',
+          borderColor: 'rgba(104,129,132,.5) !important',
+          fontFamily: 'Montserrat !important',
+          fontWeight: 'bold !important',
+          fontSize: '0.875rem !important',
+          lineHeight: '0.875rem !important',
+          color: dark ? 'white !important' : 'text',
+          padding: '1rem 2rem !important',
+          height: '3.5rem !important',
+          display: 'flex !important',
+          alignItems: 'center !important',
+          justifyContent: 'left !important',
+          pl: '1.25rem !important',
           '&.react-dropdown-select-item-selected': {
-            bg: dark ? 'w3shade1' : '#EFF5F4',
-            color: dark ? 'white' : 'text',
-            borderBottomColor: 'rgba(104,129,132,.5)',
+            bg: dark ? 'w3shade1 !important' : '#EFF5F4 !important',
+            color: dark ? 'white !important' : 'text',
+            borderBottomColor: 'rgba(104,129,132,.5) !important',
           },
-          '&:hover': {
+          '&:hover, &.react-dropdown-select-item-active': {
             bg: dark ? 'w3shade3' : 'w3TextNavTeal',
             color: dark ? 'inherit' : 'white',
+            '&::before': {
+              border: '0.0625rem solid white',
+            }
           },
           '&::before': {
-            display: 'block',
+            display: 'block !important',
             content: "''",
-            width: '1.5rem',
-            height: '1.5rem',
-            mr: '.75rem',
+            width: '1.5rem !important',
+            height: '1.5rem !important',
+            mr: '.75rem !important',
             border: '0.0625rem solid gray',
           },
           '&:last-of-type': {
-            borderBottom: 'none',
+            borderBottom: 'none !important',
           },
           '&:first-of-type': {
-            borderTop: 'none',
+            borderTop: 'none !important',
           },
         },
         '.react-dropdown-select-content': {
           '&::before': {
-            display: 'block',
+            display: 'block !important',
             content: "''",
-            width: '1.5rem',
-            height: '1.5rem',
-            mr: '.75rem',
-            background: 'url(/images/magnifying-glass.svg) no-repeat',
+            width: '1.5rem !important',
+            height: '1.5rem !important',
+            mr: '.75rem !important',
+            background: 'url(/images/magnifying-glass.svg) no-repeat !important',
           },
           span: {
             pl: '.25rem',

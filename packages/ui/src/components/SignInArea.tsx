@@ -1,7 +1,6 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
+/** @jsxImportSource theme-ui **/
 import { useState } from 'react'
-import { jsx, Flex, Button, useThemeUI } from 'theme-ui'
+import { Flex, Button, useThemeUI } from 'theme-ui'
 
 import { useRouter } from 'next/router'
 import { useStateValue } from '../state/state'

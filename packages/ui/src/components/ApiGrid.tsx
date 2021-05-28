@@ -1,6 +1,5 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { Grid, jsx, Button } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
+import { Grid, Button } from 'theme-ui'
 import { useRouter } from 'next/router'
 
 type ApiGridProps = {

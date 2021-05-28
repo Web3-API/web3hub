@@ -1,7 +1,6 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, Flex } from 'theme-ui'
-import { Global } from '@emotion/core'
+/** @jsxImportSource theme-ui **/
+import { Flex } from 'theme-ui'
+import { Global } from '@emotion/react'
 import Layout from '../../components/Layout'
 import Navbar from '../../components/Navbar'
 import Header from '../../components/Header'
@@ -23,7 +22,7 @@ const PlaygroundPage = () => {
         styles={(theme) => ({
           body: {
             background: 'none' + ' !important',
-            backgroundColor: theme.colors.w3shade0 + ' !important',
+            backgroundColor: 'w3shade0',
           },
         })}
       />

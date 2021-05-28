@@ -1,6 +1,5 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, Flex, Styled } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
+import { Flex, Themed } from 'theme-ui'
 import Link from 'next/link'
 import Stars from './Stars'
 import Badge from './Badge'
@@ -46,7 +45,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, noHover }: CardProps) => {
 
             <div className="info">
               <div className="row" sx={{ justifyContent: 'space-between' }}>
-                <Styled.h3
+                <Themed.h3
                   className="title"
                   sx={{
                     textAlign: 'center',
@@ -59,7 +58,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, noHover }: CardProps) => {
                   }}
                 >
                   {api.name}
-                </Styled.h3>
+                </Themed.h3>
                 <div
                   className="subtitle"
                   sx={{

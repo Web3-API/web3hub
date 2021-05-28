@@ -1,13 +1,11 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
+/** @jsxImportSource theme-ui **/
 import React from 'react'
-import { jsx, Flex, Button, Styled } from 'theme-ui'
+import { Flex, Button, Themed } from 'theme-ui'
 import Image from 'next/image'
 import Close from '../../public/images/close.svg'
 import onboardInit from '../utils/onboardInit'
 import { useStateValue } from '../state/state'
-import axios from 'axios'
-import { Router, useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import Github from '../../public/images/github-icon-large.svg'
 
 type ModalProps = {
@@ -100,7 +98,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
               width={140}
               height={140}
             />
-            <Styled.h1
+            <Themed.h1
               sx={{
                 color: 'white',
                 fontSize: '2.75rem',
@@ -110,8 +108,8 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
               }}
             >
               Connect wallet
-            </Styled.h1>
-            <Styled.h4
+            </Themed.h1>
+            <Themed.h4
               sx={{
                 maxWidth: '80%',
                 color: 'white',
@@ -125,7 +123,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
               }}
             >
               Please connect an ethereum wallet to continue.
-            </Styled.h4>
+            </Themed.h4>
             <Button variant="calloutLarge" onClick={handleConnect}>
               Connect
             </Button>
@@ -140,7 +138,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
               width={140}
               height={140}
             />
-            <Styled.h1
+            <Themed.h1
               sx={{
                 color: 'white',
                 fontSize: '2.75rem',
@@ -150,8 +148,8 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
               }}
             >
               Wallet Connected
-            </Styled.h1>
-            <Styled.h4
+            </Themed.h1>
+            <Themed.h4
               sx={{
                 maxWidth: '80%',
                 color: 'white',
@@ -165,7 +163,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
               }}
             >
               Address: {dapp.address}
-            </Styled.h4>
+            </Themed.h4>
             <Button variant="calloutLarge" onClick={handleDisconnect}>
               Disconnect
             </Button>
@@ -176,7 +174,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
             {close ? ( CloseButton ) : null}
 
             <Github fill={'white'} width="140px" />
-            <Styled.h1
+            <Themed.h1
               sx={{
                 color: 'white',
                 fontSize: '2.75rem',
@@ -186,8 +184,8 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
               }}
             >
               Sign in
-            </Styled.h1>
-            <Styled.h4
+            </Themed.h1>
+            <Themed.h4
               sx={{
                 maxWidth: '80%',
                 color: 'white',
@@ -201,7 +199,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
               }}
             >
               Please sign in with GitHub to continue.
-            </Styled.h4>
+            </Themed.h4>
             <a
               href={`http://localhost:3001/auth/sign-in?redirectUrl=${router.pathname}`}
               onClick={() => {
@@ -216,7 +214,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
           <React.Fragment>
             {close ? ( CloseButton ) : null}
             <Image src="/images/signout.svg" alt="signout" width={140} height={140} />
-            <Styled.h1
+            <Themed.h1
               sx={{
                 color: 'white',
                 fontSize: '2.75rem',
@@ -226,8 +224,8 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
               }}
             >
               Sign out
-            </Styled.h1>
-            <Styled.h4
+            </Themed.h1>
+            <Themed.h4
               sx={{
                 maxWidth: '80%',
                 color: 'white',
@@ -241,7 +239,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
               }}
             >
               Would you like to sign out of github?
-            </Styled.h4>
+            </Themed.h4>
             <Button variant="calloutLarge" onClick={handleSignOut}>
               Sign out
             </Button>
@@ -251,7 +249,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
           <React.Fragment>
             {close ? ( CloseButton ) : null}
             <img src="/images/trophy.svg" alt="trophy" sx={{ width: '13.75rem' }} />
-            <Styled.h1
+            <Themed.h1
               sx={{
                 color: 'white',
                 fontSize: '2.75rem',
@@ -261,8 +259,8 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
               }}
             >
               Success!
-            </Styled.h1>
-            <Styled.h4
+            </Themed.h1>
+            <Themed.h4
               sx={{
                 maxWidth: '80%',
                 color: 'white',
@@ -276,7 +274,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
               }}
             >
               Package now live on the Web3Hub!
-            </Styled.h4>
+            </Themed.h4>
             <Button variant="calloutLarge" onClick={()=>router.push(`/apis/ens/${data}`)}>View API</Button>
           </React.Fragment>
         )}

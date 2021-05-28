@@ -1,6 +1,5 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, Flex, Button, Styled, Field } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
+import { Flex, Button, Themed, Field } from 'theme-ui'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useWeb3ApiQuery } from '@web3api/react'
@@ -19,7 +18,6 @@ import getPackageQueriesFromAPIObject from '../services/ipfs/getPackageQueriesFr
 
 import GQLCodeBlock from '../components/GQLCodeBlock'
 import cleanSchema from '../utils/cleanSchema'
-import { responseData } from '../constants'
 
 type PlaygroundProps = {
   api?: any
@@ -191,9 +189,9 @@ const Playground = ({ api }: PlaygroundProps) => {
           p: '1.5rem',
           backgroundColor: 'w3shade2',
           '*': { display: 'flex' },
-          label: {
-            display: 'none',
-          },
+          // 'label': {
+          //   display: 'none',
+          // },
         }}
       >
         {api === undefined ? (
@@ -214,7 +212,7 @@ const Playground = ({ api }: PlaygroundProps) => {
             }}
           />
         ) : (
-          <Styled.h1 sx={{ mb: 0 }}>{api.name}</Styled.h1>
+          <Themed.h1 sx={{ mb: 0 }}>{api.name}</Themed.h1>
         )}
         <Flex
           className="selection-detail"
@@ -227,7 +225,7 @@ const Playground = ({ api }: PlaygroundProps) => {
         >
           <div className="left">
             <Stars count={0} onDark />
-            {api.locationUri && (
+            {api?.locationUri && (
               <div className="category-Badges" sx={{ ml: 3 }}>
                 <Badge label="IPFS" onDark ipfsHash={api.locationUri} />
               </div>
@@ -237,7 +235,7 @@ const Playground = ({ api }: PlaygroundProps) => {
             <a
               className="text-nav"
               href={router.asPath.replace('playground', 'apis')}
-              sx={{ '&:hover': { textDecoration: 'underline' } }}
+              sx={{ '&:hover': { textDecoration: 'underline' }, color: 'w3TextNavTeal' }}
             >
               GO TO API PAGE
             </a>
@@ -316,7 +314,14 @@ const Playground = ({ api }: PlaygroundProps) => {
             </div>
             <form
               onSubmit={handleRunBtnClick}
-              sx={{ bg: 'white', p: 3, pt: '0.6rem', label: { fontSize: '.9rem' } }}
+              sx={{
+                bg: 'white',
+                p: 3,
+                pt: '0.6rem',
+                '*:nth-of-type(1)': {
+                  fontSize: '.9rem',
+                },
+              }}
             >
               {varsList.map((varItem) => (
                 <Field
@@ -384,11 +389,11 @@ const Playground = ({ api }: PlaygroundProps) => {
               )}
             </div>
           </Flex>
-          <Styled.pre
+          <Themed.pre
             sx={{ height: '100%', color: 'w3PlaygroundSoftBlue', pb: 0, mb: 0 }}
           >
             {clientresponse !== '' && JSON.stringify(clientresponse, undefined, 2)}
-          </Styled.pre>
+          </Themed.pre>
         </div>
         {structuredschema?.localqueries && (
           <Flex
@@ -420,7 +425,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               }}
             />
             <div>
-              <Styled.h3 sx={{ m: 0, p: '.75rem', bg: '#cecece' }}>Schema</Styled.h3>
+              <Themed.h3 sx={{ m: 0, p: '.75rem', bg: '#cecece' }}>Schema</Themed.h3>
               <aside
                 className="hidden-schema-panel"
                 sx={{
