@@ -6,8 +6,7 @@
     "start": "ts-node src/server.ts",
     "dev": "nodemon src/server.ts",
     "db:start": "docker-compose up -d",
-    "generate:types": "ts-node --script-mode scripts/generateTypes.ts",
-    "postinstall": "yarn generate:types"
+    "generate:types": "ts-node --script-mode scripts/generateTypes.ts"
   },
   "dependencies": {
     "@ensdomains/ensjs": "2.0.0",
