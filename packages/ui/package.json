@@ -9,8 +9,8 @@
     "export": "rm -rf .next out && next build && next export",
     "deploy": "cd out && surge && cd ..",
     "postbuild": "yarn install:web3api",
-    "predev": "yarn install:web3api",
-    "install:web3api": "npx web3api-worker-install ./public"
+    "postdef": "yarn install:web3api",
+    "install:web3api": "npx web3api-worker-install .next/server/pages/"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.1.3",
