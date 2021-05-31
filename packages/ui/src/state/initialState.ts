@@ -1,6 +1,4 @@
 import { networkID } from '../constants'
-import { ensPlugin } from '@web3api/ens-plugin-js'
-import { ipfsPlugin } from '@web3api/ipfs-plugin-js'
 import { UriRedirect } from '@web3api/client-js'
 
 let initialState = {

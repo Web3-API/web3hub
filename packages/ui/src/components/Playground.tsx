@@ -44,16 +44,13 @@ const Playground = ({ api }: PlaygroundProps) => {
   const varsList = [...selectedMethod.matchAll(/\$([a-zA-Z0-9_-]{1,})/g)] || null
 
   const [formVarsToSubmit, setformVarsToSubmit] = useState({})
-
+  // ens/ropsten/haha5.web3api.open.eth
+  // console.log('ens/ropsten/' + router.asPath.split('/playground/ens/')[1])
   const { data: queryResponse, errors, loading, execute } = useWeb3ApiQuery({
     uri: 'ens/ropsten/' + router.asPath.split('/playground/ens/')[1],
     query: `mutation {
-      deploy
+      deployContract
     }`,
-  })
-  
-  console.log({
-    others,
   })
 
   function handleShowSchema(e: React.BaseSyntheticEvent) {
@@ -75,7 +72,6 @@ const Playground = ({ api }: PlaygroundProps) => {
   }
 
   function handleRunBtnClick(e) {
-    console.log('here')
     e.preventDefault()
     let varsToSubmit = {}
     console.log(e.target)
@@ -87,18 +83,10 @@ const Playground = ({ api }: PlaygroundProps) => {
     // setclientresponse(responseData)
   }
 
-
   useEffect(() => {
     async function runQuery() {
       // if (Object.keys(formVarsToSubmit).length > 0) {
       try {
-        console.log({
-          uri: 'ens/ropsten/' + router.asPath.split('/playground/ens/')[1],
-          query: `mutation {
-              deployContract
-            }`,
-          variables: formVarsToSubmit,
-        })
         const t = await execute()
         console.log(t)
         console.log({ queryResponse, errors, loading })

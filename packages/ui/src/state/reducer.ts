@@ -97,29 +97,19 @@ function publishReducer(state = {}, action) {
   }
 }
 
-function web3apiReducer(
-  state: {
-    dapp: dappType
-    web3api: web3apiType
-  } = {
-    web3api: InitialState.web3api,
-    dapp: InitialState.dapp,
-  },
-  action,
-) {
-  let newStateObj: web3apiType = InitialState.web3api
+function web3apiReducer(state, action) {
   const dapp = state.dapp
 
   switch (action.type) {
     case 'recreateredirects':
-      console.log('happening!')
       const networks: Record<string, ConnectionConfig> = {}
 
       if (dapp) {
-        networks[dapp.network.toString()] = { provider: dapp.web3 }
+        networks['ropsten'] = { provider: (window as any).ethereum }
       }
 
-      newStateObj.redirects = [
+      console.log({ networks })
+      const redirects = [
         {
           from: 'w3://ens/ipfs.web3api.eth',
           to: ipfsPlugin({ provider: 'https://ipfs.io' }),
@@ -129,13 +119,14 @@ function web3apiReducer(
           to: ensPlugin({}),
         },
         {
-          from: 'ens/ethereum.web3api.eth',
+          from: 'w3://ens/ethereum.web3api.eth',
           to: ethereumPlugin({
             networks: networks,
           }) as any,
         },
       ]
-      return { ...state, ...newStateObj }
+
+      return { redirects }
     default:
       return state
   }
@@ -146,7 +137,7 @@ export default function mainReducer(w3hubStates, action) {
   // localStorage.setItem('w3hubStates.publish', JSON.stringify(w3hubStates.publish))
   return {
     dapp: dappReducer(w3hubStates.dapp, action),
-    web3api: web3apiReducer(w3hubStates, action),
+    web3api: web3apiReducer(w3hubStates.web3api, action),
     publish: publishReducer(w3hubStates.publish, action),
     search: searchReducer(w3hubStates.search, action),
   }
