@@ -8,9 +8,9 @@
     "start": "next start",
     "export": "rm -rf .next out && next build && next export",
     "deploy": "cd out && surge && cd ..",
-    "postbuild": "yarn install:web3api",
-    "postdef": "yarn install:web3api",
-    "install:web3api": "npx web3api-worker-install ./"
+    "prebuild": "yarn install:web3api",
+    "predev": "yarn install:web3api",
+    "install:web3api": "npx web3api-worker-install ./public"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.1.3",
@@ -39,7 +39,6 @@
     "@svgr/webpack": "^5.5.0",
     "@types/react": "^17.0.8",
     "babel-plugin-inline-react-svg": "^2.0.1",
-    "typescript": "^4.2.4",
-    "worker-loader": "3.0.8"
+    "typescript": "^4.2.4"
   }
 }
