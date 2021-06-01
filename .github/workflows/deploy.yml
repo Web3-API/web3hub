@@ -1,0 +1,24 @@
+name: Deploy to EC2 instance of Web3Hub
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [closed]
+jobs:
+  deploy-app:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          name: id_rsa
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+      - name: Make deployment script executable
+        run: chmod +x ./.github/scripts/deploy.sh
+      - name: Run deployment script
+        run: ./.github/scripts/deploy.sh
