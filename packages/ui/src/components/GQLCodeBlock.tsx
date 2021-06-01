@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui **/
 import { Themed } from 'theme-ui'
 import Editor from '@monaco-editor/react'
-import { useRef } from 'react'
 
 // https://github.com/brijeshb42/monaco-themes/tree/master/themes
 import solarizedDark from '../theme/Solarized-dark.json'
