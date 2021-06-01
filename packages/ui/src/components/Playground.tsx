@@ -2,7 +2,7 @@
 import { Flex, Button, Themed, Field } from 'theme-ui'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useWeb3ApiQuery } from '@web3api/react'
+import { useWeb3ApiQuery, QueryResponse } from '@web3api/react'
 import { useStateValue } from '../state/state'
 
 import Badge from './Badge'
@@ -37,7 +37,7 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [structuredschema, setstructuredschema] = useState<any>()
 
-  const [clientresponse, setclientresponse] = useState<any>('')
+  const [clientresponse, setclientresponse] = useState<QueryResponse | undefined>(undefined)
 
   const [varformstoggle, setvarformstoggle] = useState(false)
 
@@ -69,43 +69,25 @@ const Playground = ({ api }: PlaygroundProps) => {
     link.click()
   }
 
-  function handleRunBtnClick(e) {
+  function handleVarsChange(e) {
     e.preventDefault()
     let varsToSubmit = {}
     Array.from(e.target)
       .filter((item: any) => item.type !== 'submit')
       .map((input: any) => (varsToSubmit[input.name] = input.value))
+
+    // TODO: call this whenever the form has been edited
+    // onFocusLost?
     setformVarsToSubmit(varsToSubmit)
-    // setclientresponse(responseData)
   }
 
-  useEffect(() => {
-    async function runQuery() {
-      if (Object.keys(formVarsToSubmit).length > 0) {
-        console.log({
-          uri: 'ens/rinkeby/' + router.asPath.split('/playground/ens/')[1],
-          query: selectedMethod,
-          variables: formVarsToSubmit,
-        })
-        await execute()
-        console.log({ queryResponse, errors, loading })
-        if (errors !== undefined || queryResponse !== undefined) {
-          setclientresponse(queryResponse || [...errors].toString())
-        } else {
-          console.log('if this is empty - async race condtion issue')
-        }
-
-        // data.methodName = whatever is returned (string, bool, object)
-        // if (data && data.methodName) {
-        //   setOutput(JSON.stringify(data.methodName))
-        // }
-      }
-    }
-    runQuery()
-  }, [formVarsToSubmit])
+  async function handleRunBtnClick() {
+    const response = await execute();
+    setClientResponse(response);
+  }
 
   function handleClearBtnClick() {
-    setclientresponse('')
+    setclientresponse(undefined);
   }
 
   function handleVarsFormToggle() {
@@ -297,7 +279,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               Vars
             </div>
             <form
-              onSubmit={handleRunBtnClick}
+              onBlur={handleVarsChange}
               sx={{
                 bg: 'white',
                 p: 3,
