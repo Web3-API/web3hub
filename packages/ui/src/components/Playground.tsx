@@ -2,7 +2,8 @@
 import { Flex, Button, Themed, Field } from 'theme-ui'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useWeb3ApiQuery, QueryResponse } from '@web3api/react'
+import { useWeb3ApiQuery } from '@web3api/react'
+// import { QueryResponse } from '@web3api/client-js'
 import { useStateValue } from '../state/state'
 
 import Badge from './Badge'
@@ -37,7 +38,7 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [structuredschema, setstructuredschema] = useState<any>()
 
-  const [clientresponse, setclientresponse] = useState<QueryResponse | undefined>(undefined)
+  const [clientresponded, setclientresponed] = useState(undefined)
 
   const [varformstoggle, setvarformstoggle] = useState(false)
 
@@ -45,7 +46,12 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [formVarsToSubmit, setformVarsToSubmit] = useState({})
 
-  const { data: queryResponse, errors, loading, execute } = useWeb3ApiQuery({
+  const {
+    data: queryResponse,
+    errors,
+    loading,
+    execute,
+  } = useWeb3ApiQuery({
     uri: 'ens/rinkeby/' + router.asPath.split('/playground/ens/')[1],
     query: selectedMethod,
     variables: formVarsToSubmit,
@@ -60,7 +66,7 @@ const Playground = ({ api }: PlaygroundProps) => {
   }
 
   function handleSaveBtnClick() {
-    const fileData = JSON.stringify(clientresponse)
+    const fileData = JSON.stringify(clientresponded)
     const blob = new Blob([fileData], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
@@ -82,12 +88,12 @@ const Playground = ({ api }: PlaygroundProps) => {
   }
 
   async function handleRunBtnClick() {
-    const response = await execute();
-    setClientResponse(response);
+    let response  = await execute()
+    setclientresponed(response)
   }
 
   function handleClearBtnClick() {
-    setclientresponse(undefined);
+    setclientresponed(undefined)
   }
 
   function handleVarsFormToggle() {
@@ -155,9 +161,9 @@ const Playground = ({ api }: PlaygroundProps) => {
           p: '1.5rem',
           backgroundColor: 'w3shade2',
           '*': { display: 'flex' },
-          // 'label': {
-          //   display: 'none',
-          // },
+          '&label': {
+            display: 'none',
+          },
         }}
       >
         {api === undefined ? (
@@ -279,7 +285,8 @@ const Playground = ({ api }: PlaygroundProps) => {
               Vars
             </div>
             <form
-              onBlur={handleVarsChange}
+              onChange={handleVarsChange}
+              onSubmit={handleRunBtnClick}
               sx={{
                 bg: 'white',
                 p: 3,
@@ -328,7 +335,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               <Button variant="primarySmall" onClick={handleRunBtnClick}>
                 Run
               </Button>
-              {clientresponse !== '' && (
+              {clientresponded !== undefined && (
                 <React.Fragment>
                   <Button variant="secondarySmall" onClick={handleSaveBtnClick}>
                     Save
@@ -358,7 +365,9 @@ const Playground = ({ api }: PlaygroundProps) => {
           <Themed.pre
             sx={{ height: '100%', color: 'w3PlaygroundSoftBlue', pb: 0, mb: 0 }}
           >
-            {clientresponse !== '' && JSON.stringify(clientresponse, undefined, 2)}
+            {queryResponse !== undefined &&
+              JSON.stringify(queryResponse.data, undefined, 2)}
+            {errors !== undefined && errors.toString() }
           </Themed.pre>
         </div>
         {structuredschema?.localqueries && (
