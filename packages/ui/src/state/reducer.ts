@@ -2,7 +2,6 @@ import { ensPlugin } from '@web3api/ens-plugin-js'
 import { ipfsPlugin } from '@web3api/ipfs-plugin-js'
 import InitialState from '../state/initialState'
 import type { dappType } from '../state/initialState'
-import type { web3apiType } from '../state/initialState'
 import type { publishType } from '../state/initialState'
 import type { searchType } from '../state/initialState'
 
@@ -97,19 +96,24 @@ function publishReducer(state = {}, action) {
   }
 }
 
-function web3apiReducer(state, action) {
-  const dapp = state.dapp
-
+function web3apiReducer({ dapp, web3api }, action) {
   switch (action.type) {
     case 'recreateredirects':
-      const networks: Record<string, ConnectionConfig> = {}
+      // const networks: Record<string, ConnectionConfig> = {}
 
-      if (dapp) {
-        networks['ropsten'] = { provider: (window as any).ethereum }
-      }
-
-      console.log({ networks })
+      console.log(dapp)
+      console.log(dapp.web3.getSigner())
       const redirects = [
+        {
+          from: 'w3://ens/ethereum.web3api.eth',
+          to: ethereumPlugin({
+            networks: {
+              rinkeby: {
+                provider: dapp.web3.getSigner().provider,
+              },
+            },
+          }),
+        },
         {
           from: 'w3://ens/ipfs.web3api.eth',
           to: ipfsPlugin({ provider: 'https://ipfs.io' }),
@@ -118,17 +122,11 @@ function web3apiReducer(state, action) {
           from: 'w3://ens/ens.web3api.eth',
           to: ensPlugin({}),
         },
-        {
-          from: 'w3://ens/ethereum.web3api.eth',
-          to: ethereumPlugin({
-            networks: networks,
-          }) as any,
-        },
       ]
 
       return { redirects }
     default:
-      return state
+      return web3api
   }
 }
 
@@ -137,7 +135,7 @@ export default function mainReducer(w3hubStates, action) {
   // localStorage.setItem('w3hubStates.publish', JSON.stringify(w3hubStates.publish))
   return {
     dapp: dappReducer(w3hubStates.dapp, action),
-    web3api: web3apiReducer(w3hubStates.web3api, action),
+    web3api: web3apiReducer(w3hubStates, action),
     publish: publishReducer(w3hubStates.publish, action),
     search: searchReducer(w3hubStates.search, action),
   }

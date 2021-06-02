@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui **/
 import { Flex, Button, Themed, Field } from 'theme-ui'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useWeb3ApiQuery } from '@web3api/react'
 import { useStateValue } from '../state/state'
@@ -46,12 +46,49 @@ const Playground = ({ api }: PlaygroundProps) => {
   const [formVarsToSubmit, setformVarsToSubmit] = useState({})
   // ens/ropsten/haha5.web3api.open.eth
   // console.log('ens/ropsten/' + router.asPath.split('/playground/ens/')[1])
-  const { data: queryResponse, errors, loading, execute } = useWeb3ApiQuery({
-    uri: 'ens/ropsten/' + router.asPath.split('/playground/ens/')[1],
+
+  // const {
+  //   data: queryResponse,
+  //   errors,
+  //   loading,
+  //   execute,
+  // } = useWeb3ApiQuery({
+  //   uri: 'ens/helloworld.web3api.eth',
+  //   query: `query {
+  //       logMessage(
+  //           message: "hola bro"
+  //       )
+  //    }`,
+  // })
+  const {
+    data: queryResponse,
+    errors,
+    loading,
+    execute,
+  } = useWeb3ApiQuery({
+    uri: 'ens/rinkeby/api.simplestorage.eth',
     query: `mutation {
-      deployContract
+      setData(
+        address: "0x64Dc459EBf5590CE70FD06a767a2566Dc0d23Aa6"
+        value: 10
+        connection: {
+          networkNameOrChainId: "rinkeby"
+        }
+      )
     }`,
   })
+  // const {
+  //   data: queryResponse,
+  //   errors,
+  //   loading,
+  //   execute,
+  // } = useWeb3ApiQuery({
+  //   uri: 'ens/ropsten/' + router.asPath.split('/playground/ens/')[1],
+  //   query: `mutation {
+  //     deployContract
+  //   }
+  // `,
+  // })
 
   function handleShowSchema(e: React.BaseSyntheticEvent) {
     return setshowschema(!showschema)
@@ -82,31 +119,46 @@ const Playground = ({ api }: PlaygroundProps) => {
     setformVarsToSubmit(varsToSubmit)
     // setclientresponse(responseData)
   }
-
-  useEffect(() => {
-    async function runQuery() {
-      // if (Object.keys(formVarsToSubmit).length > 0) {
-      try {
-        const t = await execute()
-        console.log(t)
-        console.log({ queryResponse, errors, loading })
-        if (errors !== undefined || queryResponse !== undefined) {
-          setclientresponse(queryResponse || [...errors].toString())
-        } else {
-          console.log('if this is empty - async race condtion issue')
-        }
-      } catch (e) {
-        console.log(e)
+  const executeQuery = useCallback(async () => {
+    try {
+      console.log('before query execute...')
+      console.log(formVarsToSubmit)
+      const t = await execute(formVarsToSubmit)
+      console.log({ t })
+      if (errors !== undefined || queryResponse !== undefined) {
+        setclientresponse(queryResponse || [...errors].toString())
+      } else {
+        console.log('if this is empty - async race condtion issue')
       }
-
-      // data.methodName = whatever is returned (string, bool, object)
-      //  if (data && data.methodName) {
-      //    setOutput(JSON.stringify(data.methodName))
-      //  }
-      // }
+    } catch (e) {
+      console.log(e)
     }
-    runQuery()
   }, [formVarsToSubmit])
+
+  // useEffect(() => {
+  //   async function runQuery() {
+  //     try {
+  //       const t = await execute()
+  //       console.log(t)
+  //       console.log({ queryResponse, errors, loading })
+  //       if (errors !== undefined || queryResponse !== undefined) {
+  //         setclientresponse(queryResponse || [...errors].toString())
+  //       } else {
+  //         console.log('if this is empty - async race condtion issue')
+  //       }
+  //     } catch (e) {
+  //       console.log(e)
+  //     }
+  //     // if (Object.keys(formVarsToSubmit).length > 0) {
+
+  //     // data.methodName = whatever is returned (string, bool, object)
+  //     //  if (data && data.methodName) {
+  //     //    setOutput(JSON.stringify(data.methodName))
+  //     //  }
+  //     // }
+  //   }
+  //   runQuery()
+  // }, [formVarsToSubmit])
 
   function handleClearBtnClick() {
     setclientresponse('')
@@ -347,7 +399,7 @@ const Playground = ({ api }: PlaygroundProps) => {
             }}
           >
             <div className="left" sx={{ '> *': { mr: '1rem !important' } }}>
-              <Button variant="primarySmall" onClick={handleRunBtnClick}>
+              <Button variant="primarySmall" onClick={executeQuery}>
                 Run
               </Button>
               {clientresponse !== '' && (
