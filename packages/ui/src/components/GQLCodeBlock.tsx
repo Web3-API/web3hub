@@ -10,16 +10,17 @@ type GQLCodeBlockProps = {
   readOnly?: boolean
   height?: string
   value: any
+  onClick?: (e: React.BaseSyntheticEvent) => void
   handleEditorChange?: (e: any) => void
 }
 
-const GQLCodeBlock = ({ title, readOnly, height = '200px', value, handleEditorChange }: GQLCodeBlockProps) => {
+const GQLCodeBlock = ({ title, readOnly, height = '200px', value, handleEditorChange, onClick }: GQLCodeBlockProps) => {
   const handleEditorWillMount = (monaco) => {
     monaco.editor.defineTheme('solarizedDark', solarizedDark);
     monaco.editor.setTheme('solarizedDark');
   } 
   return (
-    <div className="GQLCodeBlock-wrap">
+    <div className="GQLCodeBlock-wrap" onClick={onClick}>
       {title ? <Themed.h5 sx={{ m: 0, py: 2, px: '.75rem', bg: 'white' }}>{title}</Themed.h5> : null}
       <Editor
         theme="solarizedDark"

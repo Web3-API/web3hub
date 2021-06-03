@@ -160,8 +160,10 @@ const Playground = ({ api }: PlaygroundProps) => {
     runExecute()
   }, [formVarsToSubmit])
 
-
-  
+  function grabSchemaCode (e) {
+    e.preventDefault()
+    console.log(e.target.closest('.lines-content'))
+  }
 
   return (
     <div
@@ -443,26 +445,31 @@ const Playground = ({ api }: PlaygroundProps) => {
                 }}
               >
                 <GQLCodeBlock
+                  onClick={grabSchemaCode}
                   readOnly
                   title="Queries"
                   value={structuredschema.localqueries}
                 />
                 <GQLCodeBlock
+                  onClick={grabSchemaCode}
                   readOnly
                   title="Mutations"
                   value={structuredschema.localmutations}
                 />
                 <GQLCodeBlock
+                  onClick={grabSchemaCode}
                   readOnly
                   title="Custom Types"
                   value={structuredschema.localcustom}
                 />
                 <GQLCodeBlock
+                  onClick={grabSchemaCode}
                   readOnly
                   title="Imported Queries"
                   value={structuredschema.importedqueries}
                 />
                 <GQLCodeBlock
+                  onClick={grabSchemaCode}
                   readOnly
                   title="Imported Mutations"
                   value={structuredschema.importedmutations}
