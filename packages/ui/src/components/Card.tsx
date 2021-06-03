@@ -33,7 +33,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, noHover }: CardProps) => {
             <div sx={{ display: 'block', m: 'auto' }}>
               <img
                 className="api-logo"
-                src={`${cloudFlareGateway}${ipfsHash || api.locationUri.split('ipfs/')[1]}${api.icon.replace('./','/')}`}
+                // src={`${cloudFlareGateway}${ipfsHash || api.locationUri.split('ipfs/')[1]}${api.icon.replace('./','/')}`}
                 sx={{
                   width: '8.75rem',
                   height: '8.75rem',

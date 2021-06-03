@@ -7,13 +7,18 @@
     "build": "next build",
     "start": "next start",
     "export": "rm -rf .next out && next build && next export",
-    "deploy": "cd out && surge && cd .."
+    "deploy": "cd out && surge && cd ..",
+    "prebuild": "yarn install:web3api",
+    "predev": "yarn install:web3api",
+    "install:web3api": "npx web3api-worker-install ./public"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.1.3",
     "@nodefactory/dappeteer": "^2.0.0",
-    "@web3api/client-js": "^0.0.1-prealpha.24",
-    "@web3api/react": "0.0.1-prealpha.22",
+    "@web3api/client-js": "0.0.1-prealpha.25",
+    "@web3api/ens-plugin-js": "^0.0.1-prealpha.25",
+    "@web3api/ethereum-plugin-js": "^0.0.1-prealpha.25",
+    "@web3api/react": "0.0.1-prealpha.25",
     "animate.css": "^4.1.1",
     "axios": "^0.21.1",
     "bnc-onboard": "latest",

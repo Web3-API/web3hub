@@ -13,10 +13,10 @@ const swrOptions = {
   fetcher: (resource) => fetcherREST(resource),
 }
 
-function StatefulApp({pageProps, Component}) {
-  const [{ redirects }] = useStateValue()
+function StatefulApp({ pageProps, Component }) {
+  const [{ web3api }] = useStateValue()
   return (
-    <Web3ApiProvider redirects={redirects}>
+    <Web3ApiProvider redirects={web3api.redirects}>
       <ThemeProvider theme={theme}>
         <Head>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -36,7 +36,7 @@ function StatefulApp({pageProps, Component}) {
 function MyApp({ Component, pageProps }) {
   return (
     <StateProvider initialState={InitialState} reducer={Reducer}>
-      <StatefulApp pageProps={pageProps} Component={Component}/>
+      <StatefulApp pageProps={pageProps} Component={Component} />
     </StateProvider>
   )
 }
