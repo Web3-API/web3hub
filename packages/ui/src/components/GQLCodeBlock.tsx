@@ -10,9 +10,10 @@ type GQLCodeBlockProps = {
   readOnly?: boolean
   height?: string
   value: any
+  handleEditorChange?: (e: any) => void
 }
 
-const GQLCodeBlock = ({ title, readOnly, height = '200px', value }: GQLCodeBlockProps) => {
+const GQLCodeBlock = ({ title, readOnly, height = '200px', value, handleEditorChange }: GQLCodeBlockProps) => {
   const handleEditorWillMount = (monaco) => {
     monaco.editor.defineTheme('solarizedDark', solarizedDark);
     monaco.editor.setTheme('solarizedDark');
@@ -30,6 +31,7 @@ const GQLCodeBlock = ({ title, readOnly, height = '200px', value }: GQLCodeBlock
           readOnly: readOnly
         }}
         beforeMount={handleEditorWillMount}
+        onChange={handleEditorChange}
         height={height}
         defaultLanguage="graphql"
         defaultValue={value.toString()}

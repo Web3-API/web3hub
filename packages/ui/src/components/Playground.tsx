@@ -3,7 +3,6 @@ import { Flex, Button, Themed, Field } from 'theme-ui'
 import React, { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useWeb3ApiQuery } from '@web3api/react'
-// import { QueryResponse } from '@web3api/client-js'
 import { useStateValue } from '../state/state'
 
 import Badge from './Badge'
@@ -11,6 +10,7 @@ import Stars from './Stars'
 import BGWave from './BGWave'
 import SelectBox from './SelectBox'
 import SearchBox from './SearchBox'
+import LoadingSpinner from './LoadingSpinner'
 
 import Close from '../../public/images/close.svg'
 
@@ -31,7 +31,7 @@ const Playground = ({ api }: PlaygroundProps) => {
   const [apiOptions] = useState(dapp.apis)
 
   const [apiContents, setapiContents] = useState<any>({})
-  const [loadingContents, setloadingContents] = useState(false)
+  const [loadingPackageContents, setloadingPackageContents] = useState(false)
 
   const [showschema, setshowschema] = useState(false)
   const [selectedMethod, setSelectedMethod] = useState('')
@@ -41,18 +41,15 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [clientresponded, setclientresponed] = useState(undefined)
 
+  const [customquerytext, setcustomquerytext] = useState('')
+
   const [varformstoggle, setvarformstoggle] = useState(false)
 
-  const varsList = [...selectedMethod.matchAll(/\$([a-zA-Z0-9_-]{1,})/g)] || null
+  const varsList = [...selectedMethod.matchAll(/\$([a-zA-Z0-9_-]{1,})/g)].concat([...customquerytext.matchAll(/\$([a-zA-Z0-9_-]{1,})/g)]) || null
 
   const [formVarsToSubmit, setformVarsToSubmit] = useState({})
 
-  const {
-    data: queryResponse,
-    errors,
-    loading,
-    execute,
-  } = useWeb3ApiQuery({
+  const { loading, execute } = useWeb3ApiQuery({
     uri: 'ens/rinkeby/' + router.asPath.split('/playground/ens/')[1],
     query: selectedMethod,
     variables: formVarsToSubmit,
@@ -92,21 +89,6 @@ const Playground = ({ api }: PlaygroundProps) => {
     handleVarsChange(varform.current)
   }
 
-  useEffect(() => {
-    console.log("🚀 ~ file: Playground.tsx ~ line 98 ~ runExecute ~ Object.keys(formVarsToSubmit)", Object.keys(formVarsToSubmit))
-    async function runExecute() {
-      if (Object.keys(formVarsToSubmit).length > 0) {
-        try {
-          let response = await execute()
-          setclientresponed(response)
-        } catch (error) {
-          throw error
-        }
-      }
-    }
-    runExecute()
-  }, [formVarsToSubmit])
-
   function handleClearBtnClick() {
     setclientresponed(undefined)
   }
@@ -114,10 +96,14 @@ const Playground = ({ api }: PlaygroundProps) => {
   function handleVarsFormToggle() {
     setvarformstoggle(!varformstoggle)
   }
+  
+  function handleEditorChange(e) {
+    setcustomquerytext(e)
+  }
 
   useEffect(() => {
     if (router.asPath.includes('ens/')) {
-      setloadingContents(true)
+      setloadingPackageContents(true)
     }
   }, [router])
 
@@ -125,6 +111,10 @@ const Playground = ({ api }: PlaygroundProps) => {
     async function go() {
       let schemaData = await getPackageSchemaFromAPIObject(api)
       let queriesData = await getPackageQueriesFromAPIObject(api)
+      queriesData.push({
+        id: 'Custom Query',
+        value: '\n\n\n\n\n\n\n\n\n\n'
+      })
       setapiContents({
         schema: schemaData,
         queries: queriesData,
@@ -143,18 +133,35 @@ const Playground = ({ api }: PlaygroundProps) => {
         importedqueries: importedqueries,
         importedmutations: importedmutations,
       })
-      setloadingContents(false)
+      setloadingPackageContents(false)
     }
-    if (loadingContents === true) {
+    if (loadingPackageContents === true) {
       go()
     }
-  }, [loadingContents])
+  }, [loadingPackageContents])
 
   useEffect(() => {
     if (selectedMethod !== newSelectedMethod) {
       setnewSelectedMethod(selectedMethod)
     }
   }, [selectedMethod])
+
+  useEffect(() => {
+    async function runExecute() {
+      if (Object.keys(formVarsToSubmit).length > 0) {
+        try {
+          let response = await execute()
+          setclientresponed(response)
+        } catch (error) {
+          throw error
+        }
+      }
+    }
+    runExecute()
+  }, [formVarsToSubmit])
+
+
+  
 
   return (
     <div
@@ -268,6 +275,7 @@ const Playground = ({ api }: PlaygroundProps) => {
                 key={newSelectedMethod}
                 value={selectedMethod}
                 height={'300px'}
+                handleEditorChange={handleEditorChange}
               />
             </div>
           )}
@@ -349,6 +357,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               <Button variant="primarySmall" onClick={handleRunBtnClick}>
                 Run
               </Button>
+
               {clientresponded !== undefined && (
                 <React.Fragment>
                   <Button variant="secondarySmall" onClick={handleSaveBtnClick}>
@@ -361,7 +370,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               )}
             </div>
             <div className="right">
-              {loadingContents ? (
+              {loadingPackageContents ? (
                 'Loading Schema...'
               ) : (
                 <span
@@ -369,7 +378,7 @@ const Playground = ({ api }: PlaygroundProps) => {
                   onClick={handleShowSchema}
                   sx={{ cursor: 'pointer' }}
                 >
-                  {loadingContents && 'Loading Schema...'}
+                  {loadingPackageContents && 'Loading Schema...'}
                   <span sx={{ fontSize: '2.5rem', pr: '1rem' }}>‹</span>
                   <span>Show Schema</span>
                 </span>
@@ -379,9 +388,20 @@ const Playground = ({ api }: PlaygroundProps) => {
           <Themed.pre
             sx={{ height: '100%', color: 'w3PlaygroundSoftBlue', pb: 0, mb: 0 }}
           >
-            {queryResponse !== undefined &&
-              JSON.stringify(queryResponse.data, undefined, 2)}
-            {errors !== undefined && errors.toString()}
+            {loading ? (
+              <div sx={{ display: 'grid', placeItems: 'center', height: '60%' }}>
+                <LoadingSpinner />
+              </div>
+            ) : (
+              <React.Fragment>
+                {clientresponded !== undefined &&
+                  clientresponded.queryResponse !== undefined &&
+                  JSON.stringify(clientresponded.queryResponse.data, undefined, 2)}
+                {clientresponded !== undefined &&
+                  clientresponded.errors !== undefined &&
+                  clientresponded.errors.toString()}
+              </React.Fragment>
+            )}
           </Themed.pre>
         </div>
         {structuredschema?.localqueries && (
