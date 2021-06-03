@@ -1,5 +1,8 @@
 import { networkID } from '../constants'
 import { UriRedirect } from '@web3api/client-js'
+import { ensPlugin } from '@web3api/ens-plugin-js'
+import { ethereumPlugin } from '@web3api/ethereum-plugin-js'
+import { ipfsPlugin } from '@web3api/ipfs-plugin-js'
 
 let initialState = {
   dapp: {
@@ -14,7 +17,28 @@ let initialState = {
     github: '',
   },
   web3api: {
-    redirects: [],
+    redirects: [
+      {
+        from: 'w3://ens/ethereum.web3api.eth',
+        to: ethereumPlugin({
+          networks: {
+            ROPSTEN: {
+              provider: 'https://ropsten.infura.io/v3/4bf032f2d38a4ed6bb975b80d6340847',
+              signer: undefined,
+            },
+          },
+          defaultNetwork: 'ROPSTEN',
+        }),
+      },
+      {
+        from: 'w3://ens/ipfs.web3api.eth',
+        to: ipfsPlugin({ provider: 'https://ipfs.io' }),
+      },
+      {
+        from: 'w3://ens/ens.web3api.eth',
+        to: ensPlugin({}),
+      },
+    ],
   },
   publish: {
     subdomain: '',

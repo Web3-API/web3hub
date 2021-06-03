@@ -101,15 +101,15 @@ function web3apiReducer({ dapp, web3api }, action) {
     case 'recreateredirects':
       // const networks: Record<string, ConnectionConfig> = {}
 
-      console.log(dapp)
-      console.log(dapp.web3.getSigner())
+      console.log(dapp.address)
       const redirects = [
         {
           from: 'w3://ens/ethereum.web3api.eth',
           to: ethereumPlugin({
             networks: {
-              rinkeby: {
-                provider: dapp.web3.getSigner().provider,
+              ROPSTEN: {
+                provider: 'https://ropsten.infura.io/v3/4bf032f2d38a4ed6bb975b80d6340847',
+                signer: dapp.address,
               },
             },
           }),

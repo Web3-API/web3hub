@@ -1,12 +1,16 @@
-import { createEthereumProvider } from './ethereum';
+import { createEthereumProvider } from './ethereum'
 import getOnboard from './Onboarding'
 
 const onboardInit = (dispatch) => {
   return getOnboard({
     address: async (address) => {
+      console.log('aqui es el address')
       dispatch({
         type: 'SET_ADDRESS',
         payload: address,
+      })
+      dispatch({
+        type: 'recreateredirects',
       })
     },
     network: (network) => {
@@ -15,7 +19,7 @@ const onboardInit = (dispatch) => {
         payload: network,
       })
       dispatch({
-        type: 'recreateredirects'
+        type: 'recreateredirects',
       })
     },
     balance: (balance) => {
@@ -33,9 +37,6 @@ const onboardInit = (dispatch) => {
       dispatch({
         type: 'SET_WEB3',
         payload: web3,
-      })
-      dispatch({
-        type: 'recreateredirects'
       })
     },
   })

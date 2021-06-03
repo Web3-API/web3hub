@@ -60,35 +60,35 @@ const Playground = ({ api }: PlaygroundProps) => {
   //       )
   //    }`,
   // })
-  const {
-    data: queryResponse,
-    errors,
-    loading,
-    execute,
-  } = useWeb3ApiQuery({
-    uri: 'ens/rinkeby/api.simplestorage.eth',
-    query: `mutation {
-      setData(
-        address: "0x64Dc459EBf5590CE70FD06a767a2566Dc0d23Aa6"
-        value: 10
-        connection: {
-          networkNameOrChainId: "rinkeby"
-        }
-      )
-    }`,
-  })
   // const {
   //   data: queryResponse,
   //   errors,
   //   loading,
   //   execute,
   // } = useWeb3ApiQuery({
-  //   uri: 'ens/ropsten/' + router.asPath.split('/playground/ens/')[1],
+  //   uri: 'ipfs/QmWbYmj1ywgJGd2Tikpn3GtdBtQe1ePMx9tA7xDiL6M5YW',
   //   query: `mutation {
-  //     deployContract
-  //   }
-  // `,
+  //     setData(
+  //       address: "0x64Dc459EBf5590CE70FD06a767a2566Dc0d23Aa6"
+  //       value: 10
+  //       connection: {
+  //         networkNameOrChainId: "rinkeby"
+  //       }
+  //     )
+  //   }`,
   // })
+  const {
+    data: queryResponse,
+    errors,
+    loading,
+    execute,
+  } = useWeb3ApiQuery({
+    uri: 'ens/ropsten/' + router.asPath.split('/playground/ens/')[1],
+    query: `mutation {
+      deployContract
+    }
+  `,
+  })
 
   function handleShowSchema(e: React.BaseSyntheticEvent) {
     return setshowschema(!showschema)
@@ -123,7 +123,7 @@ const Playground = ({ api }: PlaygroundProps) => {
     try {
       console.log('before query execute...')
       console.log(formVarsToSubmit)
-      const t = await execute(formVarsToSubmit)
+      const t = await execute()
       console.log({ t })
       if (errors !== undefined || queryResponse !== undefined) {
         setclientresponse(queryResponse || [...errors].toString())
