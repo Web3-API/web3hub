@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui **/
 import { Flex, Button, Themed, Field } from 'theme-ui'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useRef, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useWeb3ApiQuery } from '@web3api/react'
 import { useStateValue } from '../state/state'
@@ -10,6 +10,7 @@ import Stars from './Stars'
 import BGWave from './BGWave'
 import SelectBox from './SelectBox'
 import SearchBox from './SearchBox'
+import LoadingSpinner from './LoadingSpinner'
 
 import Close from '../../public/images/close.svg'
 
@@ -24,12 +25,13 @@ type PlaygroundProps = {
 }
 
 const Playground = ({ api }: PlaygroundProps) => {
-  const [{ dapp, ...others }] = useStateValue()
+  const [{ dapp }] = useStateValue()
+  const varform = useRef(null)
   const router = useRouter()
   const [apiOptions] = useState(dapp.apis)
 
   const [apiContents, setapiContents] = useState<any>({})
-  const [loadingContents, setloadingContents] = useState(false)
+  const [loadingPackageContents, setloadingPackageContents] = useState(false)
 
   const [showschema, setshowschema] = useState(false)
   const [selectedMethod, setSelectedMethod] = useState('')
@@ -37,29 +39,34 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [structuredschema, setstructuredschema] = useState<any>()
 
-  const [clientresponse, setclientresponse] = useState<any>('')
+  const [clientresponded, setclientresponed] = useState(undefined)
+
+  const [customquerytext, setcustomquerytext] = useState('')
 
   const [varformstoggle, setvarformstoggle] = useState(false)
 
-  const varsList = [...selectedMethod.matchAll(/\$([a-zA-Z0-9_-]{1,})/g)] || null
+  const varsList =
+    [...selectedMethod.matchAll(/\$([a-zA-Z0-9_-]{1,})/g)].concat([
+      ...customquerytext.matchAll(/\$([a-zA-Z0-9_-]{1,})/g),
+    ]) || null
 
   const [formVarsToSubmit, setformVarsToSubmit] = useState({})
   // ens/ropsten/haha5.web3api.open.eth
   // console.log('ens/ropsten/' + router.asPath.split('/playground/ens/')[1])
 
-  // const {
-  //   data: queryResponse,
-  //   errors,
-  //   loading,
-  //   execute,
-  // } = useWeb3ApiQuery({
-  //   uri: 'ens/helloworld.web3api.eth',
-  //   query: `query {
-  //       logMessage(
-  //           message: "hola bro"
-  //       )
-  //    }`,
-  // })
+  const {
+    data: queryResponse,
+    errors,
+    loading,
+    execute,
+  } = useWeb3ApiQuery({
+    uri: 'ens/helloworld.web3api.eth',
+    query: `query {
+        logMessage(
+            message: "hola bro"
+        )
+     }`,
+  })
   // const {
   //   data: queryResponse,
   //   errors,
@@ -77,18 +84,18 @@ const Playground = ({ api }: PlaygroundProps) => {
   //     )
   //   }`,
   // })
-  const {
-    data: queryResponse,
-    errors,
-    loading,
-    execute,
-  } = useWeb3ApiQuery({
-    uri: 'ens/ropsten/' + router.asPath.split('/playground/ens/')[1],
-    query: `mutation {
-      deployContract
-    }
-  `,
-  })
+  // const {
+  //   data: queryResponse,
+  //   errors,
+  //   loading,
+  //   execute,
+  // } = useWeb3ApiQuery({
+  //   uri: 'ens/ropsten/haha5.web3api.open.eth'/*  + router.asPath.split('/playground/ens/')[1] */,
+  //   query: `mutation {
+  //     deploy
+  //   }
+  // `,
+  // })
 
   function handleShowSchema(e: React.BaseSyntheticEvent) {
     return setshowschema(!showschema)
@@ -99,7 +106,7 @@ const Playground = ({ api }: PlaygroundProps) => {
   }
 
   function handleSaveBtnClick() {
-    const fileData = JSON.stringify(clientresponse)
+    const fileData = JSON.stringify(clientresponded)
     const blob = new Blob([fileData], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
@@ -111,13 +118,13 @@ const Playground = ({ api }: PlaygroundProps) => {
   function handleRunBtnClick(e) {
     e.preventDefault()
     let varsToSubmit = {}
-    console.log(e.target)
-    Array.from(e.target)
+    Array.from(e)
       .filter((item: any) => item.type !== 'submit')
       .map((input: any) => (varsToSubmit[input.name] = input.value))
-    console.log(varsToSubmit)
+
+    // TODO: call this whenever the form has been edited
+    // onFocusLost?
     setformVarsToSubmit(varsToSubmit)
-    // setclientresponse(responseData)
   }
   const executeQuery = useCallback(async () => {
     try {
@@ -126,7 +133,7 @@ const Playground = ({ api }: PlaygroundProps) => {
       const t = await execute()
       console.log({ t })
       if (errors !== undefined || queryResponse !== undefined) {
-        setclientresponse(queryResponse || [...errors].toString())
+        setclientresponed(queryResponse || [...errors].toString())
       } else {
         console.log('if this is empty - async race condtion issue')
       }
@@ -161,16 +168,20 @@ const Playground = ({ api }: PlaygroundProps) => {
   // }, [formVarsToSubmit])
 
   function handleClearBtnClick() {
-    setclientresponse('')
+    setclientresponed(undefined)
   }
 
   function handleVarsFormToggle() {
     setvarformstoggle(!varformstoggle)
   }
 
+  function handleEditorChange(e) {
+    setcustomquerytext(e)
+  }
+
   useEffect(() => {
     if (router.asPath.includes('ens/')) {
-      setloadingContents(true)
+      setloadingPackageContents(true)
     }
   }, [router])
 
@@ -178,6 +189,10 @@ const Playground = ({ api }: PlaygroundProps) => {
     async function go() {
       let schemaData = await getPackageSchemaFromAPIObject(api)
       let queriesData = await getPackageQueriesFromAPIObject(api)
+      queriesData.push({
+        id: 'Custom Query',
+        value: '\n\n\n\n\n\n\n\n\n\n',
+      })
       setapiContents({
         schema: schemaData,
         queries: queriesData,
@@ -196,18 +211,46 @@ const Playground = ({ api }: PlaygroundProps) => {
         importedqueries: importedqueries,
         importedmutations: importedmutations,
       })
-      setloadingContents(false)
+      setloadingPackageContents(false)
     }
-    if (loadingContents === true) {
+    if (loadingPackageContents === true) {
       go()
     }
-  }, [loadingContents])
+  }, [loadingPackageContents])
 
   useEffect(() => {
     if (selectedMethod !== newSelectedMethod) {
       setnewSelectedMethod(selectedMethod)
     }
   }, [selectedMethod])
+
+  useEffect(() => {
+    async function runExecute() {
+      if (Object.keys(formVarsToSubmit).length > 0) {
+        try {
+          let response = await execute()
+          setclientresponed(response)
+        } catch (error) {
+          throw error
+        }
+      }
+    }
+    runExecute()
+  }, [formVarsToSubmit])
+
+  async function exec() {
+    try {
+      let response = await execute()
+      setclientresponed(response)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  function grabSchemaCode(e) {
+    e.preventDefault()
+    console.log(e.target.closest('.lines-content'))
+  }
 
   return (
     <div
@@ -229,9 +272,9 @@ const Playground = ({ api }: PlaygroundProps) => {
           p: '1.5rem',
           backgroundColor: 'w3shade2',
           '*': { display: 'flex' },
-          // 'label': {
-          //   display: 'none',
-          // },
+          '&label': {
+            display: 'none',
+          },
         }}
       >
         {api === undefined ? (
@@ -247,7 +290,6 @@ const Playground = ({ api }: PlaygroundProps) => {
             onChange={(e) => {
               if (e.length > 0) {
                 router.push('/playground/ens/' + e[0].pointerUris[0])
-                console.log('TODO')
               }
             }}
           />
@@ -322,6 +364,7 @@ const Playground = ({ api }: PlaygroundProps) => {
                 key={newSelectedMethod}
                 value={selectedMethod}
                 height={'300px'}
+                handleEditorChange={handleEditorChange}
               />
             </div>
           )}
@@ -353,6 +396,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               Vars
             </div>
             <form
+              ref={varform}
               onSubmit={handleRunBtnClick}
               sx={{
                 bg: 'white',
@@ -402,7 +446,8 @@ const Playground = ({ api }: PlaygroundProps) => {
               <Button variant="primarySmall" onClick={executeQuery}>
                 Run
               </Button>
-              {clientresponse !== '' && (
+
+              {clientresponded !== undefined && (
                 <React.Fragment>
                   <Button variant="secondarySmall" onClick={handleSaveBtnClick}>
                     Save
@@ -414,7 +459,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               )}
             </div>
             <div className="right">
-              {loadingContents ? (
+              {loadingPackageContents ? (
                 'Loading Schema...'
               ) : (
                 <span
@@ -422,7 +467,7 @@ const Playground = ({ api }: PlaygroundProps) => {
                   onClick={handleShowSchema}
                   sx={{ cursor: 'pointer' }}
                 >
-                  {loadingContents && 'Loading Schema...'}
+                  {loadingPackageContents && 'Loading Schema...'}
                   <span sx={{ fontSize: '2.5rem', pr: '1rem' }}>‹</span>
                   <span>Show Schema</span>
                 </span>
@@ -432,7 +477,20 @@ const Playground = ({ api }: PlaygroundProps) => {
           <Themed.pre
             sx={{ height: '100%', color: 'w3PlaygroundSoftBlue', pb: 0, mb: 0 }}
           >
-            {clientresponse !== '' && JSON.stringify(clientresponse, undefined, 2)}
+            {loading ? (
+              <div sx={{ display: 'grid', placeItems: 'center', height: '60%' }}>
+                <LoadingSpinner />
+              </div>
+            ) : (
+              <React.Fragment>
+                {clientresponded !== undefined &&
+                  clientresponded.queryResponse !== undefined &&
+                  JSON.stringify(clientresponded.queryResponse.data, undefined, 2)}
+                {clientresponded !== undefined &&
+                  clientresponded.errors !== undefined &&
+                  clientresponded.errors.toString()}
+              </React.Fragment>
+            )}
           </Themed.pre>
         </div>
         {structuredschema?.localqueries && (
@@ -474,26 +532,31 @@ const Playground = ({ api }: PlaygroundProps) => {
                 }}
               >
                 <GQLCodeBlock
+                  onClick={grabSchemaCode}
                   readOnly
                   title="Queries"
                   value={structuredschema.localqueries}
                 />
                 <GQLCodeBlock
+                  onClick={grabSchemaCode}
                   readOnly
                   title="Mutations"
                   value={structuredschema.localmutations}
                 />
                 <GQLCodeBlock
+                  onClick={grabSchemaCode}
                   readOnly
                   title="Custom Types"
                   value={structuredschema.localcustom}
                 />
                 <GQLCodeBlock
+                  onClick={grabSchemaCode}
                   readOnly
                   title="Imported Queries"
                   value={structuredschema.importedqueries}
                 />
                 <GQLCodeBlock
+                  onClick={grabSchemaCode}
                   readOnly
                   title="Imported Mutations"
                   value={structuredschema.importedmutations}
