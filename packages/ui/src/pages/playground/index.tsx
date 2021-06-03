@@ -19,12 +19,13 @@ const PlaygroundPage = () => {
         </main>
       </Flex>
       <Global
-        styles={(theme) => ({
-          body: {
-            background: 'none' + ' !important',
-            backgroundColor: 'w3shade0',
-          },
-        })}
+        styles={(theme: any) => {
+          return ({
+            body: {
+              background: theme.colors.w3shade0 + ' !important',
+            },
+          })
+        }}
       />
     </Layout>
   )
