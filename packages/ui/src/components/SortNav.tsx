@@ -1,6 +1,5 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, Flex, Select } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
+import { Flex, Select } from 'theme-ui'
 import { useState, useEffect } from 'react'
 import { useStateValue } from '../state/state'
 import SearchBox from './SearchBox'

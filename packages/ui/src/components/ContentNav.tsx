@@ -1,6 +1,5 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, Flex, Styled } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
+import { Flex, Themed } from 'theme-ui'
 
 type tab = {
   label: string
@@ -47,7 +46,7 @@ const ContentNav = ({ setActiveTab, activeTab, tabs }: ContentNav) => {
       {tabs.map((tab) => {
         let id = tab.label.toLowerCase()
         return (
-          <Styled.h6
+          <Themed.h6
             key={tab.label}
             className={'tab ' + id + ' ' + (activeTab === id ? 'active' : '')}
             onClick={() => setActiveTab(id)}
@@ -86,7 +85,7 @@ const ContentNav = ({ setActiveTab, activeTab, tabs }: ContentNav) => {
             >
               {tab.count}
             </span>
-          </Styled.h6>
+          </Themed.h6>
         )
       })}
     </Flex>

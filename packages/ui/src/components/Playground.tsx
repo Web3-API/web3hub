@@ -1,7 +1,6 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, Flex, Button, Styled, Field } from 'theme-ui'
-import React, { useEffect, useState } from 'react'
+/** @jsxImportSource theme-ui **/
+import { Flex, Button, Themed, Field } from 'theme-ui'
+import React, { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useWeb3ApiQuery } from '@web3api/react'
 import { useStateValue } from '../state/state'
@@ -11,6 +10,7 @@ import Stars from './Stars'
 import BGWave from './BGWave'
 import SelectBox from './SelectBox'
 import SearchBox from './SearchBox'
+import LoadingSpinner from './LoadingSpinner'
 
 import Close from '../../public/images/close.svg'
 
@@ -19,19 +19,19 @@ import getPackageQueriesFromAPIObject from '../services/ipfs/getPackageQueriesFr
 
 import GQLCodeBlock from '../components/GQLCodeBlock'
 import cleanSchema from '../utils/cleanSchema'
-import { responseData } from '../constants'
 
 type PlaygroundProps = {
   api?: any
 }
 
 const Playground = ({ api }: PlaygroundProps) => {
-  const [{ dapp, ...others }] = useStateValue()
+  const [{ dapp }] = useStateValue()
+  const varform = useRef(null)
   const router = useRouter()
   const [apiOptions] = useState(dapp.apis)
 
   const [apiContents, setapiContents] = useState<any>({})
-  const [loadingContents, setloadingContents] = useState(false)
+  const [loadingPackageContents, setloadingPackageContents] = useState(false)
 
   const [showschema, setshowschema] = useState(false)
   const [selectedMethod, setSelectedMethod] = useState('')
@@ -39,23 +39,24 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [structuredschema, setstructuredschema] = useState<any>()
 
-  const [clientresponse, setclientresponse] = useState<any>('')
+  const [clientresponded, setclientresponed] = useState(undefined)
+
+  const [customquerytext, setcustomquerytext] = useState('')
 
   const [varformstoggle, setvarformstoggle] = useState(false)
 
-  const varsList = [...selectedMethod.matchAll(/\$([a-zA-Z0-9_-]{1,})/g)] || null
+  const varsList =
+    [...selectedMethod.matchAll(/\$([a-zA-Z0-9_-]{1,})/g)].concat([
+      ...customquerytext.matchAll(/\$([a-zA-Z0-9_-]{1,})/g),
+    ]) || null
 
   const [formVarsToSubmit, setformVarsToSubmit] = useState({})
 
-  const { data: queryResponse, errors, loading, execute } = useWeb3ApiQuery({
+  const { data, loading, execute } = useWeb3ApiQuery({
     uri: 'ens/ropsten/' + router.asPath.split('/playground/ens/')[1],
     query: `mutation {
       deploy
     }`,
-  })
-  
-  console.log({
-    others,
   })
 
   function handleShowSchema(e: React.BaseSyntheticEvent) {
@@ -67,7 +68,7 @@ const Playground = ({ api }: PlaygroundProps) => {
   }
 
   function handleSaveBtnClick() {
-    const fileData = JSON.stringify(clientresponse)
+    const fileData = JSON.stringify(clientresponded)
     const blob = new Blob([fileData], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
@@ -76,63 +77,37 @@ const Playground = ({ api }: PlaygroundProps) => {
     link.click()
   }
 
-  function handleRunBtnClick(e) {
-    console.log('here')
-    e.preventDefault()
+  function handleVarsChange(e) {
     let varsToSubmit = {}
-    console.log(e.target)
-    Array.from(e.target)
+    Array.from(e)
       .filter((item: any) => item.type !== 'submit')
       .map((input: any) => (varsToSubmit[input.name] = input.value))
-    console.log(varsToSubmit)
+
+    // TODO: call this whenever the form has been edited
+    // onFocusLost?
     setformVarsToSubmit(varsToSubmit)
-    // setclientresponse(responseData)
   }
 
-
-  useEffect(() => {
-    async function runQuery() {
-      // if (Object.keys(formVarsToSubmit).length > 0) {
-      try {
-        console.log({
-          uri: 'ens/ropsten/' + router.asPath.split('/playground/ens/')[1],
-          query: `mutation {
-              deployContract
-            }`,
-          variables: formVarsToSubmit,
-        })
-        const t = await execute()
-        console.log(t)
-        console.log({ queryResponse, errors, loading })
-        if (errors !== undefined || queryResponse !== undefined) {
-          setclientresponse(queryResponse || [...errors].toString())
-        } else {
-          console.log('if this is empty - async race condtion issue')
-        }
-      } catch (e) {
-        console.log(e)
-      }
-
-      // data.methodName = whatever is returned (string, bool, object)
-      //  if (data && data.methodName) {
-      //    setOutput(JSON.stringify(data.methodName))
-      //  }
-      // }
-    }
-    runQuery()
-  }, [formVarsToSubmit])
+  async function handleRunBtnClick(e) {
+    e.preventDefault()
+    handleVarsChange(varform.current)
+  }
 
   function handleClearBtnClick() {
-    setclientresponse('')
+    setclientresponed(undefined)
   }
 
   function handleVarsFormToggle() {
     setvarformstoggle(!varformstoggle)
   }
 
+  function handleEditorChange(e) {
+    setcustomquerytext(e)
+  }
+
   useEffect(() => {
     if (router.asPath.includes('ens/')) {
-      setloadingContents(true)
+      setloadingPackageContents(true)
     }
   }, [router])
 
@@ -140,6 +115,10 @@ const Playground = ({ api }: PlaygroundProps) => {
     async function go() {
       let schemaData = await getPackageSchemaFromAPIObject(api)
       let queriesData = await getPackageQueriesFromAPIObject(api)
+      queriesData.push({
+        id: 'Custom Query',
+        value: '\n\n\n\n\n\n\n\n\n\n',
+      })
       setapiContents({
         schema: schemaData,
         queries: queriesData,
@@ -158,18 +137,46 @@ const Playground = ({ api }: PlaygroundProps) => {
         importedqueries: importedqueries,
         importedmutations: importedmutations,
       })
-      setloadingContents(false)
+      setloadingPackageContents(false)
     }
-    if (loadingContents === true) {
+    if (loadingPackageContents === true) {
       go()
     }
-  }, [loadingContents])
+  }, [loadingPackageContents])
 
   useEffect(() => {
     if (selectedMethod !== newSelectedMethod) {
       setnewSelectedMethod(selectedMethod)
     }
   }, [selectedMethod])
+
+  useEffect(() => {
+    async function runExecute() {
+      if (Object.keys(formVarsToSubmit).length > 0) {
+        try {
+          let response = await execute()
+          setclientresponed(response)
+        } catch (error) {
+          throw error
+        }
+      }
+    }
+    runExecute()
+  }, [formVarsToSubmit])
+
+  async function exec() {
+    try {
+      let response = await execute()
+      setclientresponed(response)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  function grabSchemaCode(e) {
+    e.preventDefault()
+    console.log(e.target.closest('.lines-content'))
+  }
 
   return (
     <div
@@ -191,7 +198,7 @@ const Playground = ({ api }: PlaygroundProps) => {
           p: '1.5rem',
           backgroundColor: 'w3shade2',
           '*': { display: 'flex' },
-          label: {
+          '&label': {
             display: 'none',
           },
         }}
@@ -209,12 +216,11 @@ const Playground = ({ api }: PlaygroundProps) => {
             onChange={(e) => {
               if (e.length > 0) {
                 router.push('/playground/ens/' + e[0].pointerUris[0])
-                console.log('TODO')
               }
             }}
           />
         ) : (
-          <Styled.h1 sx={{ mb: 0 }}>{api.name}</Styled.h1>
+          <Themed.h1 sx={{ mb: 0 }}>{api.name}</Themed.h1>
         )}
         <Flex
           className="selection-detail"
@@ -227,7 +233,7 @@ const Playground = ({ api }: PlaygroundProps) => {
         >
           <div className="left">
             <Stars count={0} onDark />
-            {api.locationUri && (
+            {api?.locationUri && (
               <div className="category-Badges" sx={{ ml: 3 }}>
                 <Badge label="IPFS" onDark ipfsHash={api.locationUri} />
               </div>
@@ -237,7 +243,7 @@ const Playground = ({ api }: PlaygroundProps) => {
             <a
               className="text-nav"
               href={router.asPath.replace('playground', 'apis')}
-              sx={{ '&:hover': { textDecoration: 'underline' } }}
+              sx={{ '&:hover': { textDecoration: 'underline' }, color: 'w3TextNavTeal' }}
             >
               GO TO API PAGE
             </a>
@@ -284,6 +290,7 @@ const Playground = ({ api }: PlaygroundProps) => {
                 key={newSelectedMethod}
                 value={selectedMethod}
                 height={'300px'}
+                handleEditorChange={handleEditorChange}
               />
             </div>
           )}
@@ -315,8 +322,16 @@ const Playground = ({ api }: PlaygroundProps) => {
               Vars
             </div>
             <form
+              ref={varform}
               onSubmit={handleRunBtnClick}
-              sx={{ bg: 'white', p: 3, pt: '0.6rem', label: { fontSize: '.9rem' } }}
+              sx={{
+                bg: 'white',
+                p: 3,
+                pt: '0.6rem',
+                '*:nth-of-type(1)': {
+                  fontSize: '.9rem',
+                },
+              }}
             >
               {varsList.map((varItem) => (
                 <Field
@@ -354,10 +369,11 @@ const Playground = ({ api }: PlaygroundProps) => {
             }}
           >
             <div className="left" sx={{ '> *': { mr: '1rem !important' } }}>
-              <Button variant="primarySmall" onClick={handleRunBtnClick}>
+              <Button variant="primarySmall" onClick={exec}>
                 Run
               </Button>
-              {clientresponse !== '' && (
+
+              {clientresponded !== undefined && (
                 <React.Fragment>
                   <Button variant="secondarySmall" onClick={handleSaveBtnClick}>
                     Save
@@ -369,7 +385,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               )}
             </div>
             <div className="right">
-              {loadingContents ? (
+              {loadingPackageContents ? (
                 'Loading Schema...'
               ) : (
                 <span
@@ -377,18 +393,31 @@ const Playground = ({ api }: PlaygroundProps) => {
                   onClick={handleShowSchema}
                   sx={{ cursor: 'pointer' }}
                 >
-                  {loadingContents && 'Loading Schema...'}
+                  {loadingPackageContents && 'Loading Schema...'}
                   <span sx={{ fontSize: '2.5rem', pr: '1rem' }}>‹</span>
                   <span>Show Schema</span>
                 </span>
               )}
             </div>
           </Flex>
-          <Styled.pre
+          <Themed.pre
             sx={{ height: '100%', color: 'w3PlaygroundSoftBlue', pb: 0, mb: 0 }}
           >
-            {clientresponse !== '' && JSON.stringify(clientresponse, undefined, 2)}
-          </Styled.pre>
+            {loading ? (
+              <div sx={{ display: 'grid', placeItems: 'center', height: '60%' }}>
+                <LoadingSpinner />
+              </div>
+            ) : (
+              <React.Fragment>
+                {clientresponded !== undefined &&
+                  clientresponded.queryResponse !== undefined &&
+                  JSON.stringify(clientresponded.queryResponse.data, undefined, 2)}
+                {clientresponded !== undefined &&
+                  clientresponded.errors !== undefined &&
+                  clientresponded.errors.toString()}
+              </React.Fragment>
+            )}
+          </Themed.pre>
         </div>
         {structuredschema?.localqueries && (
           <Flex
@@ -420,7 +449,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               }}
             />
             <div>
-              <Styled.h3 sx={{ m: 0, p: '.75rem', bg: '#cecece' }}>Schema</Styled.h3>
+              <Themed.h3 sx={{ m: 0, p: '.75rem', bg: '#cecece' }}>Schema</Themed.h3>
               <aside
                 className="hidden-schema-panel"
                 sx={{
@@ -429,26 +458,31 @@ const Playground = ({ api }: PlaygroundProps) => {
                 }}
               >
                 <GQLCodeBlock
+                  onClick={grabSchemaCode}
                   readOnly
                   title="Queries"
                   value={structuredschema.localqueries}
                 />
                 <GQLCodeBlock
+                  onClick={grabSchemaCode}
                   readOnly
                   title="Mutations"
                   value={structuredschema.localmutations}
                 />
                 <GQLCodeBlock
+                  onClick={grabSchemaCode}
                   readOnly
                   title="Custom Types"
                   value={structuredschema.localcustom}
                 />
                 <GQLCodeBlock
+                  onClick={grabSchemaCode}
                   readOnly
                   title="Imported Queries"
                   value={structuredschema.importedqueries}
                 />
                 <GQLCodeBlock
+                  onClick={grabSchemaCode}
                   readOnly
                   title="Imported Mutations"
                   value={structuredschema.importedmutations}
