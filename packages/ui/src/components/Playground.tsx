@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui **/
 import { Flex, Button, Themed, Field } from 'theme-ui'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useWeb3ApiQuery } from '@web3api/react'
 // import { QueryResponse } from '@web3api/client-js'
@@ -26,6 +26,7 @@ type PlaygroundProps = {
 
 const Playground = ({ api }: PlaygroundProps) => {
   const [{ dapp }] = useStateValue()
+  const varform = useRef(null)
   const router = useRouter()
   const [apiOptions] = useState(dapp.apis)
 
@@ -76,9 +77,8 @@ const Playground = ({ api }: PlaygroundProps) => {
   }
 
   function handleVarsChange(e) {
-    e.preventDefault()
     let varsToSubmit = {}
-    Array.from(e.target)
+    Array.from(e)
       .filter((item: any) => item.type !== 'submit')
       .map((input: any) => (varsToSubmit[input.name] = input.value))
 
@@ -87,10 +87,25 @@ const Playground = ({ api }: PlaygroundProps) => {
     setformVarsToSubmit(varsToSubmit)
   }
 
-  async function handleRunBtnClick() {
-    let response  = await execute()
-    setclientresponed(response)
+  async function handleRunBtnClick(e) {
+    e.preventDefault()
+    handleVarsChange(varform.current)
   }
+
+  useEffect(() => {
+    console.log("🚀 ~ file: Playground.tsx ~ line 98 ~ runExecute ~ Object.keys(formVarsToSubmit)", Object.keys(formVarsToSubmit))
+    async function runExecute() {
+      if (Object.keys(formVarsToSubmit).length > 0) {
+        try {
+          let response = await execute()
+          setclientresponed(response)
+        } catch (error) {
+          throw error
+        }
+      }
+    }
+    runExecute()
+  }, [formVarsToSubmit])
 
   function handleClearBtnClick() {
     setclientresponed(undefined)
@@ -179,7 +194,6 @@ const Playground = ({ api }: PlaygroundProps) => {
             onChange={(e) => {
               if (e.length > 0) {
                 router.push('/playground/ens/' + e[0].pointerUris[0])
-                console.log('TODO')
               }
             }}
           />
@@ -285,7 +299,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               Vars
             </div>
             <form
-              onChange={handleVarsChange}
+              ref={varform}
               onSubmit={handleRunBtnClick}
               sx={{
                 bg: 'white',
@@ -367,7 +381,7 @@ const Playground = ({ api }: PlaygroundProps) => {
           >
             {queryResponse !== undefined &&
               JSON.stringify(queryResponse.data, undefined, 2)}
-            {errors !== undefined && errors.toString() }
+            {errors !== undefined && errors.toString()}
           </Themed.pre>
         </div>
         {structuredschema?.localqueries && (
