@@ -1,11 +1,10 @@
 import { ensPlugin } from '@web3api/ens-plugin-js'
 import { ipfsPlugin } from '@web3api/ipfs-plugin-js'
+import { ethereumPlugin, ConnectionConfig } from '@web3api/ethereum-plugin-js'
 import InitialState from '../state/initialState'
 import type { dappType } from '../state/initialState'
 import type { publishType } from '../state/initialState'
 import type { searchType } from '../state/initialState'
-
-import { ethereumPlugin, ConnectionConfig } from '@web3api/ethereum-plugin-js'
 
 function dappReducer(state = {}, action) {
   // console.log('dappReducer', state, action)
@@ -99,19 +98,18 @@ function publishReducer(state = {}, action) {
 function web3apiReducer({ dapp, web3api }, action) {
   switch (action.type) {
     case 'recreateredirects':
-      // const networks: Record<string, ConnectionConfig> = {}
-
-      console.log(dapp.address)
+      const networks: Record<string, ConnectionConfig> = {
+        ropsten: {
+          provider: dapp.web3,
+          signer: dapp.web3.getSigner(),
+        },
+      }
       const redirects = [
         {
           from: 'w3://ens/ethereum.web3api.eth',
           to: ethereumPlugin({
-            networks: {
-              ROPSTEN: {
-                provider: 'https://ropsten.infura.io/v3/4bf032f2d38a4ed6bb975b80d6340847',
-                signer: dapp.address,
-              },
-            },
+            networks,
+            defaultNetwork: 'ropsten',
           }),
         },
         {

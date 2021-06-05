@@ -14,22 +14,23 @@ const swrOptions = {
 }
 
 function StatefulApp({ pageProps, Component }) {
-  const [{ web3api }] = useStateValue()
+  // const [{ web3api }] = useStateValue()
   return (
-    <Web3ApiProvider redirects={web3api.redirects}>
-      <ThemeProvider theme={theme}>
-        <Head>
-          <link rel="preconnect" href="https://fonts.gstatic.com" />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Istok+Web:wght@400;700&&display=swap"
-            rel="stylesheet"
-          ></link>
-        </Head>
-        <SWRConfig value={swrOptions}>
+    <ThemeProvider theme={theme}>
+      <Head>
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Istok+Web:wght@400;700&&display=swap"
+          rel="stylesheet"
+        ></link>
+      </Head>
+      <SWRConfig value={swrOptions}>
+
+        {/* <Web3ApiProvider redirects={web3api.redirects}> */}
           <Component {...pageProps} />
-        </SWRConfig>
-      </ThemeProvider>
-    </Web3ApiProvider>
+        {/* </Web3ApiProvider> */}
+      </SWRConfig>
+    </ThemeProvider>
   )
 }
 

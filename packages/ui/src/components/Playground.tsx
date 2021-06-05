@@ -51,51 +51,14 @@ const Playground = ({ api }: PlaygroundProps) => {
     ]) || null
 
   const [formVarsToSubmit, setformVarsToSubmit] = useState({})
-  // ens/ropsten/haha5.web3api.open.eth
-  // console.log('ens/ropsten/' + router.asPath.split('/playground/ens/')[1])
 
-  const {
-    data: queryResponse,
-    errors,
-    loading,
-    execute,
-  } = useWeb3ApiQuery({
-    uri: 'ens/helloworld.web3api.eth',
-    query: `query {
-        logMessage(
-            message: "hola bro"
-        )
-     }`,
+  const { loading, execute } = useWeb3ApiQuery({
+    uri: 'ens/ropsten/' + router.asPath.split('/playground/ens/')[1],
+    query: `mutation {
+      deployContract
+    }
+  `,
   })
-  // const {
-  //   data: queryResponse,
-  //   errors,
-  //   loading,
-  //   execute,
-  // } = useWeb3ApiQuery({
-  //   uri: 'ipfs/QmWbYmj1ywgJGd2Tikpn3GtdBtQe1ePMx9tA7xDiL6M5YW',
-  //   query: `mutation {
-  //     setData(
-  //       address: "0x64Dc459EBf5590CE70FD06a767a2566Dc0d23Aa6"
-  //       value: 10
-  //       connection: {
-  //         networkNameOrChainId: "rinkeby"
-  //       }
-  //     )
-  //   }`,
-  // })
-  // const {
-  //   data: queryResponse,
-  //   errors,
-  //   loading,
-  //   execute,
-  // } = useWeb3ApiQuery({
-  //   uri: 'ens/ropsten/haha5.web3api.open.eth'/*  + router.asPath.split('/playground/ens/')[1] */,
-  //   query: `mutation {
-  //     deploy
-  //   }
-  // `,
-  // })
 
   function handleShowSchema(e: React.BaseSyntheticEvent) {
     return setshowschema(!showschema)
@@ -128,12 +91,11 @@ const Playground = ({ api }: PlaygroundProps) => {
   }
   const executeQuery = useCallback(async () => {
     try {
-      console.log('before query execute...')
-      console.log(formVarsToSubmit)
-      const t = await execute()
-      console.log({ t })
-      if (errors !== undefined || queryResponse !== undefined) {
-        setclientresponed(queryResponse || [...errors].toString())
+      const { data, errors } = await execute()
+      console.log({ data })
+      console.log({ errors })
+      if (errors !== undefined || data !== undefined) {
+        setclientresponed(data || [...errors].toString())
       } else {
         console.log('if this is empty - async race condtion issue')
       }
@@ -141,31 +103,6 @@ const Playground = ({ api }: PlaygroundProps) => {
       console.log(e)
     }
   }, [formVarsToSubmit])
-
-  // useEffect(() => {
-  //   async function runQuery() {
-  //     try {
-  //       const t = await execute()
-  //       console.log(t)
-  //       console.log({ queryResponse, errors, loading })
-  //       if (errors !== undefined || queryResponse !== undefined) {
-  //         setclientresponse(queryResponse || [...errors].toString())
-  //       } else {
-  //         console.log('if this is empty - async race condtion issue')
-  //       }
-  //     } catch (e) {
-  //       console.log(e)
-  //     }
-  //     // if (Object.keys(formVarsToSubmit).length > 0) {
-
-  //     // data.methodName = whatever is returned (string, bool, object)
-  //     //  if (data && data.methodName) {
-  //     //    setOutput(JSON.stringify(data.methodName))
-  //     //  }
-  //     // }
-  //   }
-  //   runQuery()
-  // }, [formVarsToSubmit])
 
   function handleClearBtnClick() {
     setclientresponed(undefined)
@@ -223,29 +160,6 @@ const Playground = ({ api }: PlaygroundProps) => {
       setnewSelectedMethod(selectedMethod)
     }
   }, [selectedMethod])
-
-  useEffect(() => {
-    async function runExecute() {
-      if (Object.keys(formVarsToSubmit).length > 0) {
-        try {
-          let response = await execute()
-          setclientresponed(response)
-        } catch (error) {
-          throw error
-        }
-      }
-    }
-    runExecute()
-  }, [formVarsToSubmit])
-
-  async function exec() {
-    try {
-      let response = await execute()
-      setclientresponed(response)
-    } catch (error) {
-      throw error
-    }
-  }
 
   function grabSchemaCode(e) {
     e.preventDefault()

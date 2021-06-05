@@ -17,28 +17,7 @@ let initialState = {
     github: '',
   },
   web3api: {
-    redirects: [
-      {
-        from: 'w3://ens/ethereum.web3api.eth',
-        to: ethereumPlugin({
-          networks: {
-            ROPSTEN: {
-              provider: 'https://ropsten.infura.io/v3/4bf032f2d38a4ed6bb975b80d6340847',
-              signer: undefined,
-            },
-          },
-          defaultNetwork: 'ROPSTEN',
-        }),
-      },
-      {
-        from: 'w3://ens/ipfs.web3api.eth',
-        to: ipfsPlugin({ provider: 'https://ipfs.io' }),
-      },
-      {
-        from: 'w3://ens/ens.web3api.eth',
-        to: ensPlugin({}),
-      },
-    ],
+    redirects: undefined,
   },
   publish: {
     subdomain: '',
