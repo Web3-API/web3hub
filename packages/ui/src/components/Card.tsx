@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Stars from './Stars'
 import Badge from './Badge'
 import { cloudFlareGateway } from '../constants'
+import stripIPFSPrefix from '../utils/stripIPFSPrefix'
 
 type CardProps = {
   api?: any
@@ -13,6 +14,7 @@ type CardProps = {
 }
 
 const Card = ({ api, ipfsHash, boxShadowOn, noHover }: CardProps) => {
+  console.log(api.locationUri)
   return (
     <div
       className="Card"
@@ -33,7 +35,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, noHover }: CardProps) => {
             <div sx={{ display: 'block', m: 'auto' }}>
               <img
                 className="api-logo"
-                // src={`${cloudFlareGateway}${ipfsHash || api.locationUri.split('ipfs/')[1]}${api.icon.replace('./','/')}`}
+                src={`${cloudFlareGateway}${ipfsHash || stripIPFSPrefix(api.locationUri)}${api.icon.replace('./','/')}`}
                 sx={{
                   width: '8.75rem',
                   height: '8.75rem',

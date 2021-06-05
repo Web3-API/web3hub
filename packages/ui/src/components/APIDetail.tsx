@@ -10,9 +10,7 @@ type APIDetailProps = {
   api?: any
 }
 
-const APIDetail = ({
-  api,
-}: APIDetailProps) => {
+const APIDetail = ({ api }: APIDetailProps) => {
   const router = useRouter()
   return (
     <div
@@ -27,9 +25,7 @@ const APIDetail = ({
       <Flex className="top">
         <img
           className="api-logo"
-          src={`${cloudFlareGateway}${
-            api.locationUri.split('ipfs/')[0]
-          }${api.icon.replace('./', '/')}`}
+          src={`${cloudFlareGateway}${api.locationUri}${api.icon.replace('./', '/')}`}
           sx={{
             width: '13.125rem',
             height: '13.125rem',
@@ -137,7 +133,7 @@ const APIDetail = ({
             {'pointerUris' in api &&
               api.pointerUris.map((pointer, idx) => {
                 return (
-                  <li sx={{ display: 'flex' }} key={idx+'pointerURI'}>
+                  <li sx={{ display: 'flex' }} key={idx + 'pointerURI'}>
                     <img
                       sx={{ maxWidth: '1.1875rem', mr: 2 }}
                       src="/images/link.svg"
