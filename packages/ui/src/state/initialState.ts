@@ -1,8 +1,5 @@
 import { networkID } from '../constants'
 import { UriRedirect } from '@web3api/client-js'
-import { ensPlugin } from '@web3api/ens-plugin-js'
-import { ethereumPlugin } from '@web3api/ethereum-plugin-js'
-import { ipfsPlugin } from '@web3api/ipfs-plugin-js'
 
 let initialState = {
   dapp: {

@@ -1,20 +1,18 @@
 import { ThemeProvider } from 'theme-ui'
 import theme from '../theme'
-import { StateProvider, useStateValue } from '../state/state'
+import { StateProvider } from '../state/state'
 import InitialState from '../state/initialState'
 import Reducer from '../state/reducer'
 import Head from 'next/head'
 import 'animate.css/animate.css'
 import { SWRConfig } from 'swr'
 import { fetcherREST } from '../utils/fetcher'
-import { Web3ApiProvider } from '@web3api/react'
 const swrOptions = {
   // refreshInterval: 10000,
   fetcher: (resource) => fetcherREST(resource),
 }
 
 function StatefulApp({ pageProps, Component }) {
-  // const [{ web3api }] = useStateValue()
   return (
     <ThemeProvider theme={theme}>
       <Head>
@@ -25,10 +23,7 @@ function StatefulApp({ pageProps, Component }) {
         ></link>
       </Head>
       <SWRConfig value={swrOptions}>
-
-        {/* <Web3ApiProvider redirects={web3api.redirects}> */}
-          <Component {...pageProps} />
-        {/* </Web3ApiProvider> */}
+        <Component {...pageProps} />
       </SWRConfig>
     </ThemeProvider>
   )

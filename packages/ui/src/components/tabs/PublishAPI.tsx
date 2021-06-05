@@ -89,13 +89,6 @@ const PublishAPI = () => {
     }
   }, [status])
 
-  
-  useEffect(() => {
-    if(dapp.github === '') {
-      dispatch({ type: 'setShowSignInModal', payload: true })  
-    }
-  }, [dapp.github])
-
   useEffect(() => {
     if (publish.subdomain !== '' && publish.ipfs !== '') {
       executeCreateSubdomain(publish.subdomain, publish.ipfs)
@@ -126,28 +119,21 @@ const PublishAPI = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (publish.apiData && publish.subdomain.length > 0) {
-      if (dapp.github && dapp.github !== '') {
-        const publishReq = await axios.post(
-          'http://localhost:3001/apis/publish',
-          {
-            name: publish.apiData.name,
-            description: publish.apiData.description,
-            subtext: publish.apiData.subtext,
-            icon: publish.apiData.icon,
-            locationUri: publish.ipfs,
-            pointerUris: [`${publish.subdomain}.${MAIN_DOMAIN}`],
-          },
-          {
-            headers: {
-              Authorization: 'token ' + dapp.github,
-            },
-            withCredentials: true,
-          },
-        )
-        dispatch({ type: 'setShowSuccessModal', payload: true })
-      } else {
-        dispatch({ type: 'setShowSignInModal', payload: true })
-      }
+      const publishReq = await axios.post(
+        'http://localhost:3001/apis/publish',
+        {
+          name: publish.apiData.name,
+          description: publish.apiData.description,
+          subtext: publish.apiData.subtext,
+          icon: publish.apiData.icon,
+          locationUri: publish.ipfs,
+          pointerUris: [`${publish.subdomain}.${MAIN_DOMAIN}`],
+        },
+        {
+          withCredentials: true,
+        },
+      )
+      dispatch({ type: 'setShowSuccessModal', payload: true })
     }
   }
 
@@ -171,13 +157,15 @@ const PublishAPI = () => {
     : publish.ipfsError
     ? 'error'
     : ''
-  
-  const available  = publish.subdomainLookupSuccess ? 'available' : ''  
+
+  const available = publish.subdomainLookupSuccess ? 'available' : ''
   const registered = publish.subdomainRegisterSuccess ? 'registered' : ''
   const registering = publish.subdomainLoading ? 'loading' : ''
-  const registrationError   = publish.subdomainError ? 'error' : ''
+  const registrationError = publish.subdomainError ? 'error' : ''
 
-  const subdomainClasses = [available, registered, registering, registrationError].join(' ')
+  const subdomainClasses = [available, registered, registering, registrationError].join(
+    ' ',
+  )
 
   return (
     <Flex className="publish">
@@ -194,10 +182,7 @@ const PublishAPI = () => {
       )}
       {publish.showSignInModal && (
         <div sx={{ position: 'fixed', top: 0, left: 0, zIndex: 100000 }}>
-          <Modal
-            screen={'signin'}
-            noLeftShift
-          />
+          <Modal screen={'signin'} noLeftShift />
         </div>
       )}
       {publish.showSuccessModal && (
@@ -333,17 +318,16 @@ const PublishAPI = () => {
                 width: 'max-content !important',
               }}
             >
-              
-                <Input
-                  sx={{ maxWidth: '12rem', pr: '0 !important' }}
-                  type="text"
-                  name="ens"
-                  placeholder="{SUBDOMAIN}"
-                  required
-                  onChange={handleSubdomainChange}
-                  value={publish.subdomain}
-                />
-              
+              <Input
+                sx={{ maxWidth: '12rem', pr: '0 !important' }}
+                type="text"
+                name="ens"
+                placeholder="{SUBDOMAIN}"
+                required
+                onChange={handleSubdomainChange}
+                value={publish.subdomain}
+              />
+
               <span sx={{ ml: 3 }}>.open.web3.eth</span>
             </div>
             {publish.subdomainError && (
@@ -367,7 +351,7 @@ const PublishAPI = () => {
             <Button
               variant="primaryMedium"
               onClick={handleRegisterENS}
-              disabled={publish.subdomain.length === 0 || status === 3 }
+              disabled={publish.subdomain.length === 0 || status === 3}
             >
               Register ENS
             </Button>
@@ -404,7 +388,7 @@ const PublishAPI = () => {
         <div className="title">Package Preview</div>
         <div className="wrapper" sx={{ maxWidth: '17.5rem' }}>
           {publish.apiData && (
-            <Card api={publish.apiData} ipfsHash={publish.ipfs} boxShadowOn noHover  />
+            <Card api={publish.apiData} ipfsHash={publish.ipfs} boxShadowOn noHover />
           )}
         </div>
       </Flex>

@@ -5,6 +5,8 @@ import InitialState from '../state/initialState'
 import type { dappType } from '../state/initialState'
 import type { publishType } from '../state/initialState'
 import type { searchType } from '../state/initialState'
+import networks from '../utils/networks.json'
+import { networkID } from '../constants'
 
 function dappReducer(state = {}, action) {
   // console.log('dappReducer', state, action)
@@ -98,8 +100,9 @@ function publishReducer(state = {}, action) {
 function web3apiReducer({ dapp, web3api }, action) {
   switch (action.type) {
     case 'recreateredirects':
-      const networks: Record<string, ConnectionConfig> = {
-        ropsten: {
+      const currentNetwork = networks[networkID]
+      const networksConfig: Record<string, ConnectionConfig> = {
+        [currentNetwork.name]: {
           provider: dapp.web3,
           signer: dapp.web3.getSigner(),
         },
@@ -108,8 +111,8 @@ function web3apiReducer({ dapp, web3api }, action) {
         {
           from: 'w3://ens/ethereum.web3api.eth',
           to: ethereumPlugin({
-            networks,
-            defaultNetwork: 'ropsten',
+            networks: networksConfig,
+            defaultNetwork: currentNetwork.name,
           }),
         },
         {

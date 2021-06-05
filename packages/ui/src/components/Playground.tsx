@@ -19,6 +19,8 @@ import getPackageQueriesFromAPIObject from '../services/ipfs/getPackageQueriesFr
 
 import GQLCodeBlock from '../components/GQLCodeBlock'
 import cleanSchema from '../utils/cleanSchema'
+import { networkID } from '../constants'
+import networks from '../utils/networks.json'
 
 type PlaygroundProps = {
   api?: any
@@ -51,13 +53,11 @@ const Playground = ({ api }: PlaygroundProps) => {
     ]) || null
 
   const [formVarsToSubmit, setformVarsToSubmit] = useState({})
-
+  const { name: networkName } = networks[networkID]
   const { loading, execute } = useWeb3ApiQuery({
-    uri: 'ens/ropsten/' + router.asPath.split('/playground/ens/')[1],
-    query: `mutation {
-      deployContract
-    }
-  `,
+    uri: `ens/${networkName}/${router.asPath.split('/playground/ens/')[1]}`,
+    query: selectedMethod,
+    variables: formVarsToSubmit,
   })
 
   function handleShowSchema(e: React.BaseSyntheticEvent) {
@@ -65,7 +65,7 @@ const Playground = ({ api }: PlaygroundProps) => {
   }
 
   function handleQueryValuesChange(method) {
-    return setSelectedMethod(method[0].value)
+    setSelectedMethod(method[0].value)
   }
 
   function handleSaveBtnClick() {
@@ -91,6 +91,8 @@ const Playground = ({ api }: PlaygroundProps) => {
   }
   const executeQuery = useCallback(async () => {
     try {
+      console.log({ selectedMethod })
+      console.log({ formVarsToSubmit })
       const { data, errors } = await execute()
       console.log({ data })
       console.log({ errors })
@@ -102,7 +104,7 @@ const Playground = ({ api }: PlaygroundProps) => {
     } catch (e) {
       console.log(e)
     }
-  }, [formVarsToSubmit])
+  }, [formVarsToSubmit, selectedMethod])
 
   function handleClearBtnClick() {
     setclientresponed(undefined)

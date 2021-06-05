@@ -1,5 +1,6 @@
 import { ethers } from "ethers"
-import { INFURA_URI } from "../constants";
+import { networkID } from "../constants";
+import networks from "../utils/networks.json"
 
 type Address = string;
 type EthereumProvider = string | ethers.providers.ExternalProvider;
@@ -13,7 +14,8 @@ export const createEthereumProvider = (provider: EthereumProvider): ethers.provi
 }
 
 export const getReadOnlyProvider = (): ethers.providers.JsonRpcProvider => {
-  return new ethers.providers.JsonRpcProvider(INFURA_URI)
+  const currentNetwork = networks[networkID]
+  return new ethers.providers.JsonRpcProvider(currentNetwork.node)
 }
 
 export const getContract = (address: Address, abi: string[], providerOrSigner: ethers.providers.JsonRpcProvider | ethers.providers.JsonRpcSigner): ethers.Contract => {

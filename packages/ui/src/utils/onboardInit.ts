@@ -4,7 +4,6 @@ import getOnboard from './Onboarding'
 const onboardInit = (dispatch) => {
   return getOnboard({
     address: async (address) => {
-      console.log('aqui es el address')
       dispatch({
         type: 'SET_ADDRESS',
         payload: address,
