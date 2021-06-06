@@ -15,7 +15,6 @@ import ETHlogoicon from '../../public/images/eth-logo-hollow-icon.svg'
 import MyAPIs from '../../public/images/myapis.svg'
 import Github from '../../public/images/github-icon-large.svg'
 
-
 type SignInAreaProps = {
   onDark?: boolean
 }
@@ -47,13 +46,13 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
         li: { ml: 2 },
       }}
     >
-      {showConnectModal && (
+      {showSignInModal && (
         <div sx={{ position: 'fixed', top: 0, left: 0, zIndex: 100000 }}>
           <Modal
             screen={'connect'}
             noLeftShift
             close={() => {
-              setShowConnectModal(false)
+              setShowSignInModal(false)
             }}
           />
         </div>
@@ -69,7 +68,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
           />
         </div>
       )}
-      {showSignInModal && (
+      {/* {showSignInModal && (
         <div sx={{ position: 'fixed', top: 0, left: 0, zIndex: 100000 }}>
           <Modal
             screen={'signin'}
@@ -79,7 +78,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
             }}
           />
         </div>
-      )}
+      )} */}
       {showSignOutModal && (
         <div sx={{ position: 'fixed', top: 0, left: 0, zIndex: 100000 }}>
           <Modal
@@ -183,7 +182,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
             onKeyUp={handleSignOut}
             sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
           >
-            <Github fill={onDark ? 'white' : theme.colors.w3darkGreen} width="40px"/>
+            <Github fill={onDark ? 'white' : theme.colors.w3darkGreen} width="40px" />
             {/* <span>&nbsp;</span>
             <span
               sx={{
