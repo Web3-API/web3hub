@@ -1,8 +1,7 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
+/** @jsxImportSource theme-ui **/
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { jsx, Flex } from 'theme-ui'
+import { Flex } from 'theme-ui'
 import Layout from '../../components/Layout'
 import Header from '../../components/Header'
 import Navbar from '../../components/Navbar'

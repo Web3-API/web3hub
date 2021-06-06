@@ -1,6 +1,5 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, Flex } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
+import { Flex } from 'theme-ui'
 import Layout from '../../../components/Layout'
 import Navbar from '../../../components/Navbar'
 import Header from '../../../components/Header'

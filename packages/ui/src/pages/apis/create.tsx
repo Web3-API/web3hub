@@ -1,13 +1,11 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
+/** @jsxImportSource theme-ui **/
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { jsx, Flex, Styled } from 'theme-ui'
+import { Flex, Themed } from 'theme-ui'
 import Layout from '../../components/Layout'
 import CreateAPI from '../../components/tabs/CreateAPI'
 import PublishAPI from '../../components/tabs/PublishAPI'
 import Header from '../../components/Header'
-import Modal from '../../components/Modal'
 import BottomSpace from '../../components/BottomSpace'
 import Auth from '../../services/ceramic/auth'
 
@@ -77,18 +75,18 @@ const CreateApi = () => {
                 },
               }}
             >
-              <Styled.h3
+              <Themed.h3
                 className={'tab create ' + (activeTab === 'create' ? 'active' : '')}
                 sx={{ flex: 1 }}
               >
                 Create
-              </Styled.h3>
-              <Styled.h3
+              </Themed.h3>
+              <Themed.h3
                 className={'tab publish ' + (activeTab === 'publish' ? 'active' : '')}
                 sx={{ flex: 1 }}
               >
                 Publish
-              </Styled.h3>
+              </Themed.h3>
             </Flex>
             <div
               className="tab-content"

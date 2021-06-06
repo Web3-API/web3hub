@@ -13,7 +13,10 @@ import { swaggerJSON } from "../documentation/swagger";
 
 const app: ExpressApp = express();
 const RedisStore = connectRedis(session);
-const redisClient = redis.createClient();
+
+const redisParams =
+  process.env.NODE_ENV === "production" ? { host: "redis", port: 6379 } : {};
+const redisClient = redis.createClient(redisParams);
 
 const middlewares = [
   morgan("combined"), // adds logger to the API

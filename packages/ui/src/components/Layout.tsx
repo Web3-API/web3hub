@@ -1,9 +1,8 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
+/** @jsxImportSource theme-ui **/
 import { useEffect } from 'react'
-import { jsx, useThemeUI } from 'theme-ui'
+import { useThemeUI } from 'theme-ui'
 import { timing } from '../theme'
-import { Global } from '@emotion/core'
+import { Global } from '@emotion/react'
 import { useStateValue } from '../state/state'
 import useSWR from 'swr'
 
@@ -38,7 +37,7 @@ const Layout = ({ children }: LayoutProps) => {
     >
       {children}      
       <Global
-        styles={(theme) => ({
+        styles={(theme: any) => ({
           '@keyframes shift': {
             from: { transform: 'translate(-10px, 0)' },
             to: { transform: 'translate(0, 0)' }
@@ -111,6 +110,39 @@ const Layout = ({ children }: LayoutProps) => {
           fieldset: {
             padding: 0,
             border: 'none',
+          },
+          code: {
+            m: 0,
+            fontFamily: 'monospace',
+          },
+          table: {
+            width: '100%',
+            borderCollapse: 'separate',
+            borderSpacing: 0,
+          },
+          th: {
+            textAlign: 'left',
+            borderBottomStyle: 'solid',
+          },
+          td: {
+            textAlign: 'left',
+            borderBottomStyle: 'solid',
+          },
+          pre: {
+            overflowX: 'auto',
+            border: '2px solid rgba(205, 208, 227, 0.295455)',
+            padding: '.75rem',
+            borderRadius: '8px',
+            marginTop: 0,
+            fontFamily: 'monospace',
+            fontStyle: 'normal',
+            fontWeight: 'normal',
+            fontSize: '14px',
+            lineHeight: '140.62%',
+            color: '#000000',
+            code: {
+              color: 'inherit',
+            },
           },
           '.contents': {
             maxWidth: '76.5rem',

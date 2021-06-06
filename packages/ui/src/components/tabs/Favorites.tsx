@@ -1,7 +1,4 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx } from 'theme-ui'
-import ApiGrid from '../ApiGrid'
+/** @jsxImportSource theme-ui **/
 
 const Published = () => {
   return <div/>

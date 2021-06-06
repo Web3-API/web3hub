@@ -1,41 +1,39 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, Styled } from 'theme-ui'
-import 'prism-solarized-dark/prism-solarizeddark.css'
-import Prism from 'prismjs'
-import 'prismjs/components/prism-graphql'
-import { useEffect } from 'react'
+/** @jsxImportSource theme-ui **/
+import { Themed } from 'theme-ui'
+import Editor from '@monaco-editor/react'
+
+// https://github.com/brijeshb42/monaco-themes/tree/master/themes
+import solarizedDark from '../theme/Solarized-dark.json'
 
 type GQLCodeBlockProps = {
-  title: string
+  title?: string
+  readOnly?: boolean
+  height?: string
   value: any
 }
 
-const GQLCodeBlock = ({ title, value }: GQLCodeBlockProps) => {
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      Prism.highlightAll()
-    }
-  }, [])
+const GQLCodeBlock = ({ title, readOnly, height = '200px', value }: GQLCodeBlockProps) => {
+  const handleEditorWillMount = (monaco) => {
+    monaco.editor.defineTheme('solarizedDark', solarizedDark);
+    monaco.editor.setTheme('solarizedDark');
+  } 
   return (
-    <div
-      sx={{
-        "code[class*='language-'], pre[class*='language-']": {
-          fontSize: '12px',
-          lineHeight: 1.2,
-          borderRadius: 0,
-          mb: 0
-        },
-      }}
-    >
-      <Styled.h5 sx={{ m: 0, py: 2, bg: 'white' }}>{title}</Styled.h5>
-      <pre className="language-graphql">
-        <code>
-          {value.map((item, idx) => {
-            return item + '\n\n'
-          })}
-        </code>
-      </pre>
+    <div className="GQLCodeBlock-wrap">
+      {title ? <Themed.h5 sx={{ m: 0, py: 2, px: '.75rem', bg: 'white' }}>{title}</Themed.h5> : null}
+      <Editor
+        theme="solarizedDark"
+        options={{
+          minimap: {
+            enabled: false,
+          },
+          scrollBeyondLastLine: false,
+          readOnly: readOnly
+        }}
+        beforeMount={handleEditorWillMount}
+        height={height}
+        defaultLanguage="graphql"
+        defaultValue={value.toString()}
+      />
     </div>
   )
 }

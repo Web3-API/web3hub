@@ -1,6 +1,5 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx, useThemeUI } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
+import { Flex, useThemeUI } from 'theme-ui'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import APIs from '../../public/images/apis.svg'
@@ -39,7 +38,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="col" sx={{ flex: '6 !important', justifyContent: 'center' }}>
-        <div sx={{ flex: 1 }}>
+        <Flex sx={{ flex: 1 }}>
           <ul
             sx={{
               flex: 1,
@@ -52,7 +51,7 @@ const Navbar = () => {
                 borderLeft: '0.125rem solid',
                 borderLeftColor: 'w3NavGrayGreen',
                 svg: {
-                  stroke: theme.colors.w3green,
+                  stroke: 'w3green',
                 },
                 '&:hover': {
                   borderLeftColor: 'w3NavHighlightTeal',
@@ -83,11 +82,11 @@ const Navbar = () => {
                   : ''
               }
             >
-              <Link href="/" sx={{ alignItems: 'center' }}>
-                <a>
+              <Link href="/">
+                <a sx={{ alignItems: 'center' }}>
                   <APIs />
                   <span sx={{ height: 2 }}>&nbsp;</span>
-                  <span className="text-nav">API's</span>
+                  <span className="text-nav" sx={{ color: 'w3TextNavTeal'}}>API's</span>
                 </a>
               </Link>
             </li>
@@ -96,7 +95,7 @@ const Navbar = () => {
                 <a className="text-nav">
                   <PlaygroundImg />
                   <span sx={{ height: 2 }}>&nbsp;</span>
-                  <span>Playground</span>
+                  <span className="text-nav" sx={{ color: 'w3TextNavTeal'}}>Playground</span>
                 </a>
               </Link>
             </li>
@@ -104,13 +103,22 @@ const Navbar = () => {
               <a className="text-nav" href="https://web3api.dev" target="_BLANK">
                 <Doc />
                 <span>&nbsp;</span>
-                <span>Docs</span>
+                <span className="text-nav" sx={{ color: 'w3TextNavTeal'}}>Docs</span>
               </a>
             </li>
           </ul>
-        </div>
+          
+        </Flex>
       </div>
-      <div className="col" sx={{ flex: '3 !important' }} />
+      <div className="col" sx={{ flex: '3 !important' }}>
+        <a href="https://web3api.typeform.com/to/AkTwem3f" target="_BLANK" sx={{
+          color: 'white',
+          fontSize: 1,
+          '&:hover': {
+            textDecoration: 'underline'
+          }
+        }}>Feedback</a>
+      </div>
     </nav>
   )
 }

@@ -1,17 +1,16 @@
-/** @jsx jsx */
-/** @jsxRuntime classic */
-import { jsx } from 'theme-ui'
+/** @jsxImportSource theme-ui **/
+import { cloudFlareGateway } from '../constants'
 
 type BadgeProps = {
   label: string
+  ipfsHash?: string
   onDark?: boolean
 }
 
-const Badge = ({ label, onDark }: BadgeProps) => {
+const Badge = ({ label, onDark, ipfsHash }: BadgeProps) => {
   return (
     <div
       sx={{
-        cursor: 'default',
         border: '0.125rem solid',
         textTransform: 'uppercase',
         borderColor: onDark ? '#CAD9F3' : '#EFF5F4',
@@ -24,6 +23,12 @@ const Badge = ({ label, onDark }: BadgeProps) => {
         fontWeight: '600',
         fontSize: '0.75rem',
         lineHeight: '1.125rem',
+        cursor: ipfsHash ? 'pointer' : 'default'
+      }}
+      onClick={()=>{
+        if(ipfsHash) {
+          window.open(cloudFlareGateway+ipfsHash)
+        }
       }}
     >
       {label}
