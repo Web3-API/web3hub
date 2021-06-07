@@ -9,14 +9,14 @@ const onboardInit = (dispatch) => {
         type: 'SET_ADDRESS',
         payload: address,
       })
+      dispatch({
+        type: 'recreateredirects',
+      })
     },
     network: (network) => {
       dispatch({
         type: 'SET_NETWORK',
         payload: network,
-      })
-      dispatch({
-        type: 'recreateredirects'
       })
     },
     balance: (balance) => {

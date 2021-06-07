@@ -22,7 +22,9 @@ const CreateApi = () => {
 
   const checkInfo = async () => {
     await Auth.getInstance()
-    const t = await Auth.get('cryptoAccounts')
+    console.log('Checking info')
+    const t = await Auth.get('basicProfile')
+
     console.log(t)
   }
 
@@ -30,10 +32,13 @@ const CreateApi = () => {
     await Auth.getInstance()
 
     // example after logging with gh
-    await Auth.set('github', {
-      username: 'cbrzn',
-      access_token: '',
+    await Auth.set('basicProfile', {
+      name: 'Cesar',
     })
+    // await Auth.set('github', {
+    //   username: 'cbrzn',
+    //   access_token: '',
+    // })
   }
 
   return (

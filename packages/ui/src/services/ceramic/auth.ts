@@ -17,43 +17,27 @@ export default class Auth {
   public static async getInstance(provider?: any) {
     if (!this._instance && provider) {
       const instance = new Auth()
-      await instance.initialize(provider)
+      const idx = await instance.initialize(provider)
       this._instance = instance
+      return idx
     }
-    return this._instance
+    return Auth.idx
   }
 
-  private async initialize(provider): Promise<IDX> {
+  private async initialize(provider) {
     try {
       const resolver = {
         ...KeyDidResolver.getResolver(),
         ...ThreeIdResolver.getResolver(Auth.ceramic),
       }
       const did = new DID({ resolver })
-      console.log('This is the DID')
       await Auth.ceramic.setDID(did)
-
-      console.log('We set the DID!!')
       const authProvider = new EthereumAuthProvider(provider, provider.selectedAddress)
-
-      console.log('Auth provider: ', authProvider)
       const threeIdConnect = new ThreeIdConnect()
-
-      console.log({ threeIdConnect })
       await threeIdConnect.connect(authProvider)
-
-      console.log('Three ID Connect, connected :-D')
       const didProvider = await threeIdConnect.getDidProvider()
-
-      console.log('We already get the DID provider: ', didProvider)
       await Auth.ceramic.did.setProvider(didProvider)
-
-      console.log('DID provider set')
-
-      
       await Auth.ceramic.did.authenticate()
-
-      console.log('DID authenticated :-D')
       return Auth.idx
     } catch (e) {
       console.log('Error doing the connection of ceramic ', e)

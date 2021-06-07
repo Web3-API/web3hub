@@ -192,14 +192,6 @@ const PublishAPI = () => {
           />
         </div>
       )}
-      {publish.showSignInModal && (
-        <div sx={{ position: 'fixed', top: 0, left: 0, zIndex: 100000 }}>
-          <Modal
-            screen={'signin'}
-            noLeftShift
-          />
-        </div>
-      )}
       {publish.showSuccessModal && (
         <div sx={{ position: 'fixed', top: 0, left: 0, zIndex: 100000 }}>
           <Modal
