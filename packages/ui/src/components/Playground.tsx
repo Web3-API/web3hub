@@ -55,7 +55,6 @@ const Playground = ({ api }: PlaygroundProps) => {
   const [formVarsToSubmit, setformVarsToSubmit] = useState({})
   const { name: networkName } = networks[networkID]
 
-
   const { loading, execute } = useWeb3ApiQuery({
     uri: `ens/${networkName}/${router.asPath.split('/playground/ens/')[1]}`,
     query: selectedMethod,
@@ -90,7 +89,7 @@ const Playground = ({ api }: PlaygroundProps) => {
     // onFocusLost?
     setformVarsToSubmit(varsToSubmit)
   }
-  
+
   function handleClearBtnClick() {
     setclientresponed(undefined)
   }
@@ -158,8 +157,10 @@ const Playground = ({ api }: PlaygroundProps) => {
   }, [selectedMethod])
 
   useEffect(() => {
-    exec()
-  }, [formVarsToSubmit])
+    if (selectedMethod) {
+      exec()
+    }
+  }, [formVarsToSubmit, selectedMethod])
 
   return (
     <div
