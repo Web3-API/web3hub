@@ -54,6 +54,8 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [formVarsToSubmit, setformVarsToSubmit] = useState({})
   const { name: networkName } = networks[networkID]
+
+
   const { loading, execute } = useWeb3ApiQuery({
     uri: `ens/${networkName}/${router.asPath.split('/playground/ens/')[1]}`,
     query: selectedMethod,
@@ -81,31 +83,14 @@ const Playground = ({ api }: PlaygroundProps) => {
   function handleRunBtnClick(e) {
     e.preventDefault()
     let varsToSubmit = {}
-    Array.from(e)
+    Array.from(varform.current)
       .filter((item: any) => item.type !== 'submit')
       .map((input: any) => (varsToSubmit[input.name] = input.value))
-
     // TODO: call this whenever the form has been edited
     // onFocusLost?
     setformVarsToSubmit(varsToSubmit)
   }
-  const executeQuery = useCallback(async () => {
-    try {
-      console.log({ selectedMethod })
-      console.log({ formVarsToSubmit })
-      const { data, errors } = await execute()
-      console.log({ data })
-      console.log({ errors })
-      if (errors !== undefined || data !== undefined) {
-        setclientresponed(data || [...errors].toString())
-      } else {
-        console.log('if this is empty - async race condtion issue')
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  }, [formVarsToSubmit, selectedMethod])
-
+  
   function handleClearBtnClick() {
     setclientresponed(undefined)
   }
@@ -116,6 +101,15 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   function handleEditorChange(e) {
     setcustomquerytext(e)
+  }
+
+  async function exec() {
+    try {
+      let response = await execute()
+      setclientresponed(response)
+    } catch (error) {
+      throw error
+    }
   }
 
   useEffect(() => {
@@ -163,10 +157,9 @@ const Playground = ({ api }: PlaygroundProps) => {
     }
   }, [selectedMethod])
 
-  function grabSchemaCode(e) {
-    e.preventDefault()
-    console.log(e.target.closest('.lines-content'))
-  }
+  useEffect(() => {
+    exec()
+  }, [formVarsToSubmit])
 
   return (
     <div
@@ -359,7 +352,7 @@ const Playground = ({ api }: PlaygroundProps) => {
             }}
           >
             <div className="left" sx={{ '> *': { mr: '1rem !important' } }}>
-              <Button variant="primarySmall" onClick={executeQuery}>
+              <Button variant="primarySmall" onClick={handleRunBtnClick}>
                 Run
               </Button>
 
@@ -448,31 +441,26 @@ const Playground = ({ api }: PlaygroundProps) => {
                 }}
               >
                 <GQLCodeBlock
-                  onClick={grabSchemaCode}
                   readOnly
                   title="Queries"
                   value={structuredschema.localqueries}
                 />
                 <GQLCodeBlock
-                  onClick={grabSchemaCode}
                   readOnly
                   title="Mutations"
                   value={structuredschema.localmutations}
                 />
                 <GQLCodeBlock
-                  onClick={grabSchemaCode}
                   readOnly
                   title="Custom Types"
                   value={structuredschema.localcustom}
                 />
                 <GQLCodeBlock
-                  onClick={grabSchemaCode}
                   readOnly
                   title="Imported Queries"
                   value={structuredschema.importedqueries}
                 />
                 <GQLCodeBlock
-                  onClick={grabSchemaCode}
                   readOnly
                   title="Imported Mutations"
                   value={structuredschema.importedmutations}
