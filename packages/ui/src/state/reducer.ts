@@ -1,6 +1,5 @@
 import InitialState from '../state/initialState'
 import type { dappType } from '../state/initialState'
-import type { web3apiType } from '../state/initialState'
 import type { publishType } from '../state/initialState'
 import type { searchType } from '../state/initialState'
 

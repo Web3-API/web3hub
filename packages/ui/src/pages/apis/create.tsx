@@ -8,10 +8,12 @@ import PublishAPI from '../../components/tabs/PublishAPI'
 import Header from '../../components/Header'
 import BottomSpace from '../../components/BottomSpace'
 import Auth from '../../services/ceramic/auth'
+import { useGet } from '../../hooks/auth'
 
 const CreateApi = () => {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState(router.query.activeTab)
+  const get = useGet()
   const handleTabClick = (e: React.BaseSyntheticEvent) => {
     e.stopPropagation()
     setActiveTab(e.target.classList[1])
@@ -21,11 +23,8 @@ const CreateApi = () => {
   }, [router.query.activeTab])
 
   const checkInfo = async () => {
-    await Auth.getInstance()
-    console.log('Checking info')
-    const t = await Auth.get('basicProfile')
-
-    console.log(t)
+    const t = await get('basicProfile')
+    console.log({ t })
   }
 
   const writeInfo = async () => {

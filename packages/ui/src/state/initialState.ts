@@ -1,6 +1,6 @@
-import {networkID} from '../constants'
+import { UriRedirect } from '@web3api/client-js'
 
-import {UriRedirect} from '@web3api/client-js';
+import { networkID } from '../constants'
 
 let initialState = {
   dapp: {
@@ -12,32 +12,30 @@ let initialState = {
     network: networkID,
     web3: undefined,
     apis: [],
-    github: ''
+    github: '',
   },
   web3api: {
-    redirects: [
-
-    ],
+    redirects: [],
   },
   publish: {
     subdomain: '',
     ipfs: '',
     subdomainError: '',
-    subdomainLookupSuccess:false,
-    subdomainRegisterSuccess:false,
-    subdomainLoading:false,
-    ipfsLoading:false,
+    subdomainLookupSuccess: false,
+    subdomainRegisterSuccess: false,
+    subdomainLoading: false,
+    ipfsLoading: false,
     ipfsError: '',
-    ipfsSuccess:false,
-    showConnectModal:false,
-    showSignInModal:false,
-    showSuccessModal:false,
+    ipfsSuccess: false,
+    showConnectModal: false,
+    showSignInModal: false,
+    showSuccessModal: false,
     apiData: null,
     registrationStatus: -1,
   },
   search: {
-    sortedApi: -1
-  }
+    sortedApi: -1,
+  },
 }
 
 type dappType = {

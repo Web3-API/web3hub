@@ -26,7 +26,8 @@ const onboardInit = (dispatch) => {
       })
     },
     wallet: async (wallet) => {
-      let web3 = wallet.provider && createEthereumProvider(wallet.provider)
+      const web3 = wallet.provider && createEthereumProvider(wallet.provider)
+      await Auth.getInstance(wallet.provider)
       dispatch({
         type: 'SET_WALLET',
         payload: wallet,
@@ -35,8 +36,6 @@ const onboardInit = (dispatch) => {
         type: 'SET_WEB3',
         payload: web3,
       })
-
-      await Auth.getInstance(wallet.provider)
     },
   })
 }

@@ -17,14 +17,12 @@ export default class Auth {
   public static async getInstance(provider?: any) {
     if (!this._instance && provider) {
       const instance = new Auth()
-      const idx = await instance.initialize(provider)
+      await instance.initialize(provider)
       this._instance = instance
-      return idx
     }
-    return Auth.idx
   }
 
-  private async initialize(provider) {
+  private async initialize(provider): Promise<void> {
     try {
       const resolver = {
         ...KeyDidResolver.getResolver(),
@@ -38,20 +36,16 @@ export default class Auth {
       const didProvider = await threeIdConnect.getDidProvider()
       await Auth.ceramic.did.setProvider(didProvider)
       await Auth.ceramic.did.authenticate()
-      return Auth.idx
     } catch (e) {
       console.log('Error doing the connection of ceramic ', e)
     }
   }
 
   public static async set(key, values): Promise<void> {
-    if (!this.idx.authenticated) {
-      throw new Error('User is not authenticated')
-    }
-    await this.idx.set(key, values)
+    await Auth.idx.set(key, values)
   }
 
   public static async get(key): Promise<string> {
-    return await this.idx.get(key)
+    return await Auth.idx.get(key)
   }
 }
