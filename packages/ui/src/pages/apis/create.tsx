@@ -16,6 +16,9 @@ const CreateApi = () => {
     setActiveTab(e.target.classList[1])
   }
   useEffect(() => {
+    if(router.query.activeTab === undefined) {
+      router.push(router.pathname+'?activeTab=create')
+    }
     setActiveTab(router.query.activeTab)
   }, [router.query.activeTab])
   return (
