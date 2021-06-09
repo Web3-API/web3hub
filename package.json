@@ -16,7 +16,8 @@
     "start": "concurrently \"yarn:start:db\" \"yarn:start:ui\" \"yarn:start:api\"",
     "start:api": "lerna exec --scope @web3hub/api -- yarn dev",
     "start:ui": "lerna exec --scope @web3hub/ui -- yarn dev",
-    "start:db": "lerna exec --scope @web3hub/api -- yarn db:start"
+    "start:db": "lerna exec --scope @web3hub/api -- yarn db:start",
+    "cypress": "./node_modules/.bin/cypress open"
   },
   "devDependencies": {
     "lerna": "4.0.0",
