@@ -3,7 +3,6 @@ import { Request, Response, Router } from "express";
 import { Api } from "../models/Api";
 import { ApiData } from "../models/types";
 import { checkContentIsValid } from "../services/ens";
-import { checkAccessToken } from "./auth";
 import { validatePublishBody } from "./helpers";
 
 const router = Router();
@@ -98,6 +97,6 @@ export const getApiByLocation = async (
 router.get("/active", getAll);
 router.get("/find/:name", getApiByName);
 router.get("/find/:location/:name", getApiByLocation);
-router.post("/publish", checkAccessToken, validatePublishBody, publishApi);
+router.post("/publish", validatePublishBody, publishApi);
 
 export { router as ApiController };

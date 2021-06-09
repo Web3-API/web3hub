@@ -32,6 +32,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
     setShowDisconnectModal(true)
   }
   const handleSignIn = () => {
+    console.log('s')
     setShowSignInModal(true)
   }
   const handleSignOut = () => {
@@ -71,7 +72,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
       {/* {showSignInModal && (
         <div sx={{ position: 'fixed', top: 0, left: 0, zIndex: 100000 }}>
           <Modal
-            screen={'signin'}
+            screen={'connect'}
             noLeftShift
             close={() => {
               setShowSignInModal(false)

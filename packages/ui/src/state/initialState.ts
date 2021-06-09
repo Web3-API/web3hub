@@ -1,5 +1,4 @@
 import { UriRedirect } from '@web3api/client-js'
-
 import { networkID } from '../constants'
 
 let initialState = {
@@ -15,7 +14,7 @@ let initialState = {
     github: '',
   },
   web3api: {
-    redirects: [],
+    redirects: undefined,
   },
   publish: {
     subdomain: '',
