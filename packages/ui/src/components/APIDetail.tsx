@@ -145,6 +145,21 @@ const APIDetail = ({ api }: APIDetailProps) => {
                   </li>
                 )
               })}
+            {'locationUri' in api &&
+              
+                (
+                  <li sx={{ display: 'flex' }}>
+                    <img
+                      sx={{ maxWidth: '1.1875rem', mr: 2 }}
+                      src="/images/link.svg"
+                      alt="icon"
+                    />
+                    <a href={`${cloudFlareGateway}${api.locationUri}`} target="_BLANK">
+                      {('ipfs/'+api.locationUri).substring(0,25)+'...'}
+                    </a>
+                  </li>
+                )
+                }
             {'links' in api &&
               api.links.map((link, idx) => {
                 if (link.name === 'github') {
