@@ -122,7 +122,7 @@ const Playground = ({ api }: PlaygroundProps) => {
       let schemaData = await getPackageSchemaFromAPIObject(api)
       let queriesData = await getPackageQueriesFromAPIObject(api)
       queriesData.push({
-        id: 'Custom Query',
+        id: 'custom',
         value: '\n\n\n\n\n\n\n\n\n\n',
       })
       setapiContents({
@@ -157,10 +157,10 @@ const Playground = ({ api }: PlaygroundProps) => {
   }, [selectedMethod])
 
   useEffect(() => {
-    if (selectedMethod) {
+    if (selectedMethod !== '') {
       exec()
     }
-  }, [formVarsToSubmit, selectedMethod])
+  }, [formVarsToSubmit])
 
   return (
     <div

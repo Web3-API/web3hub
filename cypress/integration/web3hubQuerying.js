@@ -16,7 +16,7 @@ context('Landing Page', () => {
 
 context('Playground Page w/o ENS', () => {
   it('Visits page', () => cy.visit('localhost:3000/playground'))
-
+  
 })
 
 context('Detail Page', () => {
