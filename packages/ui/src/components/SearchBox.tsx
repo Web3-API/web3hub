@@ -1,6 +1,8 @@
 /** @jsxImportSource theme-ui **/
 import { useState, useEffect } from 'react'
 import RDS from 'react-dropdown-select'
+import { cloudFlareGateway } from '../constants'
+import stripIPFSPrefix from '../utils/stripIPFSPrefix'
 
 type RDSProps = {
   large?: boolean
@@ -32,6 +34,17 @@ const SearchBox = ({
   useEffect(() => {
     setTimeout(() => forceUpdate(), 100)
   }, [])
+
+  let bgs = {}
+  options.map((opt, idx) => {
+    let key = `.react-dropdown-select-item:nth-of-type(${idx+1}):before`
+    bgs[key] = {
+      background: `url(${cloudFlareGateway}${stripIPFSPrefix(
+        opt.locationUri,
+      )}${opt.icon.replace('./', '/')})`,
+    }
+  })
+
   return (
     <RDS
       sx={{
@@ -113,9 +126,6 @@ const SearchBox = ({
           '&:hover, &.react-dropdown-select-item-active': {
             bg: dark ? 'w3shade3' : 'w3TextNavTeal',
             color: dark ? 'inherit' : 'white',
-            '&::before': {
-              border: '0.0625rem solid white',
-            }
           },
           '&::before': {
             display: 'block !important',
@@ -123,7 +133,6 @@ const SearchBox = ({
             width: '1.5rem !important',
             height: '1.5rem !important',
             mr: '.75rem !important',
-            border: '0.0625rem solid gray',
           },
           '&:last-of-type': {
             borderBottom: 'none !important',
@@ -153,6 +162,7 @@ const SearchBox = ({
             justifyContent: 'center',
           },
         },
+        ...bgs
       }}
       searchable
       clearable

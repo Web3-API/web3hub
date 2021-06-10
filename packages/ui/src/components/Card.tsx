@@ -14,7 +14,6 @@ type CardProps = {
 }
 
 const Card = ({ api, ipfsHash, boxShadowOn, noHover }: CardProps) => {
-  console.log(api.locationUri)
   return (
     <div
       className="Card"
