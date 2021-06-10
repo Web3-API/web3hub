@@ -26,18 +26,19 @@ export default class Auth {
     }
   }
 
+  public static async set(key, values): Promise<void> {
+    await Auth.idx.set(key, values)
+  }
+
+  public static async get(key): Promise<string | Record<string, string>> {
+    return await Auth.idx.get(key)
+  }
+
   private async initialize(provider): Promise<void> {
     try {
-      const resolver = {
-        ...KeyDidResolver.getResolver(),
-        ...ThreeIdResolver.getResolver(Auth.ceramic),
-      }
-      const did = new DID({ resolver })
+      const did = this.createDID()
       await Auth.ceramic.setDID(did)
-      const authProvider = new EthereumAuthProvider(provider, provider.selectedAddress)
-      const threeIdConnect = new ThreeIdConnect()
-      await threeIdConnect.connect(authProvider)
-      const didProvider = await threeIdConnect.getDidProvider()
+      const didProvider = await this.createBlockchainConnection(provider)
       await Auth.ceramic.did.setProvider(didProvider)
       await Auth.ceramic.did.authenticate()
     } catch (e) {
@@ -45,11 +46,21 @@ export default class Auth {
     }
   }
 
-  public static async set(key, values): Promise<void> {
-    await Auth.idx.set(key, values)
+  private createDID() {
+    const resolver = {
+      ...KeyDidResolver.getResolver(),
+      ...ThreeIdResolver.getResolver(Auth.ceramic),
+    }
+    const did = new DID({ resolver })
+    return did
   }
 
-  public static async get(key): Promise<string> {
-    return await Auth.idx.get(key)
+  private async createBlockchainConnection(provider) {
+    const authProvider = new EthereumAuthProvider(provider, provider.selectedAddress)
+    const threeIdConnect = new ThreeIdConnect()
+    await threeIdConnect.connect(authProvider)
+    const didProvider = await threeIdConnect.getDidProvider()
+
+    return didProvider
   }
 }

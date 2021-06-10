@@ -25,7 +25,7 @@ const Header = ({ title, onDark, backNav }: HeaderProps) => {
   }, [])
 
   useEffect(() => {
-    const previouslySelectedWallet = window.localStorage.getItem('selectedWallet')
+    const previouslySelectedWallet = localStorage.getItem('selectedWallet')
 
     if (previouslySelectedWallet && onboard) {
       onboard?.walletSelect(previouslySelectedWallet)

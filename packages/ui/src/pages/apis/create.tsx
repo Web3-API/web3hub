@@ -7,13 +7,9 @@ import CreateAPI from '../../components/tabs/CreateAPI'
 import PublishAPI from '../../components/tabs/PublishAPI'
 import Header from '../../components/Header'
 import BottomSpace from '../../components/BottomSpace'
-import { useAuth } from '../../hooks/useAuth'
-import { useStateValue } from '../../state/state'
 
 const CreateApi = () => {
   const router = useRouter()
-  const [{ dapp }] = useStateValue()
-  const { get, set } = useAuth(dapp)
 
   const [activeTab, setActiveTab] = useState(router.query.activeTab)
   const handleTabClick = (e: React.BaseSyntheticEvent) => {
@@ -23,18 +19,6 @@ const CreateApi = () => {
   useEffect(() => {
     setActiveTab(router.query.activeTab)
   }, [router.query.activeTab])
-
-  const checkInfo = async () => {
-    const t = await get('authentication')
-    console.log({ t })
-  }
-
-  const writeInfo = async () => {
-    await set('authentication', {
-      accessToken: 'one',
-      id: 'another one',
-    })
-  }
 
   return (
     <Layout>

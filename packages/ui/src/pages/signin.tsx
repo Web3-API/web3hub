@@ -26,12 +26,6 @@ const Signin = () => {
           },
         )
         if ('access_token' in response.data) {
-          console.log('Access token: ', response.data.access_token)
-
-          await set('authentication', {
-            accessToken: response.data.access_token,
-          })
-          console.log('Basic profile set!')
           dispatch({
             type: 'SET_GITHUB_USER',
             payload: response.data.access_token,
