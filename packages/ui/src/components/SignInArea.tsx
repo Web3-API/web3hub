@@ -137,7 +137,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
               },
             }}
           >
-            <ETHlogoicon stroke={onDark ? 'white' : theme.colors.w3darkGreen} />
+            <ETHlogoicon fill={onDark ? 'white' : theme.colors.w3darkGreen} />
             <span
               className="header-nav"
               sx={{
