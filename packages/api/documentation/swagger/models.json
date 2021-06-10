@@ -67,5 +67,18 @@
       }
     },
     "required": ["id"]
+  },
+  "Auth": {
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "authentication",
+    "type": "object",
+    "properties": {
+      "github": {
+        "type": "object",
+        "properties": {
+          "accessToken": { "type": "string" }
+        }
+      }
+    }
   }
 }

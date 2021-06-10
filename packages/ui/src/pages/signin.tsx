@@ -9,12 +9,12 @@ import Layout from '../components/Layout'
 import Navbar from '../components/Navbar'
 import BGWave from '../components/BGWave'
 import Header from '../components/Header'
-import { useSet } from '../hooks/auth'
+import { useAuth } from '../hooks/useAuth'
 
 const Signin = () => {
-  const [, dispatch] = useStateValue()
+  const [{ dapp }, dispatch] = useStateValue()
   const router = useRouter()
-  const set = useSet()
+  const { set } = useAuth(dapp)
 
   useEffect(() => {
     ;(async () => {
@@ -28,7 +28,9 @@ const Signin = () => {
         if ('access_token' in response.data) {
           console.log('Access token: ', response.data.access_token)
 
-          await set('basicProfile', response.data.access_token)
+          await set('authentication', {
+            accessToken: response.data.access_token,
+          })
           console.log('Basic profile set!')
           dispatch({
             type: 'SET_GITHUB_USER',

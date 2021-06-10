@@ -1,9 +1,12 @@
 /** @jsxImportSource theme-ui **/
+import { useEffect, useState } from 'react'
 import { Flex, Themed } from 'theme-ui'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 const SignInArea = dynamic(() => import('./SignInArea'), { ssr: false })
 import ArrowBack from '../../public/images/arrow-back.svg'
+import onboardInit from '../utils/onboardInit'
+import { useStateValue } from '../state/state'
 
 type HeaderProps = {
   title?: string
@@ -13,6 +16,22 @@ type HeaderProps = {
 
 const Header = ({ title, onDark, backNav }: HeaderProps) => {
   const router = useRouter()
+  const [, dispatch] = useStateValue()
+  const [onboard, setOnboard] = useState()
+
+  useEffect(() => {
+    const onboard = onboardInit(dispatch)
+    setOnboard(onboard)
+  }, [])
+
+  useEffect(() => {
+    const previouslySelectedWallet = window.localStorage.getItem('selectedWallet')
+
+    if (previouslySelectedWallet && onboard) {
+      onboard?.walletSelect(previouslySelectedWallet)
+    }
+  }, [onboard])
+
   return (
     <header
       role="header"

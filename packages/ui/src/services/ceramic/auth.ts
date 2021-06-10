@@ -7,12 +7,16 @@ import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver'
 
 const CERAMIC_NODE = process.env.CERAMIC_NODE || 'https://ceramic-clay.3boxlabs.com'
 
+const aliases = {
+  authentication: 'kjzl6cwe1jw148netfw0iz6hvli9j7cqmdbraan100fr3ap1s06381a9tz7wj0p',
+}
+
 export default class Auth {
   private constructor() {}
   private static _instance: Auth
 
   public static ceramic: Ceramic = new Ceramic(CERAMIC_NODE)
-  public static idx: IDX = new IDX({ ceramic: Auth.ceramic })
+  public static idx: IDX = new IDX({ ceramic: Auth.ceramic, aliases })
 
   public static async getInstance(provider?: any) {
     if (!this._instance && provider) {

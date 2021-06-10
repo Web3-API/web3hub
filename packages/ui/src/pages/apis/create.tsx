@@ -7,13 +7,15 @@ import CreateAPI from '../../components/tabs/CreateAPI'
 import PublishAPI from '../../components/tabs/PublishAPI'
 import Header from '../../components/Header'
 import BottomSpace from '../../components/BottomSpace'
-import Auth from '../../services/ceramic/auth'
-import { useGet } from '../../hooks/auth'
+import { useAuth } from '../../hooks/useAuth'
+import { useStateValue } from '../../state/state'
 
 const CreateApi = () => {
   const router = useRouter()
+  const [{ dapp }] = useStateValue()
+  const { get, set } = useAuth(dapp)
+
   const [activeTab, setActiveTab] = useState(router.query.activeTab)
-  const get = useGet()
   const handleTabClick = (e: React.BaseSyntheticEvent) => {
     e.stopPropagation()
     setActiveTab(e.target.classList[1])
@@ -23,27 +25,19 @@ const CreateApi = () => {
   }, [router.query.activeTab])
 
   const checkInfo = async () => {
-    const t = await get('basicProfile')
+    const t = await get('authentication')
     console.log({ t })
   }
 
   const writeInfo = async () => {
-    await Auth.getInstance()
-
-    // example after logging with gh
-    await Auth.set('basicProfile', {
-      name: 'Cesar',
+    await set('authentication', {
+      accessToken: 'one',
+      id: 'another one',
     })
-    // await Auth.set('github', {
-    //   username: 'cbrzn',
-    //   access_token: '',
-    // })
   }
 
   return (
     <Layout>
-      <button onClick={checkInfo}>check info</button>
-      <button onClick={writeInfo}>write info</button>
       <Flex>
         <main sx={{ pb: 5 }}>
           <div className="contents" sx={{ maxWidth: 'calc(76.5rem + 112px)' }}>

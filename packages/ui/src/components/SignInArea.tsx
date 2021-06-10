@@ -20,7 +20,7 @@ type SignInAreaProps = {
 }
 
 const SignInArea = ({ onDark }: SignInAreaProps) => {
-  const [{ dapp }, dispatch] = useStateValue()
+  const [{ dapp }] = useStateValue()
   const { theme } = useThemeUI()
   const router = useRouter()
   const [showConnectModal, setShowConnectModal] = useState(false)
@@ -32,7 +32,6 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
     setShowDisconnectModal(true)
   }
   const handleSignIn = () => {
-    console.log('s')
     setShowSignInModal(true)
   }
   const handleSignOut = () => {
@@ -47,13 +46,13 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
         li: { ml: 2 },
       }}
     >
-      {showSignInModal && (
+      {showConnectModal && (
         <div sx={{ position: 'fixed', top: 0, left: 0, zIndex: 100000 }}>
           <Modal
-            screen={'connect'}
+            screen={'signin'}
             noLeftShift
             close={() => {
-              setShowSignInModal(false)
+              setShowConnectModal(false)
             }}
           />
         </div>
@@ -69,7 +68,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
           />
         </div>
       )}
-      {/* {showSignInModal && (
+      {showSignInModal && (
         <div sx={{ position: 'fixed', top: 0, left: 0, zIndex: 100000 }}>
           <Modal
             screen={'connect'}
@@ -79,7 +78,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
             }}
           />
         </div>
-      )} */}
+      )}
       {showSignOutModal && (
         <div sx={{ position: 'fixed', top: 0, left: 0, zIndex: 100000 }}>
           <Modal

@@ -9,9 +9,6 @@ const onboardInit = (dispatch) => {
         type: 'SET_ADDRESS',
         payload: address,
       })
-      dispatch({
-        type: 'recreateredirects',
-      })
     },
     network: (network) => {
       dispatch({
@@ -27,6 +24,7 @@ const onboardInit = (dispatch) => {
     },
     wallet: async (wallet) => {
       const web3 = wallet.provider && createEthereumProvider(wallet.provider)
+      localStorage.setItem('selectedWallet', wallet.name)
       await Auth.getInstance(wallet.provider)
       dispatch({
         type: 'SET_WALLET',
@@ -35,6 +33,9 @@ const onboardInit = (dispatch) => {
       dispatch({
         type: 'SET_WEB3',
         payload: web3,
+      })
+      dispatch({
+        type: 'recreateredirects',
       })
     },
   })
