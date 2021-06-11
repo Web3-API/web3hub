@@ -2,7 +2,6 @@
 import { Flex, Button, Themed, Field } from 'theme-ui'
 import React, { useCallback, useRef, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useWeb3ApiQuery } from '@web3api/react'
 import { useStateValue } from '../state/state'
 
 import Badge from './Badge'
@@ -24,13 +23,37 @@ import networks from '../utils/networks.json'
 
 type PlaygroundProps = {
   api?: any
+  path: string
 }
 
-const Playground = ({ api }: PlaygroundProps) => {
+import { Api, Uri } from '@web3api/client-js'
+
+import {
+  createWeb3ApiProvider,
+  Web3ApiProvider,
+  useWeb3ApiQuery,
+  useWeb3ApiClient,
+} from '@web3api/react'
+
+console.log({
+  createWeb3ApiProvider,
+  Web3ApiProvider,
+  useWeb3ApiQuery,
+  useWeb3ApiClient,
+})
+
+console.log({
+  Api,
+  Uri,
+})
+
+const Playground = ({ api, path }: PlaygroundProps) => {
   const [{ dapp }] = useStateValue()
   const varform = useRef(null)
   const router = useRouter()
   const [apiOptions] = useState(dapp.apis)
+
+  console.log(path)
 
   const [apiContents, setapiContents] = useState<any>({})
   const [loadingPackageContents, setloadingPackageContents] = useState(false)
@@ -119,7 +142,7 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   useEffect(() => {
     async function go() {
-      let schemaData = await getPackageSchemaFromAPIObject(api)
+      let schemaData = await getPackageSchemaFromAPIObject(path)
       let queriesData = await getPackageQueriesFromAPIObject(api)
       queriesData.push({
         id: 'custom',

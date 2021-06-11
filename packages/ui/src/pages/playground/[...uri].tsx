@@ -3,15 +3,15 @@ import { Flex } from 'theme-ui'
 import { Global } from '@emotion/react'
 import { useRouter } from 'next/router'
 import { Web3ApiProvider } from '@web3api/react'
-import Layout from '../../../components/Layout'
-import Navbar from '../../../components/Navbar'
-import Header from '../../../components/Header'
-import Playground from '../../../components/Playground'
+import Layout from '../../components/Layout'
+import Navbar from '../../components/Navbar'
+import Header from '../../components/Header'
+import Playground from '../../components/Playground'
 
-import { useGetAPIfromENSParamInURL } from '../../../hooks/ens/useGetAPIfromENS'
-import { useStateValue } from '../../../state/state'
-import { useEffect } from 'react'
-import Modal from '../../../components/Modal'
+import { useGetAPIfromURLPATH } from '../../hooks/ens/useGetAPIfromURLPATH'
+import { useStateValue } from '../../state/state'
+import { useEffect, useState } from 'react'
+import Modal from '../../components/Modal'
 
 const PlaygroundPage = () => {
   const router = useRouter()
@@ -23,17 +23,26 @@ const PlaygroundPage = () => {
     },
     dispatch,
   ] = useStateValue()
-  const [{ data }] = useGetAPIfromENSParamInURL()
-
-  if (router.asPath !== '/playground' && !router.asPath.includes('/playground/ens/')) {
-    router.push('/playground')
-  }
+  const [data, setdata] = useState(null)
 
   useEffect(() => {
     if (!dapp.web3) {
       dispatch({ type: 'setShowSignInModal', payload: true })
     }
   }, [dapp.web3])
+
+  async function getAPiData(router) {
+    let response = await useGetAPIfromURLPATH(router)
+    let apiData = response.api
+    setdata(apiData)
+  }
+
+  useEffect(() => {
+    if ('uri' in router.query) {
+      getAPiData(router)
+    }
+  }, [router.query])
+
   return (
     <Layout>
       <Flex>
@@ -54,7 +63,7 @@ const PlaygroundPage = () => {
             <Header onDark title="Playground" />
             {data !== null && web3api.redirects && (
               <Web3ApiProvider redirects={web3api.redirects}>
-                <Playground api={data} />
+                <Playground api={data} path={router?.query?.uri && [...router.query.uri].join('/')}/>
               </Web3ApiProvider>
             )}
           </div>
