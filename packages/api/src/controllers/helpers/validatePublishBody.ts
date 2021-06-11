@@ -8,7 +8,7 @@ export const validatePublishBody = (
   response: Response,
   next: NextFunction
 ) => {
-  
+
   const schema = object({
     description: string().required(),
     subtext: string().required(),

@@ -17,10 +17,12 @@
     "start:api": "lerna exec --scope @web3hub/api -- yarn dev",
     "start:ui": "lerna exec --scope @web3hub/ui -- yarn dev",
     "start:db": "lerna exec --scope @web3hub/api -- yarn db:start",
+    "clean": "npx rimraf ./**/node_modules ./**/build ./**/coverage",
     "cypress": "./node_modules/.bin/cypress open"
   },
   "devDependencies": {
     "concurrently": "6.0.0",
+    "rimraf": "3.0.2",
     "lerna": "4.0.0"
   },
   "dependencies": {
