@@ -142,7 +142,7 @@ const Playground = ({ api, path }: PlaygroundProps) => {
 
   useEffect(() => {
     async function go() {
-      let schemaData = await getPackageSchemaFromAPIObject(path)
+      let schemaData = await getPackageSchemaFromAPIObject(api, path)
       let queriesData = await getPackageQueriesFromAPIObject(api)
       queriesData.push({
         id: 'custom',

@@ -1,10 +1,12 @@
 import { Web3ApiClient, Uri } from "@web3api/client-js";
+import axios from "axios";
+import { cloudFlareGateway } from "../../constants";
 
 const client = new Web3ApiClient();
 
-export default async function getPackageSchema(path: string) {
+export default async function getPackageSchema(api: any, path: string) {
   const manifest = await client.loadWeb3Api(new Uri(path));
-
+  
   // let schema = manifest.getSchema(client)
   // console.log(schema)
   
@@ -21,9 +23,10 @@ export default async function getPackageSchema(path: string) {
   //   typeInfo.importedObjectTypes
   // )
 
-  // // let schemaResponse = await axios.get(
-  // //   `${cloudFlareGateway}${api.locationUri}/schema.graphql`,
-  // // )
-  // return schemaResponse.data
-  return {}
+  let schemaResponse = await axios.get(
+    `${cloudFlareGateway}${api.locationUri}/schema.graphql`,
+  )
+  
+  return schemaResponse.data
+  
 }
