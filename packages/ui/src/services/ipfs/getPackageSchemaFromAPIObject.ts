@@ -1,11 +1,10 @@
-import { Web3ApiClient } from "@web3api/client-js";
+import { Web3ApiClient, Uri } from "@web3api/client-js";
 
 const client = new Web3ApiClient();
 
-export default async function getPackageSchema(path) {
-  console.log(client)
-  const manifest = await client.loadWeb3Api(path);
-  console.log(manifest)
+export default async function getPackageSchema(path: string) {
+  const manifest = await client.loadWeb3Api(new Uri(path));
+
   // let schema = manifest.getSchema(client)
   // console.log(schema)
   
