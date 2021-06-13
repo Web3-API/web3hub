@@ -13,7 +13,13 @@ const ApiView = () => {
   const [data, setdata] = useState(null)
   const router = useRouter()
   useEffect(() => {
-    setdata(useGetAPIfromURLPATH(router))
+    async function load () {
+      let response = await useGetAPIfromURLPATH(router)
+      if(response !== null) {
+        setdata(response.api)  
+      }
+    }
+    load()
   }, [router.query])
   return (
     <Layout>

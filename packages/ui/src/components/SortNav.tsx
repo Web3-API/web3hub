@@ -62,13 +62,12 @@ const SortNav = () => {
           <span>
             <b>{dapp.apis.length}</b>&nbsp;API's
           </span>
-          <div>
+          {/* <div>
             <Select sx={{ minWidth: '8rem', border: 'none' }}>
               <option value="HighestRated">Higest Rated</option>
-              <option value="MostRecent">Most Recent</option>
               <option value="Alphabetical">Alphabetical</option>
             </Select>
-          </div>
+          </div> */}
         </Flex>
       </form>
     </nav>

@@ -262,7 +262,6 @@ const api = new Web3API({
         </div>
       </Flex>
       <BottomSpace />
-      <div className="Playground" />
     </div>
   )
 }
