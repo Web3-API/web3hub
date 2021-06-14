@@ -32,7 +32,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
     setShowDisconnectModal(true)
   }
   const handleSignIn = () => {
-    setShowSignInModal(true)
+    setShowConnectModal(true)
   }
   const handleSignOut = () => {
     setShowSignOutModal(true)
@@ -120,41 +120,6 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
             )}
           </li>
         )}
-
-        {dapp.address && (
-          <li
-            onClick={handleDisconnect}
-            className="wallet-addr"
-            sx={{
-              p: '0.425rem',
-              display: 'flex',
-              alignItems: 'center',
-              svg: {
-                stroke: 'whitesmoke',
-                strokeWidth: '0.2px',
-              },
-            }}
-          >
-            <ETHlogoicon stroke={onDark ? 'white' : theme.colors.w3darkGreen} />
-            <span
-              className="header-nav"
-              sx={{
-                ml: 2,
-                textTransform: 'initial',
-                fontFamily: 'Montserrat',
-                fontSize: '0.875rem',
-                fontWeight: '600',
-                lineHeight: '1.0625rem',
-                letterSpacing: '-0.025rem',
-                color: onDark ? 'white' : 'w3darkGreen',
-                cursor: 'pointer',
-              }}
-            >
-              {dapp.address && addrShortener(dapp.address)}
-            </span>
-          </li>
-        )}
-
         {!dapp?.github ? (
           <li
             onClick={handleSignIn}
@@ -195,6 +160,39 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
               }}
             >
             </span> */}
+          </li>
+        )}
+        {dapp.address && (
+          <li
+            onClick={handleDisconnect}
+            className="wallet-addr"
+            sx={{
+              p: '0.425rem',
+              display: 'flex',
+              alignItems: 'center',
+              svg: {
+                stroke: 'whitesmoke',
+                strokeWidth: '0.2px',
+              },
+            }}
+          >
+            <ETHlogoicon stroke={onDark ? 'white' : theme.colors.w3darkGreen} />
+            <span
+              className="header-nav"
+              sx={{
+                ml: 2,
+                textTransform: 'initial',
+                fontFamily: 'Montserrat',
+                fontSize: '0.875rem',
+                fontWeight: '600',
+                lineHeight: '1.0625rem',
+                letterSpacing: '-0.025rem',
+                color: onDark ? 'white' : 'w3darkGreen',
+                cursor: 'pointer',
+              }}
+            >
+              {dapp.address && addrShortener(dapp.address)}
+            </span>
           </li>
         )}
 

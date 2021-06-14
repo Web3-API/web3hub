@@ -9,12 +9,10 @@ import Layout from '../components/Layout'
 import Navbar from '../components/Navbar'
 import BGWave from '../components/BGWave'
 import Header from '../components/Header'
-import { useAuth } from '../hooks/useAuth'
 
 const Signin = () => {
-  const [{ dapp }, dispatch] = useStateValue()
+  const [, dispatch] = useStateValue()
   const router = useRouter()
-  const { set } = useAuth(dapp)
 
   useEffect(() => {
     ;(async () => {

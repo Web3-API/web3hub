@@ -8,7 +8,7 @@ import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver'
 const CERAMIC_NODE = process.env.CERAMIC_NODE || 'https://ceramic-clay.3boxlabs.com'
 
 const aliases = {
-  authentication: 'kjzl6cwe1jw148netfw0iz6hvli9j7cqmdbraan100fr3ap1s06381a9tz7wj0p',
+  authentication: 'kjzl6cwe1jw148u82hnzcxx40jmyv4rkssid4rlhz7mku1rpxtnvf4nu9z2loup',
 }
 
 export default class Auth {
