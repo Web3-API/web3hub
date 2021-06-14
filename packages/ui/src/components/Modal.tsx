@@ -22,6 +22,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
 
   const CloseButton = (
     <Close
+      className="modal-close-btn"
       onClick={close}
       sx={{
         position: 'absolute',

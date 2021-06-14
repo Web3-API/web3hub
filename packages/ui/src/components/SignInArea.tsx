@@ -32,7 +32,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
     setShowDisconnectModal(true)
   }
   const handleSignIn = () => {
-    setShowConnectModal(true)
+    setShowSignInModal(true)
   }
   const handleSignOut = () => {
     setShowSignOutModal(true)

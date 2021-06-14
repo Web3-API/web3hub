@@ -20,7 +20,10 @@
     "cypress": "./node_modules/.bin/cypress open"
   },
   "devDependencies": {
-    "lerna": "4.0.0",
-    "concurrently": "6.0.0"
+    "concurrently": "6.0.0",
+    "lerna": "4.0.0"
+  },
+  "dependencies": {
+    "cypress": "^7.5.0"
   }
 }

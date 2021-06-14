@@ -17,7 +17,7 @@ type HeaderProps = {
 const Header = ({ title, onDark, backNav }: HeaderProps) => {
   const router = useRouter()
   const [, dispatch] = useStateValue()
-  const [onboard, setOnboard] = useState()
+  const [onboard, setOnboard] = useState<any>()
 
   useEffect(() => {
     const onboard = onboardInit(dispatch)

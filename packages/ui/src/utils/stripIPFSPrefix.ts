@@ -1,3 +1,3 @@
-export default function (str: string) {
+export default function stripIPFSPrefix (str: string) {
   return str.replaceAll('ipfs://', '').replaceAll('ipfs/', '')
 }
