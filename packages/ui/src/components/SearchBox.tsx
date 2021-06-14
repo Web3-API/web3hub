@@ -14,6 +14,7 @@ type RDSProps = {
   valueField: string
   options: any[]
   values: any[]
+  searchable?: boolean
   onChange?: (value: any) => void
 }
 
@@ -28,6 +29,7 @@ const SearchBox = ({
   options,
   values,
   onChange,
+  searchable = true
 }: RDSProps) => {
   // Styling fix
   const forceUpdate: () => void = useState()[1].bind(null, {})
@@ -164,7 +166,6 @@ const SearchBox = ({
         },
         ...bgs
       }}
-      searchable
       clearable
       keepSelectedInList
       searchBy={searchBy}
@@ -175,6 +176,8 @@ const SearchBox = ({
       options={options}
       values={values}
       onChange={onChange}
+      searchable={searchable}
+      multi={false}
     />
   )
 }

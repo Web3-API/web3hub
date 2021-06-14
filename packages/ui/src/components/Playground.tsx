@@ -21,6 +21,7 @@ import GQLCodeBlock from '../components/GQLCodeBlock'
 import cleanSchema from '../utils/cleanSchema'
 import { networkID } from '../constants'
 import networks from '../utils/networks.json'
+import stripIPFSPrefix from '../utils/stripIPFSPrefix'
 
 type PlaygroundProps = {
   api?: any
@@ -31,6 +32,8 @@ const Playground = ({ api }: PlaygroundProps) => {
   const varform = useRef(null)
   const router = useRouter()
   const [apiOptions] = useState(dapp.apis)
+
+  const [searchboxvalues, setsearchboxvalues] = useState([])
 
   const [apiContents, setapiContents] = useState<any>({})
   const [loadingPackageContents, setloadingPackageContents] = useState(false)
@@ -185,6 +188,9 @@ const Playground = ({ api }: PlaygroundProps) => {
           '&label': {
             display: 'none',
           },
+          '.react-dropdown-select-input': {
+            display: 'none'
+          }
         }}
       >
         {api === undefined ? (
@@ -196,10 +202,16 @@ const Playground = ({ api }: PlaygroundProps) => {
             labelField="name"
             valueField="name"
             options={apiOptions}
-            values={[]}
-            onChange={(e) => {
-              if (e.length > 0) {
-                router.push('/playground/ens/' + e[0].pointerUris[0])
+            values={searchboxvalues}
+            searchable={false}
+            onChange={(values) => {
+              setsearchboxvalues(values)
+              if (values.length > 0) {
+                if (values[0]?.pointerUris.length > 0) {
+                  router.push('/playground/' + 'ens/' + values[0].pointerUris[0])
+                } else {
+                  router.push('/playground/' + 'ipfs/' + stripIPFSPrefix(values[0].locationUri[0]))
+                }
               }
             }}
           />
