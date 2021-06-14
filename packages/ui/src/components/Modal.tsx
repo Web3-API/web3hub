@@ -92,7 +92,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
       >
         {screen === 'connect' && (
           <React.Fragment>
-            {close ? ( CloseButton ) : null}
+            {close ? CloseButton : null}
             <Image
               src="/images/eth-logo-hollow-large.svg"
               alt="eth-logo-hollow-large"
@@ -132,7 +132,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
         )}
         {screen === 'disconnect' && (
           <React.Fragment>
-            {close ? ( CloseButton ) : null}
+            {close ? CloseButton : null}
             <Image
               src="/images/eth-logo-hollow-large.svg"
               alt="/eth-logo-hollow-large"
@@ -172,7 +172,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
         )}
         {screen === 'signin' && (
           <React.Fragment>
-            {close ? ( CloseButton ) : null}
+            {close ? CloseButton : null}
 
             <Github fill={'white'} width="140px" />
             <Themed.h1
@@ -202,7 +202,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
               Please sign in with GitHub to continue.
             </Themed.h4>
             <a
-              href={`http://localhost:3001/auth/sign-in?redirectUrl=${router.pathname}`}
+              href={`https://github.com/login/oauth/authorize?client_id=c0b5102af0262717b743&scope=read:user read:org`}
               onClick={() => {
                 localStorage.setItem('w3hubLastURLb4Signin', router.asPath)
               }}
@@ -213,7 +213,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
         )}
         {screen === 'signout' && (
           <React.Fragment>
-            {close ? ( CloseButton ) : null}
+            {close ? CloseButton : null}
             <Image src="/images/signout.svg" alt="signout" width={140} height={140} />
             <Themed.h1
               sx={{
@@ -248,7 +248,7 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
         )}
         {screen === 'success' && (
           <React.Fragment>
-            {close ? ( CloseButton ) : null}
+            {close ? CloseButton : null}
             <img src="/images/trophy.svg" alt="trophy" sx={{ width: '13.75rem' }} />
             <Themed.h1
               sx={{
@@ -276,7 +276,12 @@ const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => 
             >
               Package now live on the Web3Hub!
             </Themed.h4>
-            <Button variant="calloutLarge" onClick={()=>router.push(`/apis/ens/${data}`)}>View API</Button>
+            <Button
+              variant="calloutLarge"
+              onClick={() => router.push(`/apis/ens/${data}`)}
+            >
+              View API
+            </Button>
           </React.Fragment>
         )}
       </Flex>

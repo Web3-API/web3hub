@@ -15,13 +15,12 @@ import ETHlogoicon from '../../public/images/eth-logo-hollow-icon.svg'
 import MyAPIs from '../../public/images/myapis.svg'
 import Github from '../../public/images/github-icon-large.svg'
 
-
 type SignInAreaProps = {
   onDark?: boolean
 }
 
 const SignInArea = ({ onDark }: SignInAreaProps) => {
-  const [{ dapp }, dispatch] = useStateValue()
+  const [{ dapp }] = useStateValue()
   const { theme } = useThemeUI()
   const router = useRouter()
   const [showConnectModal, setShowConnectModal] = useState(false)
@@ -33,7 +32,6 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
     setShowDisconnectModal(true)
   }
   const handleSignIn = () => {
-    console.log('s')
     setShowSignInModal(true)
   }
   const handleSignOut = () => {
@@ -51,7 +49,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
       {showConnectModal && (
         <div sx={{ position: 'fixed', top: 0, left: 0, zIndex: 100000 }}>
           <Modal
-            screen={'connect'}
+            screen={'signin'}
             noLeftShift
             close={() => {
               setShowConnectModal(false)
@@ -122,41 +120,6 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
             )}
           </li>
         )}
-
-        {dapp.address && (
-          <li
-            onClick={handleDisconnect}
-            className="wallet-addr"
-            sx={{
-              p: '0.425rem',
-              display: 'flex',
-              alignItems: 'center',
-              svg: {
-                stroke: 'whitesmoke',
-                strokeWidth: '0.2px',
-              },
-            }}
-          >
-            <ETHlogoicon fill={onDark ? 'white' : theme.colors.w3darkGreen} />
-            <span
-              className="header-nav"
-              sx={{
-                ml: 2,
-                textTransform: 'initial',
-                fontFamily: 'Montserrat',
-                fontSize: '0.875rem',
-                fontWeight: '600',
-                lineHeight: '1.0625rem',
-                letterSpacing: '-0.025rem',
-                color: onDark ? 'white' : 'w3darkGreen',
-                cursor: 'pointer',
-              }}
-            >
-              {dapp.address && addrShortener(dapp.address)}
-            </span>
-          </li>
-        )}
-
         {!dapp?.github ? (
           <li
             onClick={handleSignIn}
@@ -184,7 +147,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
             onKeyUp={handleSignOut}
             sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
           >
-            <Github fill={onDark ? 'white' : theme.colors.w3darkGreen} width="40px"/>
+            <Github fill={onDark ? 'white' : theme.colors.w3darkGreen} width="40px" />
             {/* <span>&nbsp;</span>
             <span
               sx={{
@@ -197,6 +160,39 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
               }}
             >
             </span> */}
+          </li>
+        )}
+        {dapp.address && (
+          <li
+            onClick={handleDisconnect}
+            className="wallet-addr"
+            sx={{
+              p: '0.425rem',
+              display: 'flex',
+              alignItems: 'center',
+              svg: {
+                stroke: 'whitesmoke',
+                strokeWidth: '0.2px',
+              },
+            }}
+          >
+            <ETHlogoicon stroke={onDark ? 'white' : theme.colors.w3darkGreen} />
+            <span
+              className="header-nav"
+              sx={{
+                ml: 2,
+                textTransform: 'initial',
+                fontFamily: 'Montserrat',
+                fontSize: '0.875rem',
+                fontWeight: '600',
+                lineHeight: '1.0625rem',
+                letterSpacing: '-0.025rem',
+                color: onDark ? 'white' : 'w3darkGreen',
+                cursor: 'pointer',
+              }}
+            >
+              {dapp.address && addrShortener(dapp.address)}
+            </span>
           </li>
         )}
 

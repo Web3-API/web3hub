@@ -1,5 +1,5 @@
-import { networkID } from '../constants'
 import { UriRedirect } from '@web3api/client-js'
+import { networkID } from '../constants'
 
 let initialState = {
   dapp: {

@@ -1,5 +1,6 @@
 import { createEthereumProvider } from './ethereum'
 import getOnboard from './Onboarding'
+import Auth from '../services/ceramic/auth'
 
 const onboardInit = (dispatch) => {
   return getOnboard({
@@ -8,17 +9,11 @@ const onboardInit = (dispatch) => {
         type: 'SET_ADDRESS',
         payload: address,
       })
-      dispatch({
-        type: 'recreateredirects',
-      })
     },
     network: (network) => {
       dispatch({
         type: 'SET_NETWORK',
         payload: network,
-      })
-      dispatch({
-        type: 'recreateredirects',
       })
     },
     balance: (balance) => {
@@ -27,8 +22,10 @@ const onboardInit = (dispatch) => {
         payload: balance,
       })
     },
-    wallet: (wallet) => {
-      let web3 = wallet.provider && createEthereumProvider(wallet.provider)
+    wallet: async (wallet) => {
+      const web3 = wallet.provider && createEthereumProvider(wallet.provider)
+      localStorage.setItem('selectedWallet', wallet.name)
+      await Auth.getInstance(wallet.provider)
       dispatch({
         type: 'SET_WALLET',
         payload: wallet,
@@ -36,6 +33,9 @@ const onboardInit = (dispatch) => {
       dispatch({
         type: 'SET_WEB3',
         payload: web3,
+      })
+      dispatch({
+        type: 'recreateredirects',
       })
     },
   })

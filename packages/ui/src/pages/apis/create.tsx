@@ -10,6 +10,7 @@ import BottomSpace from '../../components/BottomSpace'
 
 const CreateApi = () => {
   const router = useRouter()
+
   const [activeTab, setActiveTab] = useState(router.query.activeTab)
   const handleTabClick = (e: React.BaseSyntheticEvent) => {
     e.stopPropagation()
@@ -21,12 +22,13 @@ const CreateApi = () => {
     }
     setActiveTab(router.query.activeTab)
   }, [router.query.activeTab])
+
   return (
     <Layout>
       <Flex>
         <main sx={{ pb: 5 }}>
           <div className="contents" sx={{ maxWidth: 'calc(76.5rem + 112px)' }}>
-            <Header title={'Create a Web3API'}/>
+            <Header title={'Create a Web3API'} />
             <Flex
               className="tabs"
               onClick={handleTabClick}

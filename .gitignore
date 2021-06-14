@@ -72,3 +72,6 @@ redis-data
 
 # UML diagram files
 *.puml
+
+# Web3API Thread 
+packages/ui/public/thread.js

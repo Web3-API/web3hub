@@ -23,3 +23,10 @@ export interface UserData {
   authType?: number;
   githubId?: string;
 }
+export interface Authentication {
+  github?: {
+    accessToken?: string;
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
+}
