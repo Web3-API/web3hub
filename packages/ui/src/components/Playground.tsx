@@ -189,8 +189,8 @@ const Playground = ({ api }: PlaygroundProps) => {
             display: 'none',
           },
           '.react-dropdown-select-input': {
-            display: 'none'
-          }
+            display: 'none',
+          },
         }}
       >
         {api === undefined ? (
@@ -210,7 +210,9 @@ const Playground = ({ api }: PlaygroundProps) => {
                 if (values[0]?.pointerUris.length > 0) {
                   router.push('/playground/' + 'ens/' + values[0].pointerUris[0])
                 } else {
-                  router.push('/playground/' + 'ipfs/' + stripIPFSPrefix(values[0].locationUri[0]))
+                  router.push(
+                    '/playground/' + 'ipfs/' + stripIPFSPrefix(values[0].locationUri[0]),
+                  )
                 }
               }
             }}
@@ -365,9 +367,11 @@ const Playground = ({ api }: PlaygroundProps) => {
             }}
           >
             <div className="left" sx={{ '> *': { mr: '1rem !important' } }}>
-              <Button variant="primarySmall" onClick={handleRunBtnClick}>
-                Run
-              </Button>
+              {apiContents?.queries && (
+                <Button variant="primarySmall" onClick={handleRunBtnClick}>
+                  Run
+                </Button>
+              )}
 
               {clientresponded !== undefined && (
                 <React.Fragment>
@@ -381,19 +385,19 @@ const Playground = ({ api }: PlaygroundProps) => {
               )}
             </div>
             <div className="right">
-              {loadingPackageContents ? (
-                'Loading Schema...'
-              ) : (
-                <span
-                  className="text-nav left-chevron"
-                  onClick={handleShowSchema}
-                  sx={{ cursor: 'pointer' }}
-                >
-                  {loadingPackageContents && 'Loading Schema...'}
-                  <span sx={{ fontSize: '2.5rem', pr: '1rem' }}>‹</span>
-                  <span>Show Schema</span>
-                </span>
-              )}
+              {loadingPackageContents
+                ? 'Loading Schema...'
+                : apiContents?.schema && (
+                    <span
+                      className="text-nav left-chevron"
+                      onClick={handleShowSchema}
+                      sx={{ cursor: 'pointer' }}
+                    >
+                      {loadingPackageContents && 'Loading Schema...'}
+                      <span sx={{ fontSize: '2.5rem', pr: '1rem' }}>‹</span>
+                      <span>Show Schema</span>
+                    </span>
+                  )}
             </div>
           </Flex>
           <Themed.pre
