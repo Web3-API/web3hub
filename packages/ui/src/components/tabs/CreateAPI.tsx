@@ -3,7 +3,7 @@ import { Select, Themed, Flex, Button } from 'theme-ui'
 
 const CreateAPI = () => {
   return (
-    <Flex className="create" sx={{ justifyContent: 'space-between'}}>
+    <Flex className="create" sx={{ justifyContent: 'space-between' }}>
       <form
         sx={{
           '* > div': {
@@ -108,7 +108,7 @@ yarn deploy --IPFS`}</Themed.pre>
               background: 'url(/images/doc.svg) left center no-repeat transparent',
               backgroundSize: '100%',
               opacity: 0.2,
-              zIndex: '0'
+              zIndex: '0',
             },
           }}
         >
@@ -119,12 +119,15 @@ yarn deploy --IPFS`}</Themed.pre>
               '*': { textAlign: 'center' },
             }}
           >
-            <Themed.h2 sx={{ color: 'white', fontWeight: 'bold', mb: 2, mt: 0 }}>Need help?</Themed.h2>
+            <Themed.h2 sx={{ color: 'white', fontWeight: 'bold', mb: 2, mt: 0 }}>
+              Need help?
+            </Themed.h2>
             <Themed.p sx={{ mb: 4, color: 'white' }}>
-              First time developing with Web3API? View the getting started tutorial
-              here.
+              First time developing with Web3API? View the getting started tutorial here.
             </Themed.p>
-            <Button variant="calloutMedium" sx={{ px: '2.25rem', py: '1.25rem'}}>Getting Started</Button>
+            <Button variant="calloutMedium" sx={{ px: '2.25rem', py: '1.25rem' }}>
+              Getting Started
+            </Button>
           </Flex>
         </div>
       </div>

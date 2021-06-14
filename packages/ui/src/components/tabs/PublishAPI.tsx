@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui **/
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect,useState } from 'react'
 import { Input, Flex, Button, Themed } from 'theme-ui'
 import axios from 'axios'
 import { useCreateSubdomain } from '../../hooks/ens/useCreateSubdomain'
@@ -7,8 +7,10 @@ import { useStateValue } from '../../state/state'
 import getMetaDataFromPackageHash from '../../services/ipfs/getMetaDataFromPackageHash'
 import { MAIN_DOMAIN, ZERO_ADDRESS } from '../../constants'
 import { getOwner } from '../../services/ens/getOwner'
+
 import Card from '../Card'
 import Modal from '../Modal'
+import ProgressSteps from '../ProgressSteps'
 
 type ErrorMsg = {
   children: any
@@ -35,12 +37,6 @@ const ErrorMsg = ({ children, bottomshift }: ErrorMsg) => (
 const PublishAPI = () => {
   const [{ dapp, publish }, dispatch] = useStateValue()
   const [executeCreateSubdomain, { status }] = useCreateSubdomain()
-
-  useEffect(() => {
-    if (publish.subdomain !== '') {
-      checkForENSAvailability(publish.subdomain)
-    }
-  }, [dapp.address])
 
   const checkForENSAvailability = useCallback(
     async (label: string) => {
@@ -82,18 +78,6 @@ const PublishAPI = () => {
       executeCreateSubdomain(publish.subdomain, publish.ipfs)
     }
   }
-
-  useEffect(() => {
-    if (status === 3) {
-      dispatch({ type: 'setsubdomainRegisterSuccess', payload: true })
-    }
-  }, [status])
-
-  useEffect(() => {
-    if (publish.subdomain !== '' && publish.ipfs !== '') {
-      executeCreateSubdomain(publish.subdomain, publish.ipfs)
-    }
-  }, [dapp.address])
 
   const handleIPFSHashInput = async (e) => {
     dispatch({ type: 'setipfs', payload: e.target.value })
@@ -150,6 +134,24 @@ const PublishAPI = () => {
     }
   }
 
+  useEffect(() => {
+    if (publish.subdomain !== '') {
+      checkForENSAvailability(publish.subdomain)
+    }
+  }, [dapp.address])
+
+  useEffect(() => {
+    if (status === 3) {
+      dispatch({ type: 'setsubdomainRegisterSuccess', payload: true })
+    }
+  }, [status])
+
+  useEffect(() => {
+    if (publish.subdomain !== '' && publish.ipfs !== '') {
+      executeCreateSubdomain(publish.subdomain, publish.ipfs)
+    }
+  }, [dapp.address])
+
   const ipfsClasses = publish.ipfsLoading
     ? 'loading'
     : publish.ipfsSuccess
@@ -202,6 +204,7 @@ const PublishAPI = () => {
         onInvalid={handleInvalid}
         sx={{
           flex: 7,
+          maxWidth: '650px',
           section: {
             mb: '4.375rem',
           },
@@ -348,13 +351,21 @@ const PublishAPI = () => {
               </small>
             </p>
             <br />
-            <Button
-              variant="primaryMedium"
-              onClick={handleRegisterENS}
-              disabled={publish.subdomain.length === 0 || status === 3}
-            >
-              Register ENS
-            </Button>
+            <Flex>
+              <Button
+                variant="primaryMedium"
+                onClick={handleRegisterENS}
+                disabled={publish.subdomain.length === 0 || status === 3}
+              >
+                Register ENS
+              </Button>
+              <div sx={{ flex: 1 }}>
+                <ProgressSteps
+                  currentStep={status+1}
+                  steps={['Step 1', 'Step 2', 'Step 3', 'Step 4']}
+                />
+              </div>
+            </Flex>
           </div>
         </section>
         <section>
