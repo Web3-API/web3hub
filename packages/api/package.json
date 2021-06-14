@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "build": "tsc",
     "start": "ts-node src/server.ts",
     "dev": "nodemon src/server.ts",
     "db:start": "docker-compose up -d",
-    "generate:types": "ts-node --script-mode scripts/generateTypes.ts"
+    "generate:types": "ts-node --script-mode scripts/generateTypes.ts",
+    "postinstall": "yarn build"
   },
   "dependencies": {
     "@ensdomains/ensjs": "2.0.0",
