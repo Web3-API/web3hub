@@ -11,7 +11,7 @@ import Github from '../../public/images/github-icon-large.svg'
 type ModalProps = {
   screen: string
   noLeftShift?: boolean
-  data?: any
+  data?: string
   close?: () => void
 }
 

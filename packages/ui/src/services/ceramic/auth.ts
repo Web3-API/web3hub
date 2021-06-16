@@ -30,7 +30,7 @@ export default class Auth {
     await Auth.idx.set(key, values)
   }
 
-  public static async get(key): Promise<string | Record<string, string>> {
+  public static async get(key: any): Promise<any> {
     return await Auth.idx.get(key)
   }
 

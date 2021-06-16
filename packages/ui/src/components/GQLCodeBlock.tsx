@@ -1,21 +1,22 @@
 /** @jsxImportSource theme-ui **/
 import { Themed } from 'theme-ui'
-import Editor from '@monaco-editor/react'
+import Editor, { Monaco, OnChange } from '@monaco-editor/react'
 
 // https://github.com/brijeshb42/monaco-themes/tree/master/themes
 import solarizedDark from '../theme/Solarized-dark.json'
+import { MouseEventHandler } from 'react'
 
 type GQLCodeBlockProps = {
   title?: string
   readOnly?: boolean
   height?: string
-  value: any
-  onClick?: (e: React.BaseSyntheticEvent) => void
-  handleEditorChange?: (e: any) => void
+  value: string | string[]
+  onClick?: MouseEventHandler<HTMLDivElement>
+  handleEditorChange?: OnChange
 }
 
 const GQLCodeBlock = ({ title, readOnly, height = '200px', value, handleEditorChange, onClick }: GQLCodeBlockProps) => {
-  const handleEditorWillMount = (monaco) => {
+  const handleEditorWillMount = (monaco: Monaco) => {
     monaco.editor.defineTheme('solarizedDark', solarizedDark);
     monaco.editor.setTheme('solarizedDark');
   } 

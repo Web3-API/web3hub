@@ -5,9 +5,10 @@ import Stars from './Stars'
 import Badge from './Badge'
 import { cloudFlareGateway } from '../constants'
 import stripIPFSPrefix from '../utils/stripIPFSPrefix'
+import { APIData } from '../hooks/ens/useGetAPIfromENS'
 
 type CardProps = {
-  api?: any
+  api?: APIData
   ipfsHash?: string
   boxShadowOn?: boolean
   noHover?: boolean

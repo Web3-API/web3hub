@@ -1,8 +1,10 @@
 import { createEthereumProvider } from './ethereum'
 import getOnboard from './Onboarding'
 import Auth from '../services/ceramic/auth'
+import { Dispatch } from 'react'
+import { StateAction } from '../state/action'
 
-const onboardInit = (dispatch) => {
+const onboardInit = (dispatch: Dispatch<StateAction>) => {
   return getOnboard({
     address: async (address) => {
       dispatch({

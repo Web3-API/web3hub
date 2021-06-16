@@ -1,5 +1,10 @@
 /** @jsxImportSource theme-ui **/
-import { useCallback, useEffect,useState } from 'react'
+import {
+  ChangeEventHandler,
+  FormEventHandler,
+  useCallback,
+  useEffect,
+} from 'react'
 import { Input, Flex, Button, Themed } from 'theme-ui'
 import axios from 'axios'
 import { useCreateSubdomain } from '../../hooks/ens/useCreateSubdomain'
@@ -13,7 +18,7 @@ import Modal from '../Modal'
 import ProgressSteps from '../ProgressSteps'
 
 type ErrorMsg = {
-  children: any
+  children: React.ReactNode
   bottomshift?: boolean
 }
 
@@ -61,7 +66,7 @@ const PublishAPI = () => {
     [dapp.web3],
   )
 
-  const handleSubdomainChange = async (e) => {
+  const handleSubdomainChange: ChangeEventHandler<HTMLInputElement> = async (e) => {
     dispatch({ type: 'setsubdomain', payload: e.target.value })
     dispatch({ type: 'setsubdomainError', payload: '' })
     dispatch({ type: 'setsubdomainLookupSuccess', payload: false })
@@ -70,7 +75,9 @@ const PublishAPI = () => {
     }
   }
 
-  const handleRegisterENS = async (e) => {
+  const handleRegisterENS = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
     e.preventDefault()
     if (dapp.address === undefined) {
       dispatch({ type: 'setShowConnectModal', payload: true })
@@ -79,7 +86,7 @@ const PublishAPI = () => {
     }
   }
 
-  const handleIPFSHashInput = async (e) => {
+  const handleIPFSHashInput: ChangeEventHandler<HTMLInputElement> = async (e) => {
     dispatch({ type: 'setipfs', payload: e.target.value })
     dispatch({ type: 'setipfsLoading', payload: true })
     dispatch({ type: 'setipfsSuccess', payload: false })
@@ -100,7 +107,7 @@ const PublishAPI = () => {
     }
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     if (publish.apiData && publish.subdomain.length > 0) {
       const publishReq = await axios.post(
@@ -121,12 +128,12 @@ const PublishAPI = () => {
     }
   }
 
-  const handleInvalid = async (e) => {
+  const handleInvalid: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
-    if (e.target.name === 'ipfs') {
+    if ((e.target as HTMLFormElement).name === 'ipfs') {
       dispatch({ type: 'setipfsError', payload: 'Please enter a valid IPFS hash' })
     }
-    if (e.target.name === 'ens') {
+    if ((e.target as HTMLFormElement).name === 'ens') {
       dispatch({
         type: 'setsubdomainError',
         payload: 'Please enter a valid ENS sub-domain',
@@ -361,7 +368,7 @@ const PublishAPI = () => {
               </Button>
               <div sx={{ flex: 1 }}>
                 <ProgressSteps
-                  currentStep={status+1}
+                  currentStep={status + 1}
                   steps={['Step 1', 'Step 2', 'Step 3', 'Step 4']}
                 />
               </div>

@@ -5,9 +5,10 @@ import Stars from '../components/Stars'
 import PlaygroundImg from '../../public/images/playground.svg'
 import { cloudFlareGateway } from '../constants'
 import { useRouter } from 'next/router'
+import { APIData } from '../hooks/ens/useGetAPIfromENS'
 
 type APIDetailProps = {
-  api?: any
+  api?: APIData
 }
 
 const APIDetail = ({ api }: APIDetailProps) => {

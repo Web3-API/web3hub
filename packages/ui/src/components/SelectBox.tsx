@@ -1,5 +1,6 @@
 /** @jsxImportSource theme-ui **/
 import RDS from 'react-dropdown-select'
+import { APIData } from '../hooks/ens/useGetAPIfromENS'
 
 type RDSProps = {
   dark?: boolean
@@ -7,9 +8,9 @@ type RDSProps = {
   labelField: string
   placeholder: string
   valueField: string
-  options: any[]
-  values?: any[]
-  onChange: (values: any) => void
+  options: APIData[]
+  values?: APIData[]
+  onChange: (values: APIData[]) => void
 }
 
 const SelectBox = ({

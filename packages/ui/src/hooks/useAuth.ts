@@ -1,9 +1,10 @@
 import { useCallback, useEffect } from 'react'
 import Auth from '../services/ceramic/auth'
 import { githubHandler } from '../services/ceramic/handlers'
+import { State } from '../state/initialState'
 import { useStateValue } from '../state/state'
 
-export const useAuth = (dapp) => {
+export const useAuth = (dapp: State["dapp"]) => {
   const [state, dispatch] = useStateValue()
   const { github: cachedToken } = state.dapp
   const isAuthenticated = Auth.ceramic.did?.authenticated
@@ -12,7 +13,7 @@ export const useAuth = (dapp) => {
     ;(async () => {
       if (isAuthenticated) {
         const auth = await Auth.get('authentication')
-        const tokenFromIDX = auth && auth['github']?.accessToken
+        const tokenFromIDX = auth && (auth as Record<string, unknown>)['github']?.accessToken
         await githubHandler(tokenFromIDX, cachedToken, dispatch)
       }
     })()
@@ -25,7 +26,7 @@ export const useAuth = (dapp) => {
         // open connect modal
         return
       }
-      await Auth.getInstance(dapp.web3.provider)
+      await Auth.getInstance(dapp.web3)
     },
     [Auth, dapp],
   )
@@ -35,7 +36,7 @@ export const useAuth = (dapp) => {
       if (Auth.idx.authenticated) {
         return await Auth.get(key)
       }
-      await Auth.getInstance(dapp.web3.provider)
+      await Auth.getInstance(dapp.web3)
     },
     [Auth, dapp],
   )

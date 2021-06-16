@@ -1,8 +1,10 @@
 import Onboard from 'bnc-onboard'
-import {networkID} from '../constants'
-let onboard = undefined
+import { API, Subscriptions } from 'bnc-onboard/dist/src/interfaces'
+import { networkID } from '../constants'
 
-const getOnboard = function (subscriptions) {
+let onboard: API | undefined
+
+const getOnboard = (subscriptions: Subscriptions) => {
   if (!onboard) {
     onboard = Onboard({
       dappId: '834729ff-3ae1-42ec-b770-95de5ff553a0',
