@@ -40,5 +40,5 @@ export const useAuth = (dapp) => {
     [Auth, dapp],
   )
 
-  return { set, get }
+  return { set, get, isAuthenticated }
 }

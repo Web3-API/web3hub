@@ -15,6 +15,8 @@ import ETHlogoicon from '../../public/images/eth-logo-hollow-icon.svg'
 import MyAPIs from '../../public/images/myapis.svg'
 import Github from '../../public/images/github-icon-large.svg'
 
+import { useAuth } from '../hooks/useAuth'
+
 type SignInAreaProps = {
   onDark?: boolean
 }
@@ -23,7 +25,8 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
   const [{ dapp }] = useStateValue()
   const { theme } = useThemeUI()
   const router = useRouter()
-  const [showConnectModal, setShowConnectModal] = useState(false)
+  const { isAuthenticated } = useAuth(dapp)
+  const [showGithubSignInModal, setShowGithubSignInModal] = useState(false)
   const [showDisconnectModal, setShowDisconnectModal] = useState(false)
   const [showSignInModal, setShowSignInModal] = useState(false)
   const [showSignOutModal, setShowSignOutModal] = useState(false)
@@ -46,13 +49,13 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
         li: { ml: 2 },
       }}
     >
-      {showConnectModal && (
+      {showGithubSignInModal && (
         <div sx={{ position: 'fixed', top: 0, left: 0, zIndex: 100000 }}>
           <Modal
             screen={'signin'}
             noLeftShift
             close={() => {
-              setShowConnectModal(false)
+              setShowGithubSignInModal(false)
             }}
           />
         </div>
@@ -120,7 +123,8 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
             )}
           </li>
         )}
-        {!dapp?.github ? (
+
+        {!dapp.address ? (
           <li
             onClick={handleSignIn}
             onKeyUp={handleSignIn}
@@ -142,25 +146,29 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
             </span>
           </li>
         ) : (
-          <li
-            onClick={handleSignOut}
-            onKeyUp={handleSignOut}
-            sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-          >
-            <Github fill={onDark ? 'white' : theme.colors.w3darkGreen} width="40px" />
-            {/* <span>&nbsp;</span>
-            <span
-              sx={{
-                color: onDark ? 'white' : 'w3darkGreen',
-                fontFamily: 'Montserrat',
-                fontSize: '0.875rem',
-                fontWeight: '600',
-                lineHeight: '1.0625rem',
-                letterSpacing: '-0.025rem',
-              }}
+          !dapp?.github &&
+          isAuthenticated && (
+            <li
+              onClick={() => setShowGithubSignInModal(true)}
+              onKeyUp={() => setShowGithubSignInModal(true)}
+              sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
             >
-            </span> */}
-          </li>
+              <Github fill={onDark ? 'white' : theme.colors.w3darkGreen} width="40px" />
+              <span>&nbsp;</span>
+              <span
+                sx={{
+                  color: onDark ? 'white' : 'w3darkGreen',
+                  fontFamily: 'Montserrat',
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  lineHeight: '1.0625rem',
+                  letterSpacing: '-0.025rem',
+                }}
+              >
+                Link GitHub Account
+              </span>
+            </li>
+          )
         )}
         {dapp.address && (
           <li
