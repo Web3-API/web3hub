@@ -37,9 +37,13 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
   const handleSignIn = () => {
     setShowSignInModal(true)
   }
-  const handleSignOut = () => {
-    setShowSignOutModal(true)
-  }
+
+  // @TODO: Handle in another page the removal of
+  // web2 access tokens from IDX
+
+  // const handleSignOut = () => {
+  //   setShowSignOutModal(true)
+  // }
 
   return (
     <Flex
