@@ -13,7 +13,7 @@ export const useAuth = (dapp: State["dapp"]) => {
     ;(async () => {
       if (isAuthenticated) {
         const auth = await Auth.get('authentication')
-        const tokenFromIDX = auth && (auth as Record<string, unknown>)['github']?.accessToken
+        const tokenFromIDX = auth && (auth as Record<string, any>)['github']?.accessToken
         await githubHandler(tokenFromIDX, cachedToken, dispatch)
       }
     })()

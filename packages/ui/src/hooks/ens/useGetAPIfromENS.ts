@@ -10,8 +10,6 @@ export interface APIData {
   icon: string;
   locationUri: string;
   pointerUris: string[];
-  ownerId?: string;
-  links: any;
 }
 
 export const useGetAPIfromENSParamInURL = () => {

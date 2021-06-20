@@ -1,3 +1,4 @@
+import { JsonRpcProvider } from "@web3api/client-js/build/pluginConfigs/Ethereum"
 import { APIData } from "../hooks/ens/useGetAPIfromENS"
 
 export type StateAction = Web3APIReducerAction | SearchAction | PublishAction | DAppAction
@@ -131,7 +132,7 @@ type SET_WALLET_ACTION = {
 
 type SET_WEB3_ACTION = {
   type: 'SET_WEB3'
-  payload: any
+  payload: JsonRpcProvider
 }
 
 type SET_AVAILABLE_APIS_ACTION = {
