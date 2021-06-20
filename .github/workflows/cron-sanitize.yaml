@@ -1,0 +1,12 @@
+name: sanitize APIs cron
+on:
+  schedule:
+    - cron: '* 00 * * *'
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call sanitize APIs endpoint
+        run: |
+          curl --request POST \
+          --url 'https://yoursite.com/api/cron' \
