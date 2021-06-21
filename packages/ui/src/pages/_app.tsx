@@ -11,7 +11,12 @@ const swrOptions = {
   fetcher: (resource: string) => fetcherREST(resource),
 }
 
-function StatefulApp({ pageProps, Component }) {
+interface Props<T> {
+  pageProps: React.PropsWithChildren<T>
+  Component: React.FC<T>
+}
+
+function StatefulApp({ pageProps, Component }: Props<any>) {
   const [{ dapp }] = useStateValue()
   useAuth(dapp)
   return (
@@ -30,7 +35,7 @@ function StatefulApp({ pageProps, Component }) {
   )
 }
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: Props<any>) {
   return (
     <StateProvider>
       <StatefulApp pageProps={pageProps} Component={Component} />

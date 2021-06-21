@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react'
+import { JWE } from 'did-jwt';
 import Auth from '../services/ceramic/auth'
 import { githubHandler } from '../services/ceramic/handlers'
 import { State } from '../state/initialState'
@@ -13,7 +14,7 @@ export const useAuth = (dapp: State["dapp"]) => {
     ;(async () => {
       if (isAuthenticated) {
         const auth = await Auth.get('authentication')
-        const tokenFromIDX = auth && (auth as Record<string, any>)['github']?.accessToken
+        const tokenFromIDX: JWE = auth && (auth as Record<string, any>)['github']?.accessToken
         await githubHandler(tokenFromIDX, cachedToken, dispatch)
       }
     })()

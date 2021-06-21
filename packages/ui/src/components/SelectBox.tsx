@@ -8,9 +8,9 @@ type RDSProps = {
   labelField: string
   placeholder: string
   valueField: string
-  options: APIData[]
-  values?: APIData[]
-  onChange: (values: APIData[]) => void
+  options: { id: string; value: string }[]
+  values?: { id: string; value: string }[]
+  onChange: (values: { id: string; value: string }[]) => void
 }
 
 const SelectBox = ({

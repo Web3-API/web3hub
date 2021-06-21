@@ -161,7 +161,7 @@ const APIDetail = ({ api }: APIDetailProps) => {
                   </li>
                 )
                 }
-            {'links' in api &&
+            {/* {'links' in api &&
               api.links.map((link, idx) => {
                 if (link.name === 'github') {
                   return (
@@ -191,7 +191,7 @@ const APIDetail = ({ api }: APIDetailProps) => {
                     </li>
                   )
                 }
-              })}
+              })} */}
           </ul>
           <br />
           <Button

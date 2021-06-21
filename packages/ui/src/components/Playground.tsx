@@ -55,7 +55,7 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [structuredschema, setstructuredschema] = useState<StructuredSchema>()
 
-  const [clientresponded, setclientresponed] = useState<QueryApiResult<Record<string, unknown>>>()
+  const [clientresponded, setclientresponed] = useState<QueryApiResult<Record<string, any>>>()
 
   const [customquerytext, setcustomquerytext] = useState('')
 
@@ -421,8 +421,7 @@ const Playground = ({ api }: PlaygroundProps) => {
             ) : (
               <React.Fragment>
                 {clientresponded !== undefined &&
-                  clientresponded.queryResponse !== undefined &&
-                  JSON.stringify(clientresponded.queryResponse.data, undefined, 2)}
+                  JSON.stringify(clientresponded.data, undefined, 2)}
                 {clientresponded !== undefined &&
                   clientresponded.errors !== undefined &&
                   clientresponded.errors.toString()}

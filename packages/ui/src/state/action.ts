@@ -9,7 +9,7 @@ export type Web3APIReducerAction = {
 
 export type SearchAction = {
   type: "sortSelectApi",
-  payload: number
+  payload: -1 | APIData[]
 }
 
 export type PublishAction =

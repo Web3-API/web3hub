@@ -47,7 +47,7 @@ export const initialState: State = {
     registrationStatus: -1,
   },
   search: {
-    sortedApi: -1,
+    sortedApi: [],
   },
 }
 
@@ -83,7 +83,7 @@ type publishType = {
 }
 
 type searchType = {
-  sortedApi: number
+  sortedApi: -1 | APIData[]
 }
 
 export default initialState
