@@ -4,6 +4,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import { User } from "../models/User";
 import { ghCallback } from "../services/github/strategy";
 
+const md5 = require("md5");
 const router = Router();
 
 const checkAccessToken = (
@@ -30,19 +31,13 @@ const handleSignIn = async (
   response: Response,
   next: NextFunction
 ) => {
-  const { address, authType } = request.query;
+  const { did } = request.body;
+  const hashedDid = md5(did);
   try {
-    if (address) {
-      // @TODO: Improve this
-      const user = await User.findOrCreateByAddress({
-        address: address as string,
-        authType: Number(authType) || 1,
-      });
-      return response.json({
-        status: 200,
-        user,
-      });
-    }
+    await User.findOrCreate(hashedDid);
+    return response.json({
+      status: 200,
+    });
   } catch (error) {
     response.json({
       status: 500,
@@ -81,10 +76,11 @@ const authHandler = async (request: Request, response: Response) => {
   }
 
   try {
-    await ghCallback(codeRequest.data.access_token);
+    const ghCredentials = await ghCallback(codeRequest.data.access_token);
     return response.json({
       status: 200,
       ...codeRequest.data,
+      ...ghCredentials
     });
   } catch (e) {
     return response.json({
@@ -94,7 +90,7 @@ const authHandler = async (request: Request, response: Response) => {
   }
 };
 
-router.get("/sign-in", handleSignIn);
+router.post("/sign-in", handleSignIn);
 router.get("/github/callback/:code", authHandler);
 
 export { checkAccessToken, router as AuthController };

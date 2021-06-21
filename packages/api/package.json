@@ -17,6 +17,7 @@
     "ethers": "5.0.32",
     "express": "4.17.1",
     "joi": "17.4.0",
+    "md5": "2.3.0",
     "node-schedule": "2.0.0",
     "pg-promise": "10.9.5",
     "ts-node": "9.1.1"

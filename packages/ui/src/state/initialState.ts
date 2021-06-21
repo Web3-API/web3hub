@@ -12,6 +12,7 @@ let initialState = {
     web3: undefined,
     apis: [],
     github: '',
+    did: undefined,
   },
   web3api: {
     redirects: undefined,
@@ -45,6 +46,7 @@ type dappType = {
   web3?: any
   apis: any[]
   github?: string
+  did?: string;
 }
 
 type web3apiType = {

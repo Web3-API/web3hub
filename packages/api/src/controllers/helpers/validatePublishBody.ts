@@ -8,7 +8,6 @@ export const validatePublishBody = (
   response: Response,
   next: NextFunction
 ) => {
-  
   const schema = object({
     description: string().required(),
     subtext: string().required(),
@@ -16,6 +15,7 @@ export const validatePublishBody = (
     icon: string().required(),
     locationUri: string().required(),
     pointerUris: array().items(string()),
+    did: string().required(),
   });
 
   validateRequest(request, response, next, schema);

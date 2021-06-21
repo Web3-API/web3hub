@@ -25,6 +25,7 @@ export const useAuth = (dapp) => {
         // open connect modal
         return
       }
+      console.log('its happening here in set useAuth')
       await Auth.getInstance(dapp.web3.provider)
     },
     [Auth, dapp],
@@ -35,6 +36,7 @@ export const useAuth = (dapp) => {
       if (Auth.idx.authenticated) {
         return await Auth.get(key)
       }
+      console.log('its happening here in get useAuth')
       await Auth.getInstance(dapp.web3.provider)
     },
     [Auth, dapp],

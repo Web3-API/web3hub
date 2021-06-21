@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui **/
-import { useCallback, useEffect,useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Input, Flex, Button, Themed } from 'theme-ui'
 import axios from 'axios'
 import { useCreateSubdomain } from '../../hooks/ens/useCreateSubdomain'
@@ -112,6 +112,7 @@ const PublishAPI = () => {
           icon: publish.apiData.icon,
           locationUri: publish.ipfs,
           pointerUris: [`${publish.subdomain}.${MAIN_DOMAIN}`],
+          did: dapp.did,
         },
         {
           withCredentials: true,
@@ -361,7 +362,7 @@ const PublishAPI = () => {
               </Button>
               <div sx={{ flex: 1 }}>
                 <ProgressSteps
-                  currentStep={status+1}
+                  currentStep={status + 1}
                   steps={['Step 1', 'Step 2', 'Step 3', 'Step 4']}
                 />
               </div>

@@ -27,6 +27,9 @@ function dappReducer(state = {}, action) {
     case 'SET_WEB3':
       newStateObj.web3 = action.payload
       return { ...state, ...newStateObj }
+    case 'SET_DID':
+      newStateObj.did = action.payload
+      return { ...state, ...newStateObj }
     case 'SET_AVAILABLE_APIS':
       newStateObj.apis = action.payload
       return { ...state, ...newStateObj }

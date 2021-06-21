@@ -5,13 +5,14 @@ import { ApiData } from "../models/types";
 import { checkContentIsValid } from "../services/ens";
 import { validatePublishBody } from "./helpers";
 
+const md5 = require("md5");
 const router = Router();
 
 const publishApi = async (request: Request, response: Response) => {
   try {
     // User will send id from ceramic
     // We will hash it and check that the user exists
-    const ownerId = request.body.did;
+    const ownerId = md5(request.body.did);
     const apiInfo: ApiData = {
       ownerId,
       ...request.body,

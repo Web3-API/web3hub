@@ -1,13 +1,15 @@
 import axios from "axios";
 
-export const ghCallback = async (accessToken: string) => {
+export const ghCallback = async (accessToken: string): Promise<any> => {
   try {
-    await axios.get("https://api.github.com/user", {
+    const { data } = await axios.get("https://api.github.com/user", {
       headers: {
         Authorization: `token ${accessToken}`,
         Accept: "application/json",
       },
     });
+
+    return data;
   } catch (e) {
     throw new Error(e);
   }

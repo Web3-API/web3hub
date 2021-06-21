@@ -7,7 +7,7 @@ create table organizations (
 );
 create table user_organizations (
   id bigserial not null,
-  fk_user_id bigint not null,
+  fk_user_id varchar not null,
   fk_organization_id bigint not null,
   primary key(id),
   constraint fk_user_organizations_user foreign key (fk_user_id) references users(id),
@@ -20,7 +20,7 @@ create table apis (
   subtext varchar not null,
   icon varchar not null,
   visible boolean default true,
-  fk_owner_id bigint not null not null,
+  fk_owner_id varchar not null,
   fk_organization_id bigint,
   primary key(id),
   constraint fk_api_owner foreign key (fk_owner_id) references users(id),
@@ -43,7 +43,7 @@ create table api_uris (
 );
 create table starred_apis (
   id bigserial not null,
-  fk_user_id bigint not null,
+  fk_user_id varchar not null,
   fk_api_id bigint not null,
   constraint fk_starred_api_user foreign key (fk_user_id) references users(id),
   constraint fk_starred_api_api foreign key (fk_api_id) references apis(id)
