@@ -168,6 +168,42 @@ export class Api {
     }
   }
 
+  public static async getByOwner(id: string) {
+    const connection = await db.connect();
+    try {
+      const user = await connection.oneOrNone(
+        `SELECT * FROM users WHERE id = $1`,
+        [id]
+      );
+
+      if (!user) return null;
+
+      const apisData = await connection.manyOrNone(
+        `SELECT apis.id, 
+            apis.description, 
+            apis.name, 
+            apis.subtext,
+            apis.icon, 
+            uri_types.type as type, 
+            api_uris.uri FROM apis 
+          INNER JOIN api_uris ON apis.id = api_uris.fk_api_id 
+          INNER JOIN uri_types ON uri_types.id = api_uris.fk_uri_type_id 
+          WHERE apis.fk_owner_id = $1`,
+        [id]
+      );
+
+      if (!apisData.length) return null;
+
+      const apisSanitized = apisData.reduce(this.sanitizeApis, []);
+      return apisSanitized;
+    } catch (error) {
+      console.log("Error on method: Api.getByLocation() -> ", error.message);
+      throw new Error(error);
+    } finally {
+      connection.done();
+    }
+  }
+
   private static sanitizeApis(acc: ApiData[], api): ApiData[] {
     const { authority, type, uri, name, ...metadata } = api;
 

@@ -101,9 +101,26 @@ export const getApiByLocation = async (
   }
 };
 
+export const getApisByOwner = async (request: Request, response: Response) => {
+  try {
+    const id = md5(request.params.did);
+    const api = await Api.getByOwner(id);
+    return response.json({
+      status: 200,
+      api,
+    });
+  } catch (error) {
+    return response.json({
+      status: 500,
+      error: error.message,
+    });
+  }
+};
+
 router.get("/active", getAll);
 router.get("/find/:name", getApiByName);
 router.get("/find/:location/:name", getApiByLocation);
+router.get("/owner/:did", getApisByOwner);
 router.post("/publish", validatePublishBody, publishApi);
 
 export { router as ApiController };

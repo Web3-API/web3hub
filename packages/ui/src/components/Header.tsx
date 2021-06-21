@@ -16,7 +16,7 @@ type HeaderProps = {
 
 const Header = ({ title, onDark, backNav }: HeaderProps) => {
   const router = useRouter()
-  const [, dispatch] = useStateValue()
+  const [{ dapp }, dispatch] = useStateValue()
   const [onboard, setOnboard] = useState<any>()
 
   useEffect(() => {
