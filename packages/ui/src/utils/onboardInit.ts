@@ -26,6 +26,14 @@ const onboardInit = (dispatch) => {
       const web3 = wallet.provider && createEthereumProvider(wallet.provider)
       localStorage.setItem('selectedWallet', wallet.name)
       await Auth.getInstance(wallet.provider)
+
+      if (Auth.ceramic.did?.authenticated) {
+        // do a request to backend sending the DID
+        // the backend will hash this DID and store it
+        const test = await Auth.get('cryptoAccounts')
+        console.log(test)
+      }
+
       dispatch({
         type: 'SET_WALLET',
         payload: wallet,

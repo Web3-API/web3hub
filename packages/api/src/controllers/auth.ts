@@ -6,9 +6,6 @@ import { ghCallback } from "../services/github/strategy";
 
 const router = Router();
 
-//@TODO: Make sure this is the best approach
-const domain = process.env.HOST || "http://localhost:3000";
-
 const checkAccessToken = (
   request: Request,
   response: Response,
@@ -23,32 +20,9 @@ const checkAccessToken = (
     });
   }
 
-  if (!request.session.user) {
-    return response.json({
-      status: 404,
-      message: "You must log in",
-    });
-  }
-
   const [_, token] = auth.split(" ");
   request.accessToken = token;
   return next();
-};
-
-const checkRedirectUri = (
-  request: Request,
-  response: Response,
-  next: NextFunction
-) => {
-  const { redirectUrl } = request.query;
-  if (redirectUrl) {
-    request.redirectUrl = redirectUrl as string;
-    return next();
-  }
-  return response.json({
-    status: 400,
-    message: "Redirect URL has not been sent",
-  });
 };
 
 const handleSignIn = async (
@@ -107,8 +81,7 @@ const authHandler = async (request: Request, response: Response) => {
   }
 
   try {
-    const user = await ghCallback(codeRequest.data.access_token);
-    request.session.user = user;
+    await ghCallback(codeRequest.data.access_token);
     return response.json({
       status: 200,
       ...codeRequest.data,
@@ -123,9 +96,5 @@ const authHandler = async (request: Request, response: Response) => {
 
 router.get("/sign-in", handleSignIn);
 router.get("/github/callback/:code", authHandler);
-router.get("/sign-out", (request: Request, response: Response) => {
-  request.logout();
-  response.json({ status: 200 });
-});
 
 export { checkAccessToken, router as AuthController };
