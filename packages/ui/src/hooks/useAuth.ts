@@ -42,5 +42,5 @@ export const useAuth = (dapp: State["dapp"]) => {
     [Auth, dapp],
   )
 
-  return { set, get }
+  return { set, get, isAuthenticated }
 }
