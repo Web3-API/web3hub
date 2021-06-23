@@ -75,3 +75,5 @@ redis-data
 
 # Web3API Thread 
 packages/ui/public/thread.js
+
+.vercel
