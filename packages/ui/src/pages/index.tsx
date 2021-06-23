@@ -12,7 +12,7 @@ import BottomSpace from '../components/BottomSpace'
 import Card from '../components/Card'
 
 const Home = () => {
-  const [{ dapp, search }] = useStateValue()  
+  const [{ dapp, search }] = useStateValue()
   return (
     <Layout>
       <Flex>

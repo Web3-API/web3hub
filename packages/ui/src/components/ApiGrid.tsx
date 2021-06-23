@@ -3,7 +3,7 @@ import { Grid, Button } from 'theme-ui'
 import { useRouter } from 'next/router'
 
 type ApiGridProps = {
-  children: any[]
+  children: React.ReactNode
 }
 
 const ApiGrid = ({children}: ApiGridProps) => {

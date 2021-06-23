@@ -16,7 +16,7 @@ const ApiView = () => {
         <main>
           <div className="contents">
             <Header backNav={`Browse API's`} />
-            {data !== null && <APIDetail api={data} />}
+            {!!data && <APIDetail api={data} />}
             <BottomSpace />
           </div>
         </main>

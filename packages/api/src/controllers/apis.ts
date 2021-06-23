@@ -63,7 +63,7 @@ export const checkAndUpdateApis = async () => {
   try {
     const apis = await Api.getAllActive();
 
-    apis.forEach(async (api: ApiData) => {
+    apis.forEach(async (api) => {
       const { valid } = await checkContentIsValid(
         api.pointerUris,
         api.locationUri

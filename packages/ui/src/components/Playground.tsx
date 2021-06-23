@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui **/
 import { Flex, Button, Themed, Field } from 'theme-ui'
-import React, { useCallback, useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useWeb3ApiQuery } from '@web3api/react'
 import { useStateValue } from '../state/state'
@@ -18,33 +18,44 @@ import getPackageSchemaFromAPIObject from '../services/ipfs/getPackageSchemaFrom
 import getPackageQueriesFromAPIObject from '../services/ipfs/getPackageQueriesFromAPIObject'
 
 import GQLCodeBlock from '../components/GQLCodeBlock'
-import cleanSchema from '../utils/cleanSchema'
+import cleanSchema, { StructuredSchema } from '../utils/cleanSchema'
 import { networkID } from '../constants'
 import networks from '../utils/networks.json'
 import stripIPFSPrefix from '../utils/stripIPFSPrefix'
+import { APIData } from '../hooks/ens/useGetAPIfromENS'
+import { QueryApiResult } from '@web3api/client-js'
+import { OnChange } from '@monaco-editor/react'
 
 type PlaygroundProps = {
-  api?: any
+  api?: APIData
+}
+
+interface APIContents {
+  schema?: string
+  queries?: {
+    id: string
+    value: string
+  }[]
 }
 
 const Playground = ({ api }: PlaygroundProps) => {
   const [{ dapp }] = useStateValue()
-  const varform = useRef(null)
+  const varform = useRef<HTMLFormElement>();
   const router = useRouter()
   const [apiOptions] = useState(dapp.apis)
 
   const [searchboxvalues, setsearchboxvalues] = useState([])
 
-  const [apiContents, setapiContents] = useState<any>({})
+  const [apiContents, setapiContents] = useState<APIContents>()
   const [loadingPackageContents, setloadingPackageContents] = useState(false)
 
   const [showschema, setshowschema] = useState(false)
   const [selectedMethod, setSelectedMethod] = useState('')
   const [newSelectedMethod, setnewSelectedMethod] = useState('')
 
-  const [structuredschema, setstructuredschema] = useState<any>()
+  const [structuredschema, setstructuredschema] = useState<StructuredSchema>()
 
-  const [clientresponded, setclientresponed] = useState(undefined)
+  const [clientresponded, setclientresponed] = useState<QueryApiResult<Record<string, any>>>()
 
   const [customquerytext, setcustomquerytext] = useState('')
 
@@ -68,7 +79,7 @@ const Playground = ({ api }: PlaygroundProps) => {
     return setshowschema(!showschema)
   }
 
-  function handleQueryValuesChange(method) {
+  function handleQueryValuesChange(method: { value: string }[]) {
     setSelectedMethod(method[0].value)
   }
 
@@ -82,12 +93,12 @@ const Playground = ({ api }: PlaygroundProps) => {
     link.click()
   }
 
-  function handleRunBtnClick(e) {
+  const handleRunBtnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.FormEvent) => {
     e.preventDefault()
-    let varsToSubmit = {}
+    let varsToSubmit: Record<string, string> = {}
     Array.from(varform.current)
-      .filter((item: any) => item.type !== 'submit')
-      .map((input: any) => (varsToSubmit[input.name] = input.value))
+      .filter((item: HTMLButtonElement) => item.type !== 'submit')
+      .map((input: HTMLInputElement) => (varsToSubmit[input.name] = input.value))
     // TODO: call this whenever the form has been edited
     // onFocusLost?
     setformVarsToSubmit(varsToSubmit)
@@ -101,7 +112,7 @@ const Playground = ({ api }: PlaygroundProps) => {
     setvarformstoggle(!varformstoggle)
   }
 
-  function handleEditorChange(e) {
+  const handleEditorChange: OnChange = (e) => {
     setcustomquerytext(e)
   }
 
@@ -410,8 +421,7 @@ const Playground = ({ api }: PlaygroundProps) => {
             ) : (
               <React.Fragment>
                 {clientresponded !== undefined &&
-                  clientresponded.queryResponse !== undefined &&
-                  JSON.stringify(clientresponded.queryResponse.data, undefined, 2)}
+                  JSON.stringify(clientresponded.data, undefined, 2)}
                 {clientresponded !== undefined &&
                   clientresponded.errors !== undefined &&
                   clientresponded.errors.toString()}
