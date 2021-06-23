@@ -107,6 +107,7 @@ export type DAppAction =
   | SET_AVAILABLE_APIS_ACTION
   | SET_AVAILABLE_APIS_ACTION
   | SET_GITHUB_USER_ACTION
+  | SET_DID
 
 type SET_ADDRESS_ACTION = {
   type: 'SET_ADDRESS'
@@ -142,5 +143,10 @@ type SET_AVAILABLE_APIS_ACTION = {
 
 type SET_GITHUB_USER_ACTION = {
   type: 'SET_GITHUB_USER'
+  payload: string
+}
+
+type SET_DID = {
+  type: 'SET_DID'
   payload: string
 }

@@ -28,7 +28,7 @@ export const useAuth = (dapp: State["dapp"]) => {
         return
       }
       console.log('its happening here in set useAuth')
-      await Auth.getInstance(dapp.web3.provider)    },
+      await Auth.getInstance(dapp.web3)    },
     [Auth, dapp],
   )
 
@@ -38,7 +38,7 @@ export const useAuth = (dapp: State["dapp"]) => {
         return await Auth.get(key)
       }
       console.log('its happening here in get useAuth')
-      await Auth.getInstance(dapp.web3.provider)
+      await Auth.getInstance(dapp.web3)
     },
     [Auth, dapp],
   )
