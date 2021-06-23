@@ -17,7 +17,7 @@ export default class Auth {
   private static _instance: Auth
 
   public static ceramic: Ceramic = new Ceramic(CERAMIC_NODE)
-  public static idx: IDX = new IDX({ ceramic: Auth.ceramic, aliases })
+  public static idx: IDX = new IDX({ ceramic: Auth.ceramic as any, aliases })
 
   public static async getInstance(provider?: JsonRpcProvider) {
     if (!this._instance && provider) {
