@@ -1,4 +1,12 @@
-export default function cleanSchema (suppliedSchema) {
+export interface StructuredSchema {
+  localqueries: string[];
+  localmutations: string[];
+  localcustom: string[];
+  importedqueries: string[];
+  importedmutations: string[];
+}
+
+export default function cleanSchema (suppliedSchema: string): StructuredSchema {
   const removeWb3Header = suppliedSchema.split('### Web3API Header END ###\n\n')[1]
   const removeObjects = removeWb3Header.split('\n\n### Imported Queries END ###')[0]
   const localandimported = removeObjects.split('\n### Imported Queries START ###\n\n')
@@ -6,12 +14,12 @@ export default function cleanSchema (suppliedSchema) {
   const local = localandimported[0].split('\n\n')
   const imported = localandimported[1].split('\n\n')
   
-  let localqueries = []
-  let localmutations = []
-  let localcustom = []
+  let localqueries: string[] = []
+  let localmutations: string[] = []
+  let localcustom: string[] = []
   
-  let importedqueries = []
-  let importedmutations = []
+  let importedqueries: string[] = []
+  let importedmutations: string[] = []
   
   local.map((func) => {
     if (func.includes('type Query')) {

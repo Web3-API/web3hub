@@ -11,14 +11,14 @@ import Github from '../../public/images/github-icon-large.svg'
 type ModalProps = {
   screen: string
   noLeftShift?: boolean
-  data?: any
+  data?: string
   close?: () => void
 }
 
 const Modal = ({ screen = 'connect', close, noLeftShift, data }: ModalProps) => {
   const [{ dapp }, dispatch] = useStateValue()
   const router = useRouter()
-  const onboard: any = onboardInit(dispatch)
+  const onboard = onboardInit(dispatch)
 
   const CloseButton = (
     <Close

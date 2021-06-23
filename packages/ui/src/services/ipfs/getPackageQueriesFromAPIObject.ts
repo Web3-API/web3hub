@@ -1,13 +1,14 @@
 import axios from 'axios'
 import { cloudFlareGateway } from '../../constants'
+import { APIData } from '../../hooks/ens/useGetAPIfromENS'
 import get_CFG_UI_DOM from '../../utils/get_CFG_UI_DOM'
 
-export default async function getPackageQueries(api) {
+export default async function getPackageQueries(api: APIData) {
   let $ = await get_CFG_UI_DOM(api, '/meta/queries')
   let queries = Array.from($('table tr td:nth-child(2) a'))
   queries.shift() // dump .. in row 1
-  let queriesList = []
-  await queries.map((row: any) => {
+  let queriesList: { id: string; value: string }[] = []
+  await queries.map((row) => {
     async function getQueries() {
       let queryData = await axios.get(
         `${cloudFlareGateway.replace('/ipfs/', '')}${row.attribs.href}`,
