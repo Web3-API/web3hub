@@ -1,8 +1,8 @@
-import { createConnection } from "../db";
+import { Connection } from "../db";
 
 export class Organization {
   public static async get(orgId: number) {
-    const connection = await createConnection();
+    const connection = await Connection.getInstance();
     try {
       const organization = await connection.oneOrNone("");
       return organization;

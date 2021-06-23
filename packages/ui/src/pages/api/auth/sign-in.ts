@@ -1,26 +1,22 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import { User } from '../../../api/models/User'
 
+const md5 = require("md5");
+
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method === 'GET') {
-    const { address, authType } = request.query
+    const { did } = request.body;
+    const hashedDid = md5(did);
     try {
-      if (address) {
-        // @TODO: Improve this
-        const user = await User.findOrCreateByAddress({
-          address: address as string,
-          authType: Number(authType) || 1,
-        })
-        return response.json({
-          status: 200,
-          user,
-        })
-      }
-    } catch (error) {
+      await User.findOrCreate(hashedDid);
       return response.json({
+        status: 200,
+      });
+    } catch (error) {
+      response.json({
         status: 500,
         error: error.message,
-      })
+      });
     }
   }
 }

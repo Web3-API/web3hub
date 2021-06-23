@@ -1,5 +1,6 @@
-import { createConnection } from "../db";
+import { Connection } from "../db";
 import { ApiData } from "./types";
+import pgPromise from "pg-promise";
 
 export enum Authorities {
   ENS = 1,
@@ -8,7 +9,7 @@ export enum Authorities {
 
 export class Api {
   public static async create(apiInfo: ApiData) {
-    const connection = await createConnection();
+    const connection = await Connection.getInstance();
     try {
       const {
         name,
@@ -19,7 +20,7 @@ export class Api {
         pointerUris,
         ownerId,
       } = apiInfo;
-      const insertApi = async (tx) => {
+      const insertApi = async (tx: pgPromise.ITask<{}>) => {
         const api = await tx.one(
           "INSERT INTO apis (name, subtext, description, icon, fk_owner_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
           [name, subtext, description, icon, ownerId]
@@ -31,7 +32,7 @@ export class Api {
           [locationUri, api.id, Authorities.IPFS]
         );
 
-        const insertPointers = async (locationUri) => {
+        const insertPointers = async (locationUri: string) => {
           await tx.none(
             "INSERT INTO api_uris (uri, fk_api_id, fk_uri_type_id) VALUES ($1, $2, $3)",
             [locationUri, api.id, Authorities.ENS]
@@ -59,7 +60,7 @@ export class Api {
   }
 
   public static async getAllActive(): Promise<ApiData[]> {
-    const connection = await createConnection();
+    const connection = await Connection.getInstance();
     try {
       const apis = await connection.manyOrNone(
         `SELECT 
@@ -86,7 +87,7 @@ export class Api {
   }
 
   public static async deactivate(id: number) {
-    const connection = await createConnection();
+    const connection = await Connection.getInstance();
     try {
       await connection.none("UPDATE apis SET visible = false WHERE id = $1", [
         id,
@@ -100,7 +101,7 @@ export class Api {
   }
 
   public static async get(name: string, visible = true) {
-    const connection = await createConnection();
+    const connection = await Connection.getInstance();
     try {
       const apisData = await connection.manyOrNone(
         `SELECT apis.id, 
@@ -130,7 +131,7 @@ export class Api {
   }
 
   public static async getByLocation(location: string, name: string) {
-    const connection = await createConnection();
+    const connection = await Connection.getInstance();
     try {
       const api = await connection.oneOrNone(
         `SELECT apis.id FROM apis         
@@ -168,7 +169,43 @@ export class Api {
     }
   }
 
-  private static sanitizeApis(acc: ApiData[], api): ApiData[] {
+  public static async getByOwner(id: string) {
+    const connection = await Connection.getInstance();
+    try {
+      const user = await connection.oneOrNone(
+        `SELECT * FROM users WHERE id = $1`,
+        [id]
+      );
+
+      if (!user) return null;
+
+      const apisData = await connection.manyOrNone(
+        `SELECT apis.id, 
+            apis.description, 
+            apis.name, 
+            apis.subtext,
+            apis.icon, 
+            uri_types.type as type, 
+            api_uris.uri FROM apis 
+          INNER JOIN api_uris ON apis.id = api_uris.fk_api_id 
+          INNER JOIN uri_types ON uri_types.id = api_uris.fk_uri_type_id 
+          WHERE apis.fk_owner_id = $1`,
+        [id]
+      );
+
+      if (!apisData.length) return null;
+
+      const apisSanitized = apisData.reduce(this.sanitizeApis, []);
+      return apisSanitized;
+    } catch (error) {
+      console.log("Error on method: Api.getByLocation() -> ", error.message);
+      throw new Error(error);
+    } finally {
+      connection.done();
+    }
+  }
+
+  private static sanitizeApis(acc: ApiData[], api: any): ApiData[] {
     const { authority, type, uri, name, ...metadata } = api;
 
     const apiIndex = acc.findIndex(({ name }) => name === api.name);

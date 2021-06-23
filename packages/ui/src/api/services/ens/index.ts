@@ -1,6 +1,7 @@
 import { providers } from "ethers";
-import ENS, { getEnsAddress } from "@ensdomains/ensjs";
-import { helpers } from "content-hash";
+
+const { helpers } = require("content-hash")
+const ENS = require("@ensdomains/ensjs")
 
 interface CheckContentResponse {
   valid: boolean;
@@ -15,7 +16,7 @@ export const checkContentIsValid = async (
 
   const ens = new ENS({
     provider,
-    ensAddress: getEnsAddress("3"),
+    ensAddress: ENS.getEnsAddress("3"),
   });
 
   const getContents = async (

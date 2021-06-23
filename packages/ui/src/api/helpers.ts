@@ -52,23 +52,16 @@ export const withAccessToken = (
   ) => Promise<VercelResponse> | VercelResponse,
 ) => {
   return (request: VercelRequest, response: VercelResponse) => {
-    const auth = request.headers.authorization || ''
-    const isAuthed = auth.includes('token')
+    const auth = request.headers.authorization || "";
+    const isAuthed = auth.includes("token");
     if (!isAuthed) {
       return response.json({
         status: 404,
-        message: 'Authorization header is missing',
-      })
+        message: "Authorization header is missing",
+      });
     }
 
-    if (!request.session.user) {
-      return response.json({
-        status: 404,
-        message: 'You must log in',
-      })
-    }
-
-    const [_, token] = auth.split(' ')
+    const [_, token] = auth.split(" ");
     return fn(request, response, token)
   }
 }
