@@ -1,4 +1,4 @@
-let buttons = {}
+let buttons: Record<string, any> = {}
 
 const buttonBase = {
   fontFamily: 'Montserrat',
@@ -79,8 +79,8 @@ Object.keys(buttonColorStates).map((name) => {
   Object.keys(buttonPaddingSizes).map((size) => {
     buttons[name+(size.charAt(0).toUpperCase() + size.slice(1))] = {
       ...buttonBase,
-      ...buttonColorStates[name],
-      ...buttonPaddingSizes[size]
+      ...buttonColorStates[name as keyof typeof buttonColorStates],
+      ...buttonPaddingSizes[size as keyof typeof buttonPaddingSizes]
     }
   })
 })

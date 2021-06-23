@@ -4,6 +4,7 @@ import { IDX } from '@ceramicstudio/idx'
 import { DID } from 'dids'
 import KeyDidResolver from 'key-did-resolver'
 import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver'
+import { JsonRpcProvider } from '@web3api/client-js/build/pluginConfigs/Ethereum'
 
 const CERAMIC_NODE = process.env.CERAMIC_NODE || 'https://ceramic-clay.3boxlabs.com'
 
@@ -18,7 +19,7 @@ export default class Auth {
   public static ceramic: Ceramic = new Ceramic(CERAMIC_NODE)
   public static idx: IDX = new IDX({ ceramic: Auth.ceramic, aliases })
 
-  public static async getInstance(provider?: any) {
+  public static async getInstance(provider?: JsonRpcProvider) {
     if (!this._instance && provider) {
       const instance = new Auth()
       await instance.initialize(provider)
@@ -26,15 +27,15 @@ export default class Auth {
     }
   }
 
-  public static async set(key, values): Promise<void> {
+  public static async set(key: string, values: any): Promise<void> {
     await Auth.idx.set(key, values)
   }
 
-  public static async get(key): Promise<string | Record<string, string>> {
+  public static async get(key: string): Promise<any> {
     return await Auth.idx.get(key)
   }
 
-  private async initialize(provider): Promise<void> {
+  private async initialize(provider: JsonRpcProvider): Promise<void> {
     try {
       const did = this.createDID()
       await Auth.ceramic.setDID(did)
@@ -55,7 +56,7 @@ export default class Auth {
     return did
   }
 
-  private async createBlockchainConnection(provider) {
+  private async createBlockchainConnection(provider: any) {
     const authProvider = new EthereumAuthProvider(provider, provider.selectedAddress)
     const threeIdConnect = new ThreeIdConnect()
     await threeIdConnect.connect(authProvider)

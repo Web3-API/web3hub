@@ -7,7 +7,7 @@ import { useStateValue } from '../state/state'
 import useSWR from 'swr'
 
 type LayoutProps = {
-  children?: any
+  children?: React.ReactNode
 }
 
 const Layout = ({ children }: LayoutProps) => {

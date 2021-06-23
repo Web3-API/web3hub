@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import RDS from 'react-dropdown-select'
 import { cloudFlareGateway } from '../constants'
+import { APIData } from '../hooks/ens/useGetAPIfromENS'
 import stripIPFSPrefix from '../utils/stripIPFSPrefix'
 
 type RDSProps = {
@@ -12,10 +13,10 @@ type RDSProps = {
   placeholder: string
   labelField: string
   valueField: string
-  options: any[]
-  values: any[]
+  options: APIData[]
+  values: APIData[]
   searchable?: boolean
-  onChange?: (value: any) => void
+  onChange?: (value: APIData[]) => void
 }
 
 const SearchBox = ({
@@ -37,7 +38,7 @@ const SearchBox = ({
     setTimeout(() => forceUpdate(), 100)
   }, [])
 
-  let bgs = {}
+  let bgs: Record<string, unknown> = {}
   options.map((opt, idx) => {
     let key = `.react-dropdown-select-item:nth-of-type(${idx+1}):before`
     bgs[key] = {

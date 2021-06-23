@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^5.5.0",
+    "@types/react-html-parser": "2.0.1",
     "@types/react": "^17.0.8",
     "@vercel/node": "1.11.1",
     "babel-plugin-inline-react-svg": "^2.0.1",

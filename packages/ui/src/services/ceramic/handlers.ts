@@ -1,9 +1,12 @@
+import { Dispatch } from 'react'
+import { JWE } from 'did-jwt';
+import { DAppAction } from '../../state/action'
 import Auth from './auth'
 
 // We can add custom logic for each web2
 // service that we want to
 // support on the Web3Hub
-export const githubHandler = async (tokenFromIDX, cachedToken, dispatch) => {
+export const githubHandler = async (tokenFromIDX: JWE, cachedToken: string, dispatch: Dispatch<DAppAction>) => {
   const tokenIsCached = !!cachedToken
 
   // If token is stored in local state but not in IDX, update IDX state

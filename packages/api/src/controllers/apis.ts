@@ -5,16 +5,23 @@ import { ApiData } from "../models/types";
 import { checkContentIsValid } from "../services/ens";
 import { validatePublishBody } from "./helpers";
 
+const md5 = require("md5");
 const router = Router();
 
 const publishApi = async (request: Request, response: Response) => {
   try {
+    // User will send id from ceramic
+    // We will hash it and check that the user exists
+    const ownerId = md5(request.body.did);
     const apiInfo: ApiData = {
-      ownerId: request.session.user.id,
+      ownerId,
       ...request.body,
     };
 
     const { locationUri, pointerUris } = apiInfo;
+
+    // @TODO: Remove checkContentIsValid method
+    // and use Web3Api Client instead
     const { valid, message } = await checkContentIsValid(
       pointerUris,
       locationUri
@@ -63,7 +70,7 @@ export const checkAndUpdateApis = async () => {
   try {
     const apis = await Api.getAllActive();
 
-    apis.forEach(async (api: ApiData) => {
+    apis.forEach(async (api) => {
       const { valid } = await checkContentIsValid(
         api.pointerUris,
         api.locationUri
@@ -94,9 +101,26 @@ export const getApiByLocation = async (
   }
 };
 
+export const getApisByOwner = async (request: Request, response: Response) => {
+  try {
+    const id = md5(request.params.did);
+    const api = await Api.getByOwner(id);
+    return response.json({
+      status: 200,
+      api,
+    });
+  } catch (error) {
+    return response.json({
+      status: 500,
+      error: error.message,
+    });
+  }
+};
+
 router.get("/active", getAll);
 router.get("/find/:name", getApiByName);
 router.get("/find/:location/:name", getApiByLocation);
+router.get("/owner/:did", getApisByOwner);
 router.post("/publish", validatePublishBody, publishApi);
 
 export { router as ApiController };

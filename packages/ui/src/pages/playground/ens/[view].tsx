@@ -30,7 +30,9 @@ const PlaygroundPage = () => {
   }
 
   useEffect(() => {
-    if (!dapp.web3) {
+    const previouslySelectedWallet = localStorage.getItem('selectedWallet')
+
+    if (!dapp.web3 && !previouslySelectedWallet) {
       dispatch({ type: 'setShowSignInModal', payload: true })
     }
   }, [dapp.web3])

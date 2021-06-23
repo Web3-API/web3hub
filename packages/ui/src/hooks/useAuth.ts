@@ -1,9 +1,11 @@
 import { useCallback, useEffect } from 'react'
+import { JWE } from 'did-jwt';
 import Auth from '../services/ceramic/auth'
 import { githubHandler } from '../services/ceramic/handlers'
+import { State } from '../state/initialState'
 import { useStateValue } from '../state/state'
 
-export const useAuth = (dapp) => {
+export const useAuth = (dapp: State["dapp"]) => {
   const [state, dispatch] = useStateValue()
   const { github: cachedToken } = state.dapp
   const isAuthenticated = Auth.ceramic.did?.authenticated
@@ -12,7 +14,7 @@ export const useAuth = (dapp) => {
     ;(async () => {
       if (isAuthenticated) {
         const auth = await Auth.get('authentication')
-        const tokenFromIDX = auth && auth['github']?.accessToken
+        const tokenFromIDX: JWE = auth && (auth as Record<string, any>)['github']?.accessToken
         await githubHandler(tokenFromIDX, cachedToken, dispatch)
       }
     })()
@@ -25,8 +27,8 @@ export const useAuth = (dapp) => {
         // open connect modal
         return
       }
-      await Auth.getInstance(dapp.web3.provider)
-    },
+      console.log('its happening here in set useAuth')
+      await Auth.getInstance(dapp.web3.provider)    },
     [Auth, dapp],
   )
 
@@ -35,10 +37,11 @@ export const useAuth = (dapp) => {
       if (Auth.idx.authenticated) {
         return await Auth.get(key)
       }
+      console.log('its happening here in get useAuth')
       await Auth.getInstance(dapp.web3.provider)
     },
     [Auth, dapp],
   )
 
-  return { set, get }
+  return { set, get, isAuthenticated }
 }

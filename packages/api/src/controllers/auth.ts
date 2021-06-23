@@ -4,10 +4,8 @@ import { NextFunction, Request, Response, Router } from "express";
 import { User } from "../models/User";
 import { ghCallback } from "../services/github/strategy";
 
+const md5 = require("md5");
 const router = Router();
-
-//@TODO: Make sure this is the best approach
-const domain = process.env.HOST || "http://localhost:3000";
 
 const checkAccessToken = (
   request: Request,
@@ -23,32 +21,9 @@ const checkAccessToken = (
     });
   }
 
-  if (!request.session.user) {
-    return response.json({
-      status: 404,
-      message: "You must log in",
-    });
-  }
-
   const [_, token] = auth.split(" ");
   request.accessToken = token;
   return next();
-};
-
-const checkRedirectUri = (
-  request: Request,
-  response: Response,
-  next: NextFunction
-) => {
-  const { redirectUrl } = request.query;
-  if (redirectUrl) {
-    request.redirectUrl = redirectUrl as string;
-    return next();
-  }
-  return response.json({
-    status: 400,
-    message: "Redirect URL has not been sent",
-  });
 };
 
 const handleSignIn = async (
@@ -56,19 +31,13 @@ const handleSignIn = async (
   response: Response,
   next: NextFunction
 ) => {
-  const { address, authType } = request.query;
+  const { did } = request.body;
+  const hashedDid = md5(did);
   try {
-    if (address) {
-      // @TODO: Improve this
-      const user = await User.findOrCreateByAddress({
-        address: address as string,
-        authType: Number(authType) || 1,
-      });
-      return response.json({
-        status: 200,
-        user,
-      });
-    }
+    await User.findOrCreate(hashedDid);
+    return response.json({
+      status: 200,
+    });
   } catch (error) {
     response.json({
       status: 500,
@@ -107,11 +76,11 @@ const authHandler = async (request: Request, response: Response) => {
   }
 
   try {
-    const user = await ghCallback(codeRequest.data.access_token);
-    request.session.user = user;
+    const ghCredentials = await ghCallback(codeRequest.data.access_token);
     return response.json({
       status: 200,
       ...codeRequest.data,
+      ...ghCredentials
     });
   } catch (e) {
     return response.json({
@@ -121,11 +90,7 @@ const authHandler = async (request: Request, response: Response) => {
   }
 };
 
-router.get("/sign-in", handleSignIn);
+router.post("/sign-in", handleSignIn);
 router.get("/github/callback/:code", authHandler);
-router.get("/sign-out", (request: Request, response: Response) => {
-  request.logout();
-  response.json({ status: 200 });
-});
 
 export { checkAccessToken, router as AuthController };

@@ -1,12 +1,12 @@
 import { namehash } from 'ethers/lib/utils'
 import { useCallback, useState } from 'react'
-import contentHash from 'content-hash'
 import { ENS_REGISTRY, FIFS_REGISTRAR, MAIN_DOMAIN } from '../../constants'
 import { useStateValue } from '../../state/state'
 import { utf8ToKeccak256 } from '../../utils/hash'
 import { ethers } from 'ethers'
 import { sendTransaction } from '../../utils/ethereum'
 
+const contentHash = require('content-hash')
 export const MAIN_DOMAIN_NAMEHASH = namehash(MAIN_DOMAIN)
 
 export const useCreateSubdomain = () => {

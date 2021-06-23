@@ -1,8 +1,6 @@
 import { ThemeProvider } from 'theme-ui'
 import theme from '../theme'
 import { StateProvider, useStateValue } from '../state/state'
-import InitialState from '../state/initialState'
-import Reducer from '../state/reducer'
 import Head from 'next/head'
 import 'animate.css/animate.css'
 import { SWRConfig } from 'swr'
@@ -10,10 +8,15 @@ import { fetcherREST } from '../utils/fetcher'
 import { useAuth } from '../hooks/useAuth'
 const swrOptions = {
   // refreshInterval: 10000,
-  fetcher: (resource) => fetcherREST(resource),
+  fetcher: (resource: string) => fetcherREST(resource),
 }
 
-function StatefulApp({ pageProps, Component }) {
+interface Props<T> {
+  pageProps: React.PropsWithChildren<T>
+  Component: React.FC<T>
+}
+
+function StatefulApp({ pageProps, Component }: Props<any>) {
   const [{ dapp }] = useStateValue()
   useAuth(dapp)
   return (
@@ -32,9 +35,9 @@ function StatefulApp({ pageProps, Component }) {
   )
 }
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: Props<any>) {
   return (
-    <StateProvider initialState={InitialState} reducer={Reducer}>
+    <StateProvider>
       <StatefulApp pageProps={pageProps} Component={Component} />
     </StateProvider>
   )
