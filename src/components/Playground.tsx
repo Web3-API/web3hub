@@ -159,10 +159,10 @@ const Playground = ({ api }: PlaygroundProps) => {
       })
       setloadingPackageContents(false)
     }
-    if (loadingPackageContents === true) {
+    if (loadingPackageContents && api) {
       go()
     }
-  }, [loadingPackageContents])
+  }, [loadingPackageContents, api])
 
   useEffect(() => {
     if (selectedMethod !== newSelectedMethod) {

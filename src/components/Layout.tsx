@@ -14,7 +14,6 @@ const Layout = ({ children }: LayoutProps) => {
   const { theme } = useThemeUI()
   const [, dispatch] = useStateValue()
   const { data: apis, error } = useSWR('http://localhost:3000/api/apis/active')
-  console.log(apis)
   // https://github.com/system-ui/theme-ui/issues/834#issuecomment-625865772
   const pageLevelAnimationTiming = timing[3] + 's'
 

@@ -50,7 +50,6 @@ const onboardInit = (dispatch: Dispatch<StateAction>) => {
         await axios.post(`http://localhost:3000/api/auth/sign-in`, {
           did: id,
         })
-        console.log({ id })
         dispatch({
           type: 'SET_DID',
           payload: id,

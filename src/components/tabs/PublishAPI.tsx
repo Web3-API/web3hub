@@ -42,7 +42,6 @@ const ErrorMsg = ({ children, bottomshift }: ErrorMsg) => (
 
 const PublishAPI = () => {
   const [{ dapp, publish }, dispatch] = useStateValue()
-  console.log({ dapp })
   const [executeCreateSubdomain, { status }] = useCreateSubdomain()
 
   const checkForENSAvailability = useCallback(

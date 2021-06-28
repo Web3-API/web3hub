@@ -29,7 +29,6 @@ export const withValidatePublishBody = (
   ) => Promise<VercelResponse> | VercelResponse,
 ) => {
   return (request: VercelRequest, response: VercelResponse) => {
-    console.log(request.body)
     const schema = Joi.object({
       description: Joi.string().required(),
       subtext: Joi.string().required(),
