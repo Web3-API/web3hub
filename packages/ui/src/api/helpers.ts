@@ -1,10 +1,10 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
-import { Schema, object, array, string } from 'joi'
+import Joi from 'joi'
 
 export function validateRequest(
   request: VercelRequest,
   response: VercelResponse,
-  schema: Schema,
+  schema: Joi.Schema,
 ) {
   const options = {
     abortEarly: false,
@@ -29,15 +29,17 @@ export const withValidatePublishBody = (
   ) => Promise<VercelResponse> | VercelResponse,
 ) => {
   return (request: VercelRequest, response: VercelResponse) => {
-    const schema = object({
-      description: string().required(),
-      subtext: string().required(),
-      name: string().required(),
-      icon: string().required(),
-      locationUri: string().required(),
-      pointerUris: array().items(string()),
+    console.log(request.body)
+    const schema = Joi.object({
+      description: Joi.string().required(),
+      subtext: Joi.string().required(),
+      name: Joi.string().required(),
+      icon: Joi.string().required(),
+      locationUri: Joi.string().required(),
+      pointerUris: Joi.array().items(Joi.string()),
+      did: Joi.string(),
     })
-
+    
     validateRequest(request, response, schema)
 
     return fn(request, response)
@@ -52,16 +54,16 @@ export const withAccessToken = (
   ) => Promise<VercelResponse> | VercelResponse,
 ) => {
   return (request: VercelRequest, response: VercelResponse) => {
-    const auth = request.headers.authorization || "";
-    const isAuthed = auth.includes("token");
+    const auth = request.headers.authorization || ''
+    const isAuthed = auth.includes('token')
     if (!isAuthed) {
       return response.json({
         status: 404,
-        message: "Authorization header is missing",
-      });
+        message: 'Authorization header is missing',
+      })
     }
 
-    const [_, token] = auth.split(" ");
+    const [_, token] = auth.split(' ')
     return fn(request, response, token)
   }
 }

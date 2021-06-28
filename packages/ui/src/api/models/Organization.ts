@@ -2,7 +2,8 @@ import { Connection } from "../db";
 
 export class Organization {
   public static async get(orgId: number) {
-    const connection = await Connection.getInstance();
+    const db = Connection.getInstance()
+    const connection = await db.connect()
     try {
       const organization = await connection.oneOrNone("");
       return organization;

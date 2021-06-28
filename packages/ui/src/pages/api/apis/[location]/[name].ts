@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from "@vercel/node"
-import { Api } from "../../../../../api/models/Api"
+import { Api } from "../../../../api/models/Api"
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if(request.method === "GET") {

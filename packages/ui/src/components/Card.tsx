@@ -29,7 +29,7 @@ const Card = ({ api, ipfsHash, boxShadowOn, noHover }: CardProps) => {
         },
       }}
     >
-      {api && api.pointerUris.length > 0 ? (
+      {api && api.pointerUris && api.pointerUris.length > 0 ? (
         <Link href={`${ipfsHash || 'apis/ens/' + api.pointerUris[0]}`}>
           <a sx={{ textDecoration: 'none', p: 4, width: '100%', height: '100%' }}>
             <div className="wrap-contents">

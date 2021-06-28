@@ -6,7 +6,8 @@ export enum AddressesTypes {
 
 export class User {
   public static async findOrCreate(did: string) {
-    const connection = await Connection.getInstance();
+    const db = Connection.getInstance()
+    const connection = await db.connect()
     try {
       await connection.oneOrNone(
         "INSERT INTO users (id) VALUES ($1) ON CONFLICT (id) DO NOTHING RETURNING *",

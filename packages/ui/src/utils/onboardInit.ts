@@ -47,9 +47,10 @@ const onboardInit = (dispatch: Dispatch<StateAction>) => {
         // do a request to backend sending the DID
         // the backend will hash this DID and store it
         const { id } = Auth.ceramic.did
-        await axios.post(`http://localhost:3001/auth/sign-in`, {
+        await axios.post(`http://localhost:3000/api/auth/sign-in`, {
           did: id,
         })
+        console.log({ id })
         dispatch({
           type: 'SET_DID',
           payload: id,

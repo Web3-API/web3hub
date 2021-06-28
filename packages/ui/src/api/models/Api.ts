@@ -9,7 +9,8 @@ export enum Authorities {
 
 export class Api {
   public static async create(apiInfo: ApiData) {
-    const connection = await Connection.getInstance();
+    const db = Connection.getInstance();
+    const connection = await db.connect()
     try {
       const {
         name,
@@ -60,9 +61,10 @@ export class Api {
   }
 
   public static async getAllActive(): Promise<ApiData[]> {
-    const connection = await Connection.getInstance();
+    const connection = Connection.getInstance();
+    const con = await connection.connect()
     try {
-      const apis = await connection.manyOrNone(
+      const apis = await con.manyOrNone(
         `SELECT 
           apis.id, 
           apis.description, 
@@ -82,26 +84,26 @@ export class Api {
       console.log("Error on method: Api.getAllActive() -> ", error.message);
       throw new Error(error);
     } finally {
-      connection.done();
+      con.done();
     }
   }
 
   public static async deactivate(id: number) {
-    const connection = await Connection.getInstance();
+    const db = Connection.getInstance()
+    const connection = await db.connect()
     try {
-      await connection.none("UPDATE apis SET visible = false WHERE id = $1", [
-        id,
-      ]);
+      await connection.none('UPDATE apis SET visible = false WHERE id = $1', [id])
     } catch (error) {
-      console.log("Error on method: Api.deactivate() -> ", error.message);
-      throw new Error(error);
+      console.log('Error on method: Api.deactivate() -> ', error.message)
+      throw new Error(error)
     } finally {
-      connection.done();
+      connection.done()
     }
   }
 
   public static async get(name: string, visible = true) {
-    const connection = await Connection.getInstance();
+    const db = Connection.getInstance()
+    const connection = await db.connect()
     try {
       const apisData = await connection.manyOrNone(
         `SELECT apis.id, 
@@ -131,7 +133,8 @@ export class Api {
   }
 
   public static async getByLocation(location: string, name: string) {
-    const connection = await Connection.getInstance();
+    const db = Connection.getInstance()
+    const connection = await db.connect()
     try {
       const api = await connection.oneOrNone(
         `SELECT apis.id FROM apis         
@@ -141,6 +144,7 @@ export class Api {
         [name, location]
       );
 
+      console.log({ api })
       if (!api) return null;
 
       const apisData = await connection.manyOrNone(
@@ -170,7 +174,8 @@ export class Api {
   }
 
   public static async getByOwner(id: string) {
-    const connection = await Connection.getInstance();
+    const db = Connection.getInstance()
+    const connection = await db.connect()
     try {
       const user = await connection.oneOrNone(
         `SELECT * FROM users WHERE id = $1`,

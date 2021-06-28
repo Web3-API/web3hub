@@ -42,6 +42,7 @@ const ErrorMsg = ({ children, bottomshift }: ErrorMsg) => (
 
 const PublishAPI = () => {
   const [{ dapp, publish }, dispatch] = useStateValue()
+  console.log({ dapp })
   const [executeCreateSubdomain, { status }] = useCreateSubdomain()
 
   const checkForENSAvailability = useCallback(
@@ -112,7 +113,7 @@ const PublishAPI = () => {
     e.preventDefault()
     if (publish.apiData && publish.subdomain.length > 0) {
       const publishReq = await axios.post(
-        'http://localhost:3001/apis/publish',
+        'http://localhost:3000/api/apis/publish',
         {
           name: publish.apiData.name,
           description: publish.apiData.description,

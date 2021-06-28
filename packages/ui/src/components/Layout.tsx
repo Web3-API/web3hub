@@ -13,12 +13,13 @@ type LayoutProps = {
 const Layout = ({ children }: LayoutProps) => {
   const { theme } = useThemeUI()
   const [, dispatch] = useStateValue()
-  const { data: apis, error } = useSWR('http://localhost:3001/apis/active')
+  const { data: apis, error } = useSWR('http://localhost:3000/api/apis/active')
+  console.log(apis)
   // https://github.com/system-ui/theme-ui/issues/834#issuecomment-625865772
-  const pageLevelAnimationTiming = timing[3] +'s'
-  
+  const pageLevelAnimationTiming = timing[3] + 's'
+
   useEffect(() => {
-    if(apis && apis.apis) {
+    if (apis && apis.apis) {
       dispatch({
         type: 'SET_AVAILABLE_APIS',
         payload: apis.apis,
@@ -35,13 +36,13 @@ const Layout = ({ children }: LayoutProps) => {
         },
       }}
     >
-      {children}      
+      {children}
       <Global
         styles={(theme: any) => ({
           '@keyframes shift': {
             from: { transform: 'translate(-10px, 0)' },
-            to: { transform: 'translate(0, 0)' }
-           },
+            to: { transform: 'translate(0, 0)' },
+          },
           '*': {
             boxSizing: 'border-box',
             position: 'relative',
@@ -150,7 +151,7 @@ const Layout = ({ children }: LayoutProps) => {
             width: '100%',
             height: '100%',
             paddingLeft: '1rem',
-            paddingRight: '1rem'
+            paddingRight: '1rem',
           },
           '.contents.animate': {
             animation: `fadeIn ${pageLevelAnimationTiming}, shift ${pageLevelAnimationTiming}`,
@@ -160,12 +161,13 @@ const Layout = ({ children }: LayoutProps) => {
             padding: '0',
             listStyle: 'none',
           },
-          'a, Button, [type="Button"], [type="reset"], [type="submit"], [type="file"], [type="file"]::-webkit-file-upload-Button': {
-            textTransform: 'none',
-            appearance: 'none',
-            cursor: 'pointer',
-            textDecoration: 'none'
-          },
+          'a, Button, [type="Button"], [type="reset"], [type="submit"], [type="file"], [type="file"]::-webkit-file-upload-Button':
+            {
+              textTransform: 'none',
+              appearance: 'none',
+              cursor: 'pointer',
+              textDecoration: 'none',
+            },
           'a:visited, a:active': {
             textDecoration: 'none',
           },

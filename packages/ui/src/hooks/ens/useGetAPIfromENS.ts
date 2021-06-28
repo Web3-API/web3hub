@@ -23,7 +23,7 @@ export const useGetAPIfromENSParamInURL = () => {
       try {
         if (router.query.view !== undefined) {
           const { data: apiData } = await axios.get<{ api: APIData }>(
-            `http://localhost:3001/apis/find/ens/${router.asPath.split('ens/')[1]}`,
+            `http://localhost:3000/api/apis/ens/${router.asPath.split('ens/')[1]}`,
           )
           setData(apiData.api)
         }

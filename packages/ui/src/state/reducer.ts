@@ -136,6 +136,9 @@ export function dappReducer(state: State, action: DAppAction): State['dapp'] {
     case 'SET_GITHUB_USER':
       newStateObj.github = action.payload
       return newStateObj
+    case 'SET_DID':
+      newStateObj.did = action.payload
+      return newStateObj
     default:
       return state.dapp
   }

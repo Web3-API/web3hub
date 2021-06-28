@@ -18,7 +18,7 @@ const Signin = () => {
     ;(async () => {
       if (router.query.code) {
         const response = await axios.get(
-          `http://localhost:3001/auth/github/callback/${router.query.code}`,
+          `http://localhost:3000/api/auth/github/callback/${router.query.code}`,
           {
             withCredentials: true,
           },
