@@ -98,8 +98,7 @@ const SignInArea = ({ onDark }: SignInAreaProps) => {
         </div>
       )}
       <ul sx={{ display: 'flex', alignItems: 'center' }}>
-        {/* TODO: is this the correct check? */}
-        {dapp?.apis && (
+        {dapp?.address && (
           <li>
             {router.pathname === '/apis/create' ? (
               ''

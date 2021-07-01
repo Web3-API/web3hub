@@ -1,9 +1,12 @@
 /** @jsxImportSource theme-ui **/
 import { Flex, Button, Themed } from 'theme-ui'
 import { useRouter } from 'next/router'
+import { useStateValue } from '../../state/state'
 
 const Published = () => {
   const router = useRouter()
+  const [{ dapp }] = useStateValue()
+  console.log(dapp)
   return (
     <Flex
       className="published"

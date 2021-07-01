@@ -69,6 +69,8 @@ const Playground = ({ api }: PlaygroundProps) => {
   const [formVarsToSubmit, setformVarsToSubmit] = useState({})
   const { name: networkName } = networks[networkID]
 
+  console.log({formVarsToSubmit})
+
   const { loading, execute } = useWeb3ApiQuery({
     uri: `ens/${networkName}/${router.asPath.split('/playground/ens/')[1]}`,
     query: selectedMethod,
