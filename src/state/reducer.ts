@@ -18,34 +18,36 @@ export function web3apiReducer(
 ): State['web3api'] {
   switch (action.type) {
     case 'recreateredirects':
-      const currentNetwork = networks[networkID]
-      const networksConfig: Record<string, ConnectionConfig> = {
-        [currentNetwork.name]: {
-          provider: state.dapp.web3,
-          signer: state.dapp.web3.getSigner(),
-        },
-      }
-      const redirects = [
-        {
-          from: 'w3://ens/ethereum.web3api.eth',
-          to: ethereumPlugin({
-            networks: networksConfig,
-            defaultNetwork: currentNetwork.name,
-          }),
-        },
-        {
-          from: 'w3://ens/ipfs.web3api.eth',
-          to: ipfsPlugin({ provider: 'https://ipfs.io' }),
-        },
-        {
-          from: 'w3://ens/ens.web3api.eth',
-          to: ensPlugin({}),
-        },
-      ]
+      if (state.dapp.web3) {
+        const currentNetwork = networks[networkID]
+        const networksConfig: Record<string, ConnectionConfig> = {
+          [currentNetwork.name]: {
+            provider: state.dapp.web3,
+            signer: state.dapp.web3.getSigner(),
+          },
+        }
+        const redirects = [
+          {
+            from: 'w3://ens/ethereum.web3api.eth',
+            to: ethereumPlugin({
+              networks: networksConfig,
+              defaultNetwork: currentNetwork.name,
+            }),
+          },
+          {
+            from: 'w3://ens/ipfs.web3api.eth',
+            to: ipfsPlugin({ provider: 'https://ipfs.io' }),
+          },
+          {
+            from: 'w3://ens/ens.web3api.eth',
+            to: ensPlugin({}),
+          },
+        ]
 
-      return {
-        ...state.web3api,
-        redirects,
+        return {
+          ...state.web3api,
+          redirects,
+        }
       }
     default:
       return state.web3api
