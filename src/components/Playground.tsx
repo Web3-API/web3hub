@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui **/
 import { Flex, Button, Themed, Field } from 'theme-ui'
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { useWeb3ApiQuery } from '@web3api/react'
 import { useStateValue } from '../state/state'
@@ -40,7 +40,7 @@ interface APIContents {
 
 const Playground = ({ api }: PlaygroundProps) => {
   const [{ dapp }] = useStateValue()
-  const varform = useRef<HTMLFormElement>();
+  const varform = useRef<HTMLFormElement>()
   const router = useRouter()
   const [apiOptions] = useState(dapp.apis)
 
@@ -55,7 +55,9 @@ const Playground = ({ api }: PlaygroundProps) => {
 
   const [structuredschema, setstructuredschema] = useState<StructuredSchema>()
 
-  const [clientresponded, setclientresponed] = useState<QueryApiResult<Record<string, any>>>()
+  const [clientresponded, setclientresponed] = useState<
+    QueryApiResult<Record<string, any>>
+  >()
 
   const [customquerytext, setcustomquerytext] = useState('')
 
@@ -69,9 +71,7 @@ const Playground = ({ api }: PlaygroundProps) => {
   const [formVarsToSubmit, setformVarsToSubmit] = useState({})
   const { name: networkName } = networks[networkID]
 
-  console.log({formVarsToSubmit})
-
-  const { loading, execute } = useWeb3ApiQuery({
+  const { loading, execute, errors } = useWeb3ApiQuery({
     uri: `ens/${networkName}/${router.asPath.split('/playground/ens/')[1]}`,
     query: selectedMethod,
     variables: formVarsToSubmit,
@@ -95,14 +95,21 @@ const Playground = ({ api }: PlaygroundProps) => {
     link.click()
   }
 
-  const handleRunBtnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.FormEvent) => {
+  const handleRunBtnClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.FormEvent,
+  ) => {
     e.preventDefault()
-    let varsToSubmit: Record<string, string> = {}
+    let varsToSubmit: Record<string, string | number> = {}
     Array.from(varform.current)
       .filter((item: HTMLButtonElement) => item.type !== 'submit')
-      .map((input: HTMLInputElement) => (varsToSubmit[input.name] = input.value))
+      .map((input: HTMLInputElement) => {
+        let value: string | number  = input.value
+        if (input.name === 'value') value = Number(value)
+        return (varsToSubmit[input.name] = value)
+      })
     // TODO: call this whenever the form has been edited
     // onFocusLost?
+
     setformVarsToSubmit(varsToSubmit)
   }
 
@@ -118,14 +125,14 @@ const Playground = ({ api }: PlaygroundProps) => {
     setcustomquerytext(e)
   }
 
-  async function exec() {
+  const exec = useCallback(async () => {
     try {
       let response = await execute()
       setclientresponed(response)
     } catch (error) {
       throw error
     }
-  }
+  }, [formVarsToSubmit])
 
   useEffect(() => {
     if (router.asPath.includes('ens/')) {
