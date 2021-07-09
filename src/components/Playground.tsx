@@ -51,6 +51,7 @@ const Playground = ({ api }: PlaygroundProps) => {
   const [showschema, setshowschema] = useState(false)
   const [selectedMethod, setSelectedMethod] = useState('')
   const [newSelectedMethod, setnewSelectedMethod] = useState('')
+  const [methodName, setMethodName] = useState('')
 
   const [structuredschema, setstructuredschema] = useState<StructuredSchema>()
 
@@ -80,7 +81,8 @@ const Playground = ({ api }: PlaygroundProps) => {
     return setshowschema(!showschema)
   }
 
-  function handleQueryValuesChange(method: { value: string }[]) {
+  function handleQueryValuesChange(method: { value: string; id: string }[]) {
+    setMethodName(method[0].id)
     setSelectedMethod(method[0].value)
   }
 
@@ -167,10 +169,9 @@ const Playground = ({ api }: PlaygroundProps) => {
   }, [selectedMethod])
 
   useEffect(() => {
-    const queryInfo = apiContents && apiContents.queries.find((q) => q.id === newSelectedMethod)
-    if (queryInfo && queryInfo.recipe) {
-      setformVarsToSubmit(queryInfo.recipe)
-    }
+    const queryInfo = apiContents && apiContents.queries.find((q) => q.id === methodName)
+    let newVars = queryInfo && queryInfo.recipe ? queryInfo.recipe : {}
+    setformVarsToSubmit(newVars)
   }, [newSelectedMethod])
 
   return (
@@ -328,7 +329,7 @@ const Playground = ({ api }: PlaygroundProps) => {
               Vars
             </div>
             <JSONEditor
-              value={ Object.keys(formVarsToSubmit).length ? formVarsToSubmit.toString() : ''}
+              value={formVarsToSubmit}
               handleEditorChange={handleVariableChanges}
             />
           </div>

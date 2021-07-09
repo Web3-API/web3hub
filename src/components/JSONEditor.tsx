@@ -4,11 +4,11 @@ import Editor, { Monaco, OnChange } from '@monaco-editor/react'
 
 // https://github.com/brijeshb42/monaco-themes/tree/master/themes
 import solarizedDark from '../theme/Solarized-dark.json'
-import { MouseEventHandler } from 'react'
+import { MouseEventHandler, useMemo } from 'react'
 
 type GQLCodeBlockProps = {
   height?: string
-  value: string
+  value: Record<string, unknown>
   onClick?: MouseEventHandler<HTMLDivElement>
   handleEditorChange?: OnChange
 }
@@ -20,9 +20,16 @@ const JSONEditor = ({
   onClick,
 }: GQLCodeBlockProps) => {
   const handleEditorWillMount = (monaco: Monaco) => {
+    console.log('sera?')
     monaco.editor.defineTheme('solarizedDark', solarizedDark)
     monaco.editor.setTheme('solarizedDark')
   }
+
+  const t = useMemo(() => {
+    console.log(value)
+    return JSON.stringify(value, null, 2)
+  }, [value])
+
   return (
     <div className="GQLCodeBlock-wrap" onClick={onClick}>
       <Editor
@@ -31,7 +38,7 @@ const JSONEditor = ({
         onChange={handleEditorChange}
         height={height}
         defaultLanguage="json"
-        defaultValue={value}
+        value={JSON.stringify(value, null, 2)}
       />
     </div>
   )
