@@ -20,7 +20,6 @@ const JSONEditor = ({
   onClick,
 }: GQLCodeBlockProps) => {
   const handleEditorWillMount = (monaco: Monaco) => {
-    console.log('sera?')
     monaco.editor.defineTheme('solarizedDark', solarizedDark)
     monaco.editor.setTheme('solarizedDark')
   }

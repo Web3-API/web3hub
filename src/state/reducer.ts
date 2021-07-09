@@ -1,3 +1,4 @@
+import { ConnectionConfig, ethereumPlugin } from '@web3api/ethereum-plugin-js'
 import {
   DAppAction,
   PublishAction,
@@ -8,9 +9,6 @@ import {
 import { State, initialState } from './initialState'
 import networks from '../utils/networks.json'
 import { networkID } from '../constants'
-import { ConnectionConfig, ethereumPlugin } from '@web3api/ethereum-plugin-js'
-import { ipfsPlugin } from '@web3api/ipfs-plugin-js'
-import { ensPlugin } from '@web3api/ens-plugin-js'
 
 export function web3apiReducer(
   state: State,
@@ -26,6 +24,7 @@ export function web3apiReducer(
             signer: state.dapp.web3.getSigner(),
           },
         }
+
         const redirects = [
           {
             from: 'ens/ethereum.web3api.eth',
@@ -34,10 +33,6 @@ export function web3apiReducer(
               defaultNetwork: currentNetwork.name,
             }),
           },
-          {
-            from: 'w3://ens/ipfs.web3api.eth',
-            to: ipfsPlugin({ provider: 'https://ipfs.io' }),
-          }
         ]
 
         return {

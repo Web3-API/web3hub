@@ -1,5 +1,7 @@
+import ethers from 'ethers'
 import { PluginPackage, UriRedirect } from '@web3api/client-js'
-import ethers from "ethers"
+import { ipfsPlugin } from '@web3api/ipfs-plugin-js'
+import { ethereumPlugin } from '@web3api/ethereum-plugin-js'
 import { networkID } from '../constants'
 import { APIData } from '../hooks/ens/useGetAPIfromENS'
 
@@ -17,7 +19,7 @@ export interface State {
 
 export const initialState: State = {
   dapp: {
-    balance: "-1",
+    balance: '-1',
     address: undefined,
     wallet: {
       name: 'TEST',
@@ -29,7 +31,22 @@ export const initialState: State = {
     did: undefined,
   },
   web3api: {
-    redirects: undefined,
+    redirects: [
+      {
+        from: 'ens/ethereum.web3api.eth',
+        to: ethereumPlugin({
+          networks: {
+            mainnet: {
+              provider: 'https://mainnet.infura.io/v3/b00b2c2cc09c487685e9fb061256d6a6',
+            },
+          },
+        }),
+      },
+      {
+        from: 'w3://ens/ipfs.web3api.eth',
+        to: ipfsPlugin({ provider: 'https://ipfs.io' }),
+      },
+    ],
   },
   publish: {
     subdomain: '',
@@ -60,7 +77,7 @@ type dappType = {
   web3?: ethers.providers.JsonRpcProvider
   apis: APIData[]
   github?: string
-  did?: string;
+  did?: string
 }
 
 type web3apiType = {
