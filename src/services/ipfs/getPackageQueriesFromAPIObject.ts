@@ -28,9 +28,7 @@ const getPackageQueries = async (api: APIData): Promise<QueryAttributes[]> => {
 
   const recipes = await getPackageRecipes(api)
 
-  console.log({ queries })
-  const g = queries.map((query) => {
-    console.log({ queryName: query.id })
+  return queries.map((query) => {
     const recipeOfQuery = recipes.find((r) => {
       const [recipeName] = r.id.split('.json')
       return recipeName === query.id
@@ -44,8 +42,6 @@ const getPackageQueries = async (api: APIData): Promise<QueryAttributes[]> => {
     }
     return query
   })
-  console.log({ g })
-  return g
 }
 
 async function getPackageRecipes(api: ApiData): Promise<QueryAttributes[]> {

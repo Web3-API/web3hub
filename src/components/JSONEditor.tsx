@@ -25,11 +25,6 @@ const JSONEditor = ({
     monaco.editor.setTheme('solarizedDark')
   }
 
-  const t = useMemo(() => {
-    console.log(value)
-    return JSON.stringify(value, null, 2)
-  }, [value])
-
   return (
     <div className="GQLCodeBlock-wrap" onClick={onClick}>
       <Editor
