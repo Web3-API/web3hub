@@ -28,7 +28,7 @@ export function web3apiReducer(
         }
         const redirects = [
           {
-            from: 'w3://ens/ethereum.web3api.eth',
+            from: 'ens/ethereum.web3api.eth',
             to: ethereumPlugin({
               networks: networksConfig,
               defaultNetwork: currentNetwork.name,
@@ -37,11 +37,7 @@ export function web3apiReducer(
           {
             from: 'w3://ens/ipfs.web3api.eth',
             to: ipfsPlugin({ provider: 'https://ipfs.io' }),
-          },
-          {
-            from: 'w3://ens/ens.web3api.eth',
-            to: ensPlugin({}),
-          },
+          }
         ]
 
         return {
