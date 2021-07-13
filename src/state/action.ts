@@ -4,7 +4,7 @@ import { APIData } from "../hooks/ens/useGetAPIfromENS"
 export type StateAction = Web3APIReducerAction | SearchAction | PublishAction | DAppAction
 
 export type Web3APIReducerAction = {
-  type: 'recreateredirects'
+  type: 'recreateplugins'
 }
 
 export type SearchAction = {

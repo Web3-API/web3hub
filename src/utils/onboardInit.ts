@@ -38,7 +38,7 @@ const onboardInit = (dispatch: Dispatch<StateAction>) => {
         payload: web3,
       })
       dispatch({
-        type: 'recreateredirects',
+        type: 'recreateplugins',
       })
 
       await Auth.getInstance(wallet.provider)

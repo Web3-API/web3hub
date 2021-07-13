@@ -17,8 +17,8 @@ const PlaygroundPage = () => {
         <main>
           <div className="contents animate">
             <Header onDark title="Playground" />
-            {web3api.redirects && (
-              <Web3ApiProvider redirects={web3api.redirects}>
+            {web3api.plugins && (
+              <Web3ApiProvider plugins={web3api.plugins}>
                 <Playground />
               </Web3ApiProvider>
             )}

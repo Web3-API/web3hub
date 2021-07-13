@@ -1,3 +1,4 @@
+import { PluginRegistration } from '@web3api/client-js'
 import { ConnectionConfig, ethereumPlugin } from '@web3api/ethereum-plugin-js'
 import {
   DAppAction,
@@ -15,7 +16,7 @@ export function web3apiReducer(
   action: Web3APIReducerAction,
 ): State['web3api'] {
   switch (action.type) {
-    case 'recreateredirects':
+    case 'recreateplugins':
       if (state.dapp.web3) {
         const currentNetwork = networks[networkID]
         const networksConfig: Record<string, ConnectionConfig> = {
@@ -25,10 +26,10 @@ export function web3apiReducer(
           },
         }
 
-        const redirects = [
+        const plugins: PluginRegistration[] = [
           {
-            from: 'ens/ethereum.web3api.eth',
-            to: ethereumPlugin({
+            uri: 'ens/ethereum.web3api.eth',
+            plugin: ethereumPlugin({
               networks: networksConfig,
               defaultNetwork: currentNetwork.name,
             }),
@@ -37,7 +38,7 @@ export function web3apiReducer(
 
         return {
           ...state.web3api,
-          redirects,
+          plugins,
         }
       }
     default:
